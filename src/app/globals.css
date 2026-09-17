@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+@config "../../tailwind.config.ts";
+
+@theme {
+  --color-void: #000000;
+  --color-void-dark: #000000;
+  --color-void-light: #060608;
+
+  --color-panel: #08080A;
+  --color-panel-hover: #101014;
+  --color-panel-border: #1E1E26;
+  --color-panel-border-glow: #383848;
+
+  --color-silver: #E4E4E7;
+  --color-silver-bright: #FFFFFF;
+  --color-silver-dim: #8E8E93;
+
+  --color-muted: #71717A;
+  --color-muted-dark: #52525B;
+
+  --color-accent-purple: #FFFFFF;
+  --color-accent-mint: #FFFFFF;
+  --color-accent-cyan: #E4E4E7;
+
+  --font-mono: var(--font-jetbrains-mono), 'Space Mono', monospace;
+  --font-sans: var(--font-jetbrains-mono), var(--font-inter), sans-serif;
+}
+
+:root {
+  --background: #000000;
+  --foreground: #FFFFFF;
+}
+
+/* Base Body Styles */
+body {
+  background-color: #000000;
+  color: #FFFFFF;
+  font-family: var(--font-jetbrains-mono), 'Space Mono', monospace;
+  overflow-x: hidden;
+}
+
+/* Technical HUD Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+  border-left: 1px solid #1A1A22;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272A;
+  border-radius: 1px;
+  transition: all 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFFFFF;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+/* Cyber Canvas Background Dot Matrix Texture */
+.bg-cyber-grid {
+  background-image: 
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.12) 1px, transparent 0),
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px, 24px 24px;
+}
+
+/* Scanline Effect */
+.bg-scanline {
+  position: relative;
+}
+
+.bg-scanline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(255, 255, 255, 0.02) 50%,
+    rgba(255, 255, 255, 0.02)
+  );
+  background-size: 100% 3px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Technical HUD Card Container Utility */
+.hud-card {
+  background-color: #08080A;
+  border: 1px solid #1E1E26;
+  border-radius: 0.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hud-card:hover {
+  border-color: #383848;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.03);
+}
+
+/* Technical Telemetry Bracket Tag */
+.hud-tag {
+  font-family: var(--font-jetbrains-mono), 'Space Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #E4E4E7;
+  background-color: #000000;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.2rem;
+  border: 1px solid #27272A;
+}
+
+/* Mechanical Checkbox Terminal Switch */
+.hud-checkbox {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 0.2rem;
+  border: 1px solid #27272A;
+  background-color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.hud-checkbox:hover {
+  border-color: #FFFFFF;
+}
+
+.hud-checkbox.checked {
+  background-color: #FFFFFF;
+  border-color: #FFFFFF;
+  color: #000000;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+}
+
+/* Cyber Corner Clip-path Utility */
+.clip-cyber-corner {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 10px) 0,
+    100% 10px,
+    100% 100%,
+    10px 100%,
+    0 calc(100% - 10px)
+  );
+}
+
+/* Cyber Glass Panel Utility */
+.glass-panel {
+  background: rgba(8, 8, 10, 0.94);
+  backdrop-filter: blur(12px);
+  border: 1px solid #1E1E26;
+}
+
+

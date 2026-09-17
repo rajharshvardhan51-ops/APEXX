@@ -1,0 +1,142 @@
+// APEXX Cyberpunk RPG Life OS - Database Schema
+// Provider: PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ------------------------------------------------------
+// ENUMS
+// ------------------------------------------------------
+
+enum DomainCategory {
+  ENGINEERING
+  FITNESS
+  MIND
+  ACADEMICS
+}
+
+enum HabitType {
+  GYM
+  CODING
+  READING
+  DEEP_WORK
+}
+
+// ------------------------------------------------------
+// MODELS
+// ------------------------------------------------------
+
+model User {
+  id             String   @id @default(uuid()) @db.Uuid
+  username       String   @unique
+  title          String   @default("Awakened Pioneer")
+  rank           String   @default("Bronze Rookie")
+  level          Int      @default(1)
+  totalXp        Int      @default(0) @map("total_xp")
+  currentStreak  Int      @default(0) @map("current_streak")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  macroGoals     MacroGoal[]
+  skillNodes     SkillNode[]
+  dailyQuests    DailyQuest[]
+  habitLogs      HabitLog[]
+  growthMetrics  GrowthMetric[]
+
+  @@map("users")
+}
+
+model MacroGoal {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @map("user_id") @db.Uuid
+  targetName    String   @map("target_name")
+  horizonDate   DateTime @map("horizon_date")
+  targetMetrics Json     @map("target_metrics")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillNodes    SkillNode[]
+
+  @@map("macro_goals")
+}
+
+model SkillNode {
+  id                  String         @id @default(uuid()) @db.Uuid
+  userId              String         @map("user_id") @db.Uuid
+  macroGoalId         String         @map("macro_goal_id") @db.Uuid
+  domain              DomainCategory
+  currentCategoryLevel Int           @default(1) @map("current_category_level")
+  categoryXp          Int            @default(0) @map("category_xp")
+  createdAt           DateTime       @default(now()) @map("created_at")
+  updatedAt           DateTime       @updatedAt @map("updated_at")
+
+  // Relations
+  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  macroGoal           MacroGoal      @relation(fields: [macroGoalId], references: [id], onDelete: Cascade)
+  dailyQuests         DailyQuest[]
+
+  @@map("skill_nodes")
+}
+
+model DailyQuest {
+  id               String         @id @default(uuid()) @db.Uuid
+  userId           String         @map("user_id") @db.Uuid
+  skillNodeId      String         @map("skill_node_id") @db.Uuid
+  title            String
+  description      String?
+  domainTag        DomainCategory @map("domain_tag")
+  baseXpReward     Int            @map("base_xp_reward")
+  completionStatus Boolean        @default(false) @map("completion_status")
+  scheduledDate    DateTime       @map("scheduled_date")
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  // Relations
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillNode        SkillNode      @relation(fields: [skillNodeId], references: [id], onDelete: Cascade)
+
+  @@map("daily_quests")
+}
+
+model HabitLog {
+  id            String    @id @default(uuid()) @db.Uuid
+  userId        String    @map("user_id") @db.Uuid
+  type          HabitType
+  metricPayload Json      @map("metric_payload")
+  xpGained      Int       @map("xp_gained")
+  timestamp     DateTime  @default(now())
+
+  // Relations
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("habit_logs")
+}
+
+model GrowthMetric {
+  id                    String   @id @default(uuid()) @db.Uuid
+  userId                String   @map("user_id") @db.Uuid
+  date                  DateTime @db.Date
+  productivityScore     Int      @map("productivity_score")
+  moodScore             Int      @map("mood_score")
+  totalFocusMins        Int      @map("total_focus_mins")
+  consistencyPercentage Float    @map("consistency_percentage")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Indexes & Constraints
+  @@unique([userId, date])
+  @@index([userId, date])
+  @@map("growth_metrics")
+}
