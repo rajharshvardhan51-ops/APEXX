@@ -191,3 +191,37 @@ export function playTimerChime(): void {
     // Audio Context policy swallow
   }
 }
+
+/**
+ * 5. playJarvisActivate()
+ * Futuristic high-tech pulse chord (784Hz -> 1046Hz -> 1568Hz over 200ms) with resonant shimmer.
+ * Used on "Hey APEX" voice wake word activation.
+ */
+export function playJarvisActivate(): void {
+  const volume = getEffectiveMasterVolume();
+  if (volume <= 0) return;
+
+  const ctx = getAudioContext();
+  if (!ctx) return;
+
+  try {
+    const now = ctx.currentTime;
+    const freqs = [784.0, 1046.5, 1567.98];
+    freqs.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+      gain.gain.setValueAtTime(0, now + idx * 0.05);
+      gain.gain.linearRampToValueAtTime(0.18 * volume, now + idx * 0.05 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.25);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + idx * 0.05);
+      osc.stop(now + idx * 0.05 + 0.28);
+    });
+  } catch (e) {
+    // Audio Context policy swallow
+  }
+}
+

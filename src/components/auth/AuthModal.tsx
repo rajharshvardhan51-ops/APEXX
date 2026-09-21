@@ -60,6 +60,30 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     }
   };
 
+  const formatFirebaseError = (errMessage: string): string => {
+    if (
+      errMessage.includes('auth/api-key-not-valid') ||
+      errMessage.includes('invalid-api-key') ||
+      errMessage.includes('api-key-not-valid')
+    ) {
+      return 'Firebase Cloud Auth requires a valid API key. To enable cloud sync, set NEXT_PUBLIC_FIREBASE_API_KEY in your .env.local file, or click "CONTINUE AS ANONYMOUS GUEST OPERATIVE" below to proceed in local mode.';
+    }
+    if (
+      errMessage.includes('auth/invalid-credential') ||
+      errMessage.includes('wrong-password') ||
+      errMessage.includes('user-not-found')
+    ) {
+      return 'Invalid email or password. Please verify your operative credentials.';
+    }
+    if (errMessage.includes('auth/email-already-in-use')) {
+      return 'An operative account already exists with this email address. Please sign in instead.';
+    }
+    if (errMessage.includes('auth/weak-password')) {
+      return 'Security password must be at least 6 characters long.';
+    }
+    return errMessage.replace('Firebase: ', '').replace(/^Error \((.*)\)\.$/, '$1');
+  };
+
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -74,7 +98,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
       onClose();
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Authentication failed';
-      setError(errorMessage.replace('Firebase: ', ''));
+      setError(formatFirebaseError(errorMessage));
     } finally {
       setIsSubmitting(false);
     }
@@ -88,7 +112,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
       onClose();
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Google sign in failed';
-      setError(errorMessage.replace('Firebase: ', ''));
+      setError(formatFirebaseError(errorMessage));
     } finally {
       setIsSubmitting(false);
     }
@@ -102,7 +126,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
       onClose();
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Guest sign in failed';
-      setError(errorMessage.replace('Firebase: ', ''));
+      setError(formatFirebaseError(errorMessage));
     } finally {
       setIsSubmitting(false);
     }

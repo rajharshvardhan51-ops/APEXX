@@ -8,10 +8,13 @@ import { User, Key, Eye, EyeOff, Cloud, Bell, CheckCircle2, Shield, Settings, Up
 
 export const CorePreferencesForm: React.FC = () => {
   const username = useApexStore((state) => state.username);
+  const honorificStore = useApexStore((state) => state.honorific);
+  const setHonorificStore = useApexStore((state) => state.setHonorific);
   const avatarUrlStore = useApexStore((state) => state.avatarUrl);
   const { updateUserProfileData } = useAuth();
 
   const [name, setName] = useState(username);
+  const [honorific, setHonorific] = useState(honorificStore || 'SIR');
   const [avatarUrl, setAvatarUrl] = useState(avatarUrlStore);
   const [mentor, setMentor] = useState('Jarvis (Polite & Analytical)');
   const [apiKey, setApiKey] = useState('');
@@ -42,6 +45,7 @@ export const CorePreferencesForm: React.FC = () => {
     e.preventDefault();
     const cleanName = name.trim() || 'NEW OPERATIVE';
 
+    setHonorificStore(honorific);
     await updateUserProfileData(cleanName, avatarUrl);
 
     if (apiKey) {
@@ -84,18 +88,39 @@ export const CorePreferencesForm: React.FC = () => {
       </div>
 
       <form onSubmit={handleCommit} className="space-y-4">
-        {/* Character Name Input */}
-        <div className="space-y-1.5">
-          <label className="text-[10px] text-[#8E8E93] uppercase tracking-wider font-semibold flex items-center gap-1.5">
-            <User className="w-3.5 h-3.5 text-[#FFFFFF]" /> OPERATIVE NICKNAME / CALLSIGN
-          </label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter character callsign..."
-            className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3.5 py-2.5 text-xs text-[#FFFFFF] focus:outline-none transition-colors"
-          />
+        {/* Character Salutation & Callsign Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="space-y-1.5 sm:col-span-1">
+            <label className="text-[10px] text-[#8E8E93] uppercase tracking-wider font-semibold flex items-center gap-1.5">
+              <User className="w-3.5 h-3.5 text-[#FFFFFF]" /> SALUTATION / TITLE
+            </label>
+            <select
+              value={honorific}
+              onChange={(e) => setHonorific(e.target.value)}
+              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2.5 text-xs text-[#FFFFFF] focus:outline-none transition-colors cursor-pointer font-mono font-bold"
+            >
+              <option value="SIR">SIR</option>
+              <option value="BOSS">BOSS</option>
+              <option value="MA'AM">MA'AM</option>
+              <option value="COMMANDER">COMMANDER</option>
+              <option value="CHIEF">CHIEF</option>
+              <option value="OPERATIVE">OPERATIVE</option>
+              <option value="NONE">NONE (NAME ONLY)</option>
+            </select>
+          </div>
+
+          <div className="space-y-1.5 sm:col-span-2">
+            <label className="text-[10px] text-[#8E8E93] uppercase tracking-wider font-semibold flex items-center gap-1.5">
+              <User className="w-3.5 h-3.5 text-[#FFFFFF]" /> OPERATIVE NICKNAME / CALLSIGN
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. HARSH, ALEX, VICTOR..."
+              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3.5 py-2.5 text-xs text-[#FFFFFF] focus:outline-none transition-colors"
+            />
+          </div>
         </div>
 
         {/* Profile Picture Upload Section */}

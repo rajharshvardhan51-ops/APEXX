@@ -109,31 +109,91 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => unsubscribe();
   }, []);
 
+  const isApiKeyInvalidError = (err: any) => {
+    const msg = err?.message || String(err);
+    return (
+      msg.includes('auth/api-key-not-valid') ||
+      msg.includes('invalid-api-key') ||
+      msg.includes('api-key-not-valid')
+    );
+  };
+
   const signInWithGoogle = async () => {
-    await signInWithPopup(auth, googleProvider);
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (err: any) {
+      if (isApiKeyInvalidError(err)) {
+        console.warn('[Firebase Auth] API key unconfigured, creating local Google operative session');
+        const defaultName = useApexStore.getState().username !== 'NEW OPERATIVE'
+          ? useApexStore.getState().username
+          : 'GOOGLE OPERATIVE';
+        setUser({
+          uid: 'google-' + Date.now(),
+          email: 'operative@gmail.com',
+          displayName: defaultName,
+          photoURL: useApexStore.getState().avatarUrl || '',
+          isAnonymous: false,
+        } as unknown as User);
+        return;
+      }
+      throw err;
+    }
   };
 
   const signInWithEmail = async (email: string, pass: string) => {
-    await signInWithEmailAndPassword(auth, email, pass);
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+    } catch (err: any) {
+      if (isApiKeyInvalidError(err)) {
+        console.warn('[Firebase Auth] API key unconfigured, creating local email operative session');
+        const effectiveName = email.split('@')[0].toUpperCase();
+        useApexStore.setState({ username: effectiveName });
+        setUser({
+          uid: 'op-' + Date.now(),
+          email: email,
+          displayName: effectiveName,
+          photoURL: useApexStore.getState().avatarUrl || '',
+          isAnonymous: false,
+        } as unknown as User);
+        return;
+      }
+      throw err;
+    }
   };
 
   const signUpWithEmail = async (email: string, pass: string, nickname?: string, avatarUrl?: string) => {
-    const cred = await createUserWithEmailAndPassword(auth, email, pass);
     const effectiveNickname = nickname?.trim() || email.split('@')[0].toUpperCase();
+    const effectiveAvatar = avatarUrl || '';
 
-    if (effectiveNickname || avatarUrl) {
-      await updateProfile(cred.user, {
-        displayName: effectiveNickname,
-        photoURL: avatarUrl || '',
-      });
-    }
-
+    // Always update local store immediately
     useApexStore.setState({
       username: effectiveNickname,
-      avatarUrl: avatarUrl || '',
+      avatarUrl: effectiveAvatar,
     });
 
-    await syncUserProfile(cred.user);
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      if (effectiveNickname || effectiveAvatar) {
+        await updateProfile(cred.user, {
+          displayName: effectiveNickname,
+          photoURL: effectiveAvatar,
+        });
+      }
+      await syncUserProfile(cred.user);
+    } catch (err: any) {
+      if (isApiKeyInvalidError(err)) {
+        console.warn('[Firebase Auth] API key unconfigured, created local operative account for:', effectiveNickname);
+        setUser({
+          uid: 'op-' + Date.now(),
+          email: email,
+          displayName: effectiveNickname,
+          photoURL: effectiveAvatar,
+          isAnonymous: false,
+        } as unknown as User);
+        return;
+      }
+      throw err;
+    }
   };
 
   const updateUserProfileData = async (nickname: string, avatarUrl?: string) => {
@@ -147,12 +207,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     if (currentUser) {
-      await updateProfile(currentUser, {
-        displayName: effectiveName,
-        photoURL: effectiveAvatar,
-      });
-
       try {
+        await updateProfile(currentUser, {
+          displayName: effectiveName,
+          photoURL: effectiveAvatar,
+        });
         const userRef = doc(db, 'users', currentUser.uid);
         await setDoc(
           userRef,
@@ -169,11 +228,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signInAsGuest = async () => {
-    await signInAnonymously(auth);
+    try {
+      await signInAnonymously(auth);
+    } catch (err: any) {
+      console.warn('[Firebase Auth] Guest auth fallback to local session:', err?.message || err);
+      const guestName = useApexStore.getState().username !== 'NEW OPERATIVE'
+        ? useApexStore.getState().username
+        : 'GUEST OPERATIVE';
+
+      useApexStore.setState({ username: guestName });
+      setUser({
+        uid: 'guest-' + Date.now(),
+        email: 'guest@apexx.local',
+        displayName: guestName,
+        isAnonymous: true,
+      } as unknown as User);
+    }
   };
 
   const logout = async () => {
-    await signOut(auth);
+    try {
+      await signOut(auth);
+    } catch (e) {}
+    setUser(null);
   };
 
   return (

@@ -2,12 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Award, RefreshCw, CheckCircle2, Wifi, WifiOff, UserCheck, LogIn } from 'lucide-react';
+import { Zap, Award, RefreshCw, CheckCircle2, Wifi, WifiOff, UserCheck, LogIn, Mic, Sparkles } from 'lucide-react';
 import { useApexStore } from '@/store/useApexStore';
 import { subscribeSyncStatus, processSyncQueue, SyncStatusState } from '@/lib/storageAdapter';
 import ApexLogo from '@/components/brand/ApexLogo';
 import { useAuth } from '@/context/AuthContext';
 import AuthModal from '@/components/auth/AuthModal';
+import { useVoiceJarvis } from '@/hooks/useVoiceJarvis';
+import { JarvisVoiceHud } from '@/components/voice/JarvisVoiceHud';
 
 interface HeaderProps {
   onSyncNode?: () => void;
@@ -23,6 +25,10 @@ export const Header: React.FC<HeaderProps> = ({ onSyncNode }) => {
 
   const { user } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  // Initialize Voice Assistant Hook
+  const voiceJarvis = useVoiceJarvis();
+  const { isListening, isSpeaking, toggleListening, triggerVoiceBriefing } = voiceJarvis;
 
   const [syncStatus, setSyncStatus] = useState<SyncStatusState>({
     isOnline: true,
@@ -72,18 +78,17 @@ export const Header: React.FC<HeaderProps> = ({ onSyncNode }) => {
               <span className="text-[9px] uppercase tracking-widest text-[#8E8E93]">
                 CURRENT TITLE
               </span>
-              <span className="text-xs font-bold text-[#FFFFFF] tracking-wider">
+              <span className="text-xs font-bold text-[#FFFFFF] tracking-wider text-glow-sm">
                 {title}
               </span>
             </div>
           </div>
 
-
           {/* Level & XP Telemetry Bar */}
           <div className="flex items-center gap-4 bg-[#000000] px-4 py-1.5 rounded-md border border-[#1E1E26]">
             <div className="flex items-center gap-1.5">
               <Zap className="w-4 h-4 text-[#FFFFFF] fill-[#FFFFFF]" />
-              <span className="text-xs font-extrabold text-[#FFFFFF]">LVL {level}</span>
+              <span className="text-xs font-extrabold text-[#FFFFFF] text-glow-sm">LVL {level}</span>
             </div>
 
             <div className="flex flex-col w-48 gap-1">
@@ -109,6 +114,22 @@ export const Header: React.FC<HeaderProps> = ({ onSyncNode }) => {
 
         {/* Header Right Action Trigger & Sync Telemetry */}
         <div className="flex items-center gap-3">
+          {/* J.A.R.V.I.S. "HEY APEX" Voice Trigger Button */}
+          <button
+            onClick={triggerVoiceBriefing}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-xs font-bold transition-all cursor-pointer group ${
+              isSpeaking || isListening
+                ? 'bg-[#FFFFFF] text-[#000000] border-[#FFFFFF] shadow-glow-white'
+                : 'bg-[#000000] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border-[#383848] hover:border-[#FFFFFF]'
+            }`}
+            title="Click to trigger J.A.R.V.I.S. voice work briefing"
+          >
+            <Mic className={`w-3.5 h-3.5 ${isSpeaking ? 'animate-bounce text-[#000000]' : isListening ? 'animate-pulse text-[#000000]' : 'text-[#FFFFFF] group-hover:text-[#000000]'}`} />
+            <span className="font-mono uppercase tracking-wider hidden md:inline">
+              HEY APEX
+            </span>
+          </button>
+
           {/* Firebase Operative Auth Trigger Button */}
           <button
             onClick={() => setIsAuthModalOpen(true)}
@@ -186,9 +207,13 @@ export const Header: React.FC<HeaderProps> = ({ onSyncNode }) => {
 
       {/* Render Telemetry Auth Modal */}
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+
+      {/* Render Holographic J.A.R.V.I.S. Voice HUD Overlay */}
+      <JarvisVoiceHud voiceJarvis={voiceJarvis} />
     </>
   );
 };
 
 export default Header;
+
 

@@ -165,4 +165,21 @@ body {
   border: 1px solid #1E1E26;
 }
 
+/* White Glow Text Utilities */
+.text-glow {
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.7), 0 0 16px rgba(255, 255, 255, 0.3);
+}
+
+.text-glow-lg {
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.9), 0 0 24px rgba(255, 255, 255, 0.5), 0 0 36px rgba(255, 255, 255, 0.3);
+}
+
+.text-glow-sm {
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+}
+
+.shadow-glow-white {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.25), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
 

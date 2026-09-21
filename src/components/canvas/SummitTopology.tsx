@@ -5,6 +5,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { Compass, Cpu, Maximize2, Radio, Terminal, Crosshair, Activity, Layers } from 'lucide-react';
+import { useWeatherLocation } from '@/hooks/useWeatherLocation';
 
 export interface SummitTopologyProps {
   growthPercentage?: number; // 0 to 100 (backwards compatibility)
@@ -234,11 +235,12 @@ const SummitLoader: React.FC = () => (
 
 // Main Export Component
 export const SummitTopology: React.FC<SummitTopologyProps> = ({
-  growthPercentage = 78.4,
+  growthPercentage = 0,
   completionIndex,
   className = '',
 }) => {
   const [isMounted, setIsMounted] = useState(false);
+  const { latitude, longitude } = useWeatherLocation();
 
   // Normalize effective completion percentage
   const activeCompletion = useMemo(() => {
@@ -265,32 +267,32 @@ export const SummitTopology: React.FC<SummitTopologyProps> = ({
 
       {/* HUD Corner Brackets & Crosshair Reticles */}
       <div className="absolute top-2 left-2 z-20 pointer-events-none text-[10px] font-mono text-[#8E8E93] flex items-center gap-1">
-        <span className="text-[#FFFFFF] font-bold">[+</span>
+        <span className="text-[#FFFFFF] font-bold text-glow-sm">[+</span>
         <Crosshair className="w-3 h-3 text-[#FFFFFF] inline" />
         <span>.0KCF-1109.9]</span>
       </div>
 
       <div className="absolute top-2 right-2 z-20 pointer-events-none text-[10px] font-mono text-[#8E8E93] flex items-center gap-1">
-        <span className="text-[#FFFFFF] font-bold">-8/7C6</span>
+        <span className="text-[#FFFFFF] font-bold text-glow-sm">-8/7C6</span>
         <span>[ALT: 4850M+]</span>
       </div>
 
       <div className="absolute bottom-2 left-2 z-20 pointer-events-none text-[10px] font-mono text-[#8E8E93] flex items-center gap-1">
-        <span className="text-[#FFFFFF] font-bold">[+.258</span>
+        <span className="text-[#FFFFFF] font-bold text-glow-sm">[+.258</span>
         <Layers className="w-3 h-3 text-[#FFFFFF] inline" />
         <span>MATRIX]</span>
       </div>
 
       <div className="absolute bottom-2 right-2 z-20 pointer-events-none text-[10px] font-mono text-[#8E8E93] flex items-center gap-1">
         <span>[RADAR: ACTIVE</span>
-        <span className="text-[#FFFFFF] font-bold">+]</span>
+        <span className="text-[#FFFFFF] font-bold text-glow-sm">+]</span>
       </div>
 
       {/* Perimeter Telemetry Header */}
       <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none font-mono text-xs">
         <div className="flex items-center gap-2 bg-[#000000]/95 backdrop-blur-md px-3.5 py-1.5 rounded border border-[#27272A] shadow-sm">
           <Terminal className="w-3.5 h-3.5 text-[#FFFFFF]" />
-          <span className="text-[#FFFFFF] font-extrabold tracking-wider">
+          <span className="text-[#FFFFFF] font-extrabold tracking-wider text-glow-sm">
             SUMMIT TOPOLOGY // STIPPLED ELEVATION
           </span>
         </div>
@@ -298,7 +300,7 @@ export const SummitTopology: React.FC<SummitTopologyProps> = ({
         <div className="flex items-center gap-3 bg-[#000000]/95 backdrop-blur-md px-3.5 py-1.5 rounded border border-[#27272A] shadow-sm">
           <Activity className="w-3.5 h-3.5 text-[#FFFFFF] animate-pulse" />
           <span className="text-[#8E8E93]">APEX ELEVATION:</span>
-          <span className="text-[#FFFFFF] font-black tracking-wide">
+          <span className="text-[#FFFFFF] font-black tracking-wide text-glow-sm">
             {apexMeters}M ({activeCompletion.toFixed(1)}%)
           </span>
         </div>
@@ -308,13 +310,15 @@ export const SummitTopology: React.FC<SummitTopologyProps> = ({
       <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none font-mono text-[11px] text-[#8E8E93]">
         <div className="flex items-center gap-2 bg-[#000000]/90 backdrop-blur-md px-3 py-1 rounded border border-[#27272A]">
           <Compass className="w-3.5 h-3.5 text-[#FFFFFF]" />
-          <span className="text-[#FFFFFF]">LAT: 35.6762° N | LON: 139.6503° E</span>
+          <span className="text-[#FFFFFF] font-bold text-glow-sm">
+            LAT: {latitude.toFixed(4)}° {latitude >= 0 ? 'N' : 'S'} | LON: {longitude.toFixed(4)}° {longitude >= 0 ? 'E' : 'W'}
+          </span>
         </div>
 
         <div className="flex items-center gap-2 bg-[#000000]/90 backdrop-blur-md px-3 py-1 rounded border border-[#27272A]">
           <Radio className="w-3.5 h-3.5 text-[#FFFFFF] animate-pulse" />
           <span className="text-[#E4E4E7]">RADAR FREQ: 1420 MHz</span>
-          <span className="text-[9px] bg-[#18181F] text-[#FFFFFF] border border-[#27272A] px-1.5 py-0.5 rounded ml-1 font-bold">
+          <span className="text-[9px] bg-[#18181F] text-[#FFFFFF] border border-[#27272A] px-1.5 py-0.5 rounded ml-1 font-bold text-glow-sm">
             SWEEP 60FPS
           </span>
         </div>

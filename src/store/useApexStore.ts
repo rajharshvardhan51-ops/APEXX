@@ -32,6 +32,7 @@ export interface HabitLogEntry {
 export interface ApexStoreState {
   // Profile State
   username: string;
+  honorific: string;
   avatarUrl: string;
   level: number;
   currentXp: number;
@@ -62,6 +63,7 @@ export interface ApexStoreState {
 
   // Actions
   setUsername: (name: string) => void;
+  setHonorific: (honorific: string) => void;
   setAvatarUrl: (url: string) => void;
   addXp: (amount: number, category?: string) => void;
   completeQuest: (questId: string, xpReward: number, domain?: string) => void;
@@ -83,6 +85,7 @@ export const useApexStore = create<ApexStoreState>()(
   persist(
     (set, get) => ({
       username: 'NEW OPERATIVE',
+      honorific: 'SIR',
       avatarUrl: '',
       level: 1,
       currentXp: 0,
@@ -119,6 +122,7 @@ export const useApexStore = create<ApexStoreState>()(
       masterVolume: 0.5,
 
       setUsername: (name: string) => set({ username: name }),
+      setHonorific: (honorific: string) => set({ honorific: honorific }),
       setAvatarUrl: (url: string) => set({ avatarUrl: url }),
 
       resetAllDataToZero: () => {
