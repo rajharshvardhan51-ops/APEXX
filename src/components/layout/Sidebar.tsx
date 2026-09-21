@@ -72,7 +72,7 @@ export const Sidebar: React.FC = () => {
       initial={false}
       animate={{ width: isCollapsed ? '72px' : '280px' }}
       transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-      className="relative flex flex-col h-screen bg-[#060608] border-r border-[#1E1E26] text-[#FFFFFF] z-30 select-none overflow-hidden shrink-0"
+      className="relative hidden md:flex flex-col h-screen bg-[#060608] border-r border-[#1E1E26] text-[#FFFFFF] z-30 select-none overflow-hidden shrink-0"
     >
       {/* Sidebar Header / Brand Identity */}
       <div className="flex flex-col border-b border-[#1E1E26] p-4 relative">

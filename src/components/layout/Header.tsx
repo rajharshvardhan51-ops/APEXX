@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Award, RefreshCw, CheckCircle2, Wifi, WifiOff, UserCheck, LogIn, Mic, Sparkles } from 'lucide-react';
+import { Zap, Award, RefreshCw, CheckCircle2, Wifi, WifiOff, UserCheck, LogIn, Mic, Sparkles, Menu } from 'lucide-react';
 import { useApexStore } from '@/store/useApexStore';
 import { subscribeSyncStatus, processSyncQueue, SyncStatusState } from '@/lib/storageAdapter';
 import ApexLogo from '@/components/brand/ApexLogo';
@@ -13,9 +13,10 @@ import { JarvisVoiceHud } from '@/components/voice/JarvisVoiceHud';
 
 interface HeaderProps {
   onSyncNode?: () => void;
+  onOpenDrawer?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onSyncNode }) => {
+export const Header: React.FC<HeaderProps> = ({ onSyncNode, onOpenDrawer }) => {
   const level = useApexStore((state) => state.level);
   const currentXp = useApexStore((state) => state.currentXp);
   const xpToNextLevel = useApexStore((state) => state.xpToNextLevel);
@@ -66,8 +67,17 @@ export const Header: React.FC<HeaderProps> = ({ onSyncNode }) => {
       <header className="sticky top-0 z-20 h-16 bg-[#060608] backdrop-blur-md border-b border-[#1E1E26] px-3 sm:px-6 flex items-center justify-between select-none font-mono">
         {/* Telemetry Left: Mobile Brand & Level & Title */}
         <div className="flex items-center gap-2 sm:gap-6">
-          {/* Mobile / Collapsed View Brand Icon */}
-          <div className="md:hidden flex items-center shrink-0 pr-1.5 border-r border-[#1E1E26]">
+          {/* Mobile / Collapsed View Brand Icon & Drawer Toggle */}
+          <div className="md:hidden flex items-center shrink-0 pr-1.5 border-r border-[#1E1E26] gap-1.5">
+            {onOpenDrawer && (
+              <button
+                onClick={onOpenDrawer}
+                className="w-7 h-7 rounded bg-[#121217] hover:bg-[#FFFFFF] text-[#8E8E93] hover:text-[#000000] border border-[#1E1E26] flex items-center justify-center transition-colors"
+                aria-label="Open Navigation Drawer"
+              >
+                <Menu className="w-4 h-4" />
+              </button>
+            )}
             <ApexLogo variant="icon-only" size="sm" glow={true} />
           </div>
 

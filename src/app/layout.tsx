@@ -1,12 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
-import Sidebar from '@/components/layout/Sidebar';
-import Header from '@/components/layout/Header';
 import SystemBoot from '@/components/layout/SystemBoot';
 import XPFloatToast from '@/components/ui/XPFloatToast';
 import LevelUpOverlay from '@/components/ui/LevelUpOverlay';
 import DayRolloverToast from '@/components/ui/DayRolloverToast';
 import PwaRegistrar from '@/components/ui/PwaRegistrar';
+import AppShell from '@/components/layout/AppShell';
 import { AuthProvider } from '@/context/AuthContext';
 import './globals.css';
 
@@ -34,6 +33,9 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
+  icons: {
+    apple: '/icon-192.png',
+  },
 };
 
 export const viewport: Viewport = {
@@ -42,6 +44,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  viewportFit: 'cover',
 };
 
 export default function RootLayout({
@@ -53,8 +56,10 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`}>
       <head>
         <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icon-192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body className="bg-[#000000] text-[#FFFFFF] flex h-screen overflow-hidden antialiased font-mono">
         <AuthProvider>
@@ -73,25 +78,10 @@ export default function RootLayout({
           {/* Day Rollover Lifecycle Engine Toast & Listener */}
           <DayRolloverToast />
 
-          {/* Persistent Left Sidebar */}
-          <Sidebar />
-
-          {/* Main Application Area */}
-          <div className="flex flex-col flex-1 h-screen overflow-hidden relative">
-            {/* Top Telemetry Header */}
-            <Header />
-
-            {/* Scrollable Main Canvas */}
-            <main className="flex-1 overflow-y-auto bg-cyber-grid bg-scanline p-3 sm:p-6 relative">
-              {children}
-            </main>
-          </div>
+          {/* Main App Layout Shell with Mobile Bottom Nav & Drawer */}
+          <AppShell>{children}</AppShell>
         </AuthProvider>
       </body>
     </html>
   );
 }
-
-
-
-
