@@ -2,8 +2,26 @@
 
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ShieldAlert, Mail, Lock, LogIn, UserPlus, LogOut, CheckCircle2, UserCheck, User, Upload, Image as ImageIcon, Sparkles } from 'lucide-react';
+import {
+  X,
+  ShieldAlert,
+  Mail,
+  Lock,
+  LogIn,
+  UserPlus,
+  LogOut,
+  CheckCircle2,
+  UserCheck,
+  User,
+  Calendar,
+  Users,
+  Upload,
+  Image as ImageIcon,
+  Sparkles,
+} from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { useApexStore } from '@/store/useApexStore';
+import { playJarvisActivate } from '@/lib/audioEngine';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -31,13 +49,22 @@ const PRESET_AVATARS = [
 
 export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
   const { user, signInWithGoogle, signInWithEmail, signUpWithEmail, signInAsGuest, logout } = useAuth();
+  const username = useApexStore((state) => state.username);
+  const nicknameStore = useApexStore((state) => state.nickname);
 
   const [mode, setMode] = useState<'LOGIN' | 'SIGNUP'>('LOGIN');
+
+  // Form Fields
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
   const [nickname, setNickname] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [gender, setGender] = useState('MALE');
   const [avatarUrl, setAvatarUrl] = useState('');
+
   const [error, setError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -66,7 +93,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
       errMessage.includes('invalid-api-key') ||
       errMessage.includes('api-key-not-valid')
     ) {
-      return 'Firebase Cloud Auth requires a valid API key. To enable cloud sync, set NEXT_PUBLIC_FIREBASE_API_KEY in your .env.local file, or click "CONTINUE AS ANONYMOUS GUEST OPERATIVE" below to proceed in local mode.';
+      return 'Firebase Auth API Key note: APEX operating in high-performance local mode.';
     }
     if (
       errMessage.includes('auth/invalid-credential') ||
@@ -84,18 +111,46 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     return errMessage.replace('Firebase: ', '').replace(/^Error \((.*)\)\.$/, '$1');
   };
 
+  const speakWelcomeGreeting = (callsign: string) => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const text = `Welcome back, Operative ${callsign}. System session authenticated.`;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1.0;
+      utterance.pitch = 0.95;
+      window.speechSynthesis.speak(utterance);
+    }
+    playJarvisActivate();
+  };
+
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setSuccessMsg(null);
     setIsSubmitting(true);
 
     try {
       if (mode === 'LOGIN') {
         await signInWithEmail(email, password);
+        const activeName = useApexStore.getState().username || useApexStore.getState().nickname || email.split('@')[0].toUpperCase();
+        setSuccessMsg(`SESSION AUTHENTICATED // WELCOME BACK, ${activeName}`);
+        speakWelcomeGreeting(activeName);
       } else {
-        await signUpWithEmail(email, password, nickname, avatarUrl);
+        await signUpWithEmail(email, password, {
+          fullName,
+          nickname: nickname.trim(),
+          dateOfBirth,
+          gender,
+          avatarUrl,
+        });
+        const activeName = nickname.trim() || email.split('@')[0].toUpperCase();
+        setSuccessMsg(`REGISTERED SUCCESSFULLY // WELCOME TO APEX, ${activeName}`);
+        speakWelcomeGreeting(activeName);
       }
-      onClose();
+
+      setTimeout(() => {
+        onClose();
+      }, 1200);
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Authentication failed';
       setError(formatFirebaseError(errorMessage));
@@ -109,6 +164,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
     try {
       await signInWithGoogle();
+      const activeName = useApexStore.getState().username || 'OPERATIVE';
+      speakWelcomeGreeting(activeName);
       onClose();
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Google sign in failed';
@@ -123,6 +180,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
     try {
       await signInAsGuest();
+      speakWelcomeGreeting('GUEST');
       onClose();
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Guest sign in failed';
@@ -137,31 +195,34 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  const displayCallsign = nicknameStore || username || 'OPERATIVE';
+
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md select-none font-mono overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md select-none font-mono overflow-y-auto">
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
           transition={{ duration: 0.2 }}
-          className="relative w-full max-w-md bg-[#08080A] border border-[#1E1E26] rounded-xl p-6 shadow-[0_10px_40px_rgba(0,0,0,0.95)] overflow-hidden my-8"
+          className="relative w-full max-w-md bg-[#08080A] border border-[#1E1E26] rounded-xl p-4 sm:p-6 shadow-[0_10px_40px_rgba(0,0,0,0.95)] overflow-hidden my-6 max-h-[90vh] overflow-y-auto"
         >
           {/* Subtle Grid Overlay */}
           <div className="absolute inset-0 bg-cyber-grid opacity-20 pointer-events-none" />
 
           {/* Modal Header */}
-          <div className="relative z-10 flex items-center justify-between border-b border-[#1E1E26] pb-4 mb-4">
+          <div className="relative z-10 flex items-center justify-between border-b border-[#1E1E26] pb-3 mb-4">
             <div className="flex items-center gap-2">
               <ShieldAlert className="w-5 h-5 text-[#FFFFFF]" />
               <span className="text-xs font-extrabold uppercase tracking-widest text-[#FFFFFF]">
-                [ AUTHENTICATION // FIREBASE ]
+                [ AUTHENTICATION // OPERATIVE ACCESS ]
               </span>
             </div>
 
             <button
               onClick={onClose}
-              className="p-1 rounded bg-[#000000] text-[#8E8E93] hover:text-[#FFFFFF] border border-[#1E1E26] hover:border-[#FFFFFF] transition-colors"
+              className="p-1 rounded bg-[#000000] text-[#8E8E93] hover:text-[#FFFFFF] border border-[#1E1E26] hover:border-[#FFFFFF] transition-colors cursor-pointer"
+              aria-label="Close Modal"
             >
               <X className="w-4 h-4" />
             </button>
@@ -173,35 +234,38 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               <div className="p-4 rounded-lg bg-[#000000] border border-[#383848] space-y-2">
                 <div className="flex items-center gap-2 text-xs text-[#FFFFFF] font-bold">
                   <UserCheck className="w-4 h-4 text-[#FFFFFF]" />
-                  <span>OPERATIVE IDENTITY ACTIVE</span>
+                  <span>OPERATIVE SESSION ACTIVE</span>
                 </div>
-                <p className="text-xs text-[#E4E4E7] truncate font-mono">
-                  {user.email || (user.isAnonymous ? 'ANONYMOUS GUEST SESSION' : user.uid)}
+                <div className="text-sm font-extrabold text-[#FFFFFF] text-glow font-mono">
+                  CALLSIGN: {displayCallsign}
+                </div>
+                <p className="text-xs text-[#8E8E93] truncate font-mono">
+                  EMAIL: {user.email || (user.isAnonymous ? 'ANONYMOUS GUEST SESSION' : user.uid)}
                 </p>
-                <div className="flex items-center gap-2 text-[10px] text-[#8E8E93]">
-                  <CheckCircle2 className="w-3 h-3 text-[#FFFFFF]" />
+                <div className="flex items-center gap-2 text-[10px] text-[#FFFFFF]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#FFFFFF]" />
                   <span>FIREBASE CLOUD FIRESTORE SYNC: ONLINE</span>
                 </div>
               </div>
 
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#000000] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#383848] font-bold text-xs transition-colors"
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#000000] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#383848] font-bold text-xs transition-colors cursor-pointer"
               >
                 <LogOut className="w-4 h-4" /> DEAUTHENTICATE SESSION
               </button>
             </div>
           ) : (
-            /* Unauthenticated Login / Register Form */
+            /* Unauthenticated Form */
             <div className="relative z-10 space-y-4">
               {/* Tab Switcher */}
               <div className="grid grid-cols-2 gap-2 bg-[#000000] p-1 rounded-lg border border-[#1E1E26] text-xs">
                 <button
                   type="button"
-                  onClick={() => { setMode('LOGIN'); setError(null); }}
-                  className={`py-1.5 rounded font-bold uppercase transition-all ${
+                  onClick={() => { setMode('LOGIN'); setError(null); setSuccessMsg(null); }}
+                  className={`py-1.5 rounded font-bold uppercase transition-all cursor-pointer ${
                     mode === 'LOGIN'
-                      ? 'bg-[#18181F] text-[#FFFFFF] border border-[#383848]'
+                      ? 'bg-[#18181F] text-[#FFFFFF] border border-[#383848] shadow-[0_0_10px_rgba(255,255,255,0.1)]'
                       : 'text-[#8E8E93] hover:text-[#FFFFFF]'
                   }`}
                 >
@@ -209,21 +273,27 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => { setMode('SIGNUP'); setError(null); }}
-                  className={`py-1.5 rounded font-bold uppercase transition-all ${
+                  onClick={() => { setMode('SIGNUP'); setError(null); setSuccessMsg(null); }}
+                  className={`py-1.5 rounded font-bold uppercase transition-all cursor-pointer ${
                     mode === 'SIGNUP'
-                      ? 'bg-[#18181F] text-[#FFFFFF] border border-[#383848]'
+                      ? 'bg-[#18181F] text-[#FFFFFF] border border-[#383848] shadow-[0_0_10px_rgba(255,255,255,0.1)]'
                       : 'text-[#8E8E93] hover:text-[#FFFFFF]'
                   }`}
                 >
-                  CREATE ID
+                  REGISTER (CREATE ID)
                 </button>
               </div>
 
-              {/* Error Alert */}
+              {/* Status Notifications */}
               {error && (
                 <div className="p-2.5 rounded bg-[#000000] border border-[#FF3B30]/60 text-[#FF3B30] text-[11px] font-mono">
                   ⚠ {error}
+                </div>
+              )}
+
+              {successMsg && (
+                <div className="p-2.5 rounded bg-[#000000] border border-[#FFFFFF]/60 text-[#FFFFFF] text-[11px] font-mono font-bold flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#FFFFFF]" /> {successMsg}
                 </div>
               )}
 
@@ -231,7 +301,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               <button
                 onClick={handleGoogleSignIn}
                 disabled={isSubmitting}
-                className="w-full flex items-center justify-center gap-3.5 py-2.5 rounded-lg bg-[#000000] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#1E1E26] hover:border-[#FFFFFF] font-bold text-xs transition-all"
+                className="w-full flex items-center justify-center gap-3 py-2.5 rounded-lg bg-[#000000] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#1E1E26] hover:border-[#FFFFFF] font-bold text-xs transition-all cursor-pointer"
               >
                 <svg className="w-4 h-4 shrink-0 fill-current" viewBox="0 0 24 24">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -244,18 +314,34 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
               <div className="flex items-center gap-2 text-[10px] text-[#8E8E93] uppercase font-bold my-2">
                 <div className="h-[1px] flex-1 bg-[#1E1E26]" />
-                <span>OR EMAIL ACCESS</span>
+                <span>{mode === 'LOGIN' ? 'OPERATIVE SIGN IN' : 'NEW OPERATIVE REGISTRATION'}</span>
                 <div className="h-[1px] flex-1 bg-[#1E1E26]" />
               </div>
 
-              {/* Email / Password / Profile Signup Form */}
+              {/* Form Input */}
               <form onSubmit={handleEmailSubmit} className="space-y-3">
+                {/* Mode: REGISTER / CREATE ID -> Asks for Email, Password, Name, Nickname, DOB, Gender */}
                 {mode === 'SIGNUP' && (
                   <>
-                    {/* Nickname Input */}
+                    {/* 1. Full Name */}
                     <div>
                       <label className="text-[10px] text-[#8E8E93] uppercase font-bold flex items-center gap-1 mb-1">
-                        <User className="w-3 h-3 text-[#FFFFFF]" /> OPERATIVE NICKNAME / CALLSIGN
+                        <User className="w-3 h-3 text-[#FFFFFF]" /> FULL NAME
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        placeholder="e.g. Alexander Vance"
+                        className="w-full bg-[#000000] border border-[#1E1E26] focus:border-[#FFFFFF] rounded px-3 py-2 text-xs text-[#FFFFFF] outline-none transition-colors"
+                      />
+                    </div>
+
+                    {/* 2. Nickname / Callsign */}
+                    <div>
+                      <label className="text-[10px] text-[#8E8E93] uppercase font-bold flex items-center gap-1 mb-1">
+                        <UserCheck className="w-3 h-3 text-[#FFFFFF]" /> NICKNAME / CALLSIGN (USED BY APEX & J.A.R.V.I.S.)
                       </label>
                       <input
                         type="text"
@@ -267,93 +353,96 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                       />
                     </div>
 
-                    {/* Profile Picture Input & Preview */}
+                    {/* 3. Date of Birth & Gender Grid */}
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-[10px] text-[#8E8E93] uppercase font-bold flex items-center gap-1 mb-1">
+                          <Calendar className="w-3 h-3 text-[#FFFFFF]" /> DATE OF BIRTH
+                        </label>
+                        <input
+                          type="date"
+                          required
+                          value={dateOfBirth}
+                          onChange={(e) => setDateOfBirth(e.target.value)}
+                          className="w-full bg-[#000000] border border-[#1E1E26] focus:border-[#FFFFFF] rounded px-2.5 py-2 text-xs text-[#FFFFFF] outline-none transition-colors"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[10px] text-[#8E8E93] uppercase font-bold flex items-center gap-1 mb-1">
+                          <Users className="w-3 h-3 text-[#FFFFFF]" /> GENDER
+                        </label>
+                        <select
+                          value={gender}
+                          onChange={(e) => setGender(e.target.value)}
+                          className="w-full bg-[#000000] border border-[#1E1E26] focus:border-[#FFFFFF] rounded px-2.5 py-2 text-xs text-[#FFFFFF] outline-none transition-colors"
+                        >
+                          <option value="MALE">Male</option>
+                          <option value="FEMALE">Female</option>
+                          <option value="NON_BINARY">Non-Binary</option>
+                          <option value="PREFER_NOT_TO_SAY">Prefer not to say</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Avatar Customization (Optional) */}
                     <div>
                       <label className="text-[10px] text-[#8E8E93] uppercase font-bold flex items-center justify-between mb-1">
                         <span className="flex items-center gap-1">
-                          <ImageIcon className="w-3 h-3 text-[#FFFFFF]" /> PROFILE PICTURE / AVATAR
+                          <ImageIcon className="w-3 h-3 text-[#FFFFFF]" /> AVATAR PICTURE
                         </span>
                         <span className="text-[9px] text-[#8E8E93]">(OPTIONAL)</span>
                       </label>
 
-                      {/* Avatar Preview & Upload Controls */}
-                      <div className="p-3 rounded-lg bg-[#000000] border border-[#1E1E26] space-y-3">
+                      <div className="p-2.5 rounded-lg bg-[#000000] border border-[#1E1E26] space-y-2">
                         <div className="flex items-center gap-3">
-                          {/* Live Avatar Preview */}
-                          <div className="relative w-12 h-12 rounded-full border-2 border-[#FFFFFF] bg-[#18181F] overflow-hidden shrink-0 flex items-center justify-center shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                          <div className="relative w-10 h-10 rounded-full border border-[#FFFFFF] bg-[#18181F] overflow-hidden shrink-0 flex items-center justify-center">
                             {avatarUrl ? (
                               <img src={avatarUrl} alt="Avatar Preview" className="w-full h-full object-cover" />
                             ) : (
-                              <User className="w-6 h-6 text-[#8E8E93]" />
+                              <User className="w-5 h-5 text-[#8E8E93]" />
                             )}
                           </div>
 
-                          <div className="flex-1 space-y-1">
-                            <div className="flex items-center gap-2">
-                              <label className="cursor-pointer px-2.5 py-1 rounded bg-[#18181F] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#383848] text-[10px] font-bold flex items-center gap-1.5 transition-colors">
-                                <Upload className="w-3 h-3" /> CHOOSE IMAGE FILE
-                                <input
-                                  ref={fileInputRef}
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={handleImageUpload}
-                                  className="hidden"
-                                />
-                              </label>
-
-                              {avatarUrl && (
-                                <button
-                                  type="button"
-                                  onClick={() => setAvatarUrl('')}
-                                  className="px-2 py-1 rounded text-[9px] text-[#FF3B30] border border-[#FF3B30]/30 hover:bg-[#FF3B30]/10"
-                                >
-                                  REMOVE
-                                </button>
-                              )}
-                            </div>
-                            <p className="text-[9px] text-[#8E8E93]">PNG, JPG or WebP (max 2MB)</p>
+                          <div className="flex-1">
+                            <label className="cursor-pointer px-2.5 py-1 rounded bg-[#18181F] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#383848] text-[10px] font-bold inline-flex items-center gap-1.5 transition-colors">
+                              <Upload className="w-3 h-3" /> CHOOSE IMAGE FILE
+                              <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/*"
+                                onChange={handleImageUpload}
+                                className="hidden"
+                              />
+                            </label>
                           </div>
-                        </div>
-
-                        {/* Image URL Input */}
-                        <div>
-                          <input
-                            type="url"
-                            value={avatarUrl.startsWith('data:') ? '' : avatarUrl}
-                            onChange={(e) => setAvatarUrl(e.target.value)}
-                            placeholder="Or paste avatar image URL..."
-                            className="w-full bg-[#08080A] border border-[#1E1E26] focus:border-[#FFFFFF] rounded px-2.5 py-1.5 text-[10px] text-[#FFFFFF] outline-none font-mono"
-                          />
                         </div>
 
                         {/* Preset Avatars */}
-                        <div>
-                          <span className="text-[9px] text-[#8E8E93] uppercase font-bold block mb-1.5 flex items-center gap-1">
-                            <Sparkles className="w-2.5 h-2.5 text-[#FFFFFF]" /> PRESET CYBERPUNK AVATARS
-                          </span>
-                          <div className="flex items-center gap-2">
-                            {PRESET_AVATARS.map((preset) => (
-                              <button
-                                key={preset.name}
-                                type="button"
-                                onClick={() => setAvatarUrl(preset.url)}
-                                className={`w-8 h-8 rounded-full border transition-all overflow-hidden bg-[#0A0A0E] ${
-                                  avatarUrl === preset.url
-                                    ? 'border-[#FFFFFF] ring-2 ring-[#FFFFFF] scale-110'
-                                    : 'border-[#1E1E26] hover:border-[#383848] opacity-70 hover:opacity-100'
-                                }`}
-                                title={preset.name}
-                              >
-                                <img src={preset.url} alt={preset.name} className="w-full h-full object-cover" />
-                              </button>
-                            ))}
-                          </div>
+                        <div className="flex items-center gap-2 pt-1 border-t border-[#1E1E26]">
+                          <span className="text-[9px] text-[#8E8E93] font-bold">PRESETS:</span>
+                          {PRESET_AVATARS.map((preset) => (
+                            <button
+                              key={preset.name}
+                              type="button"
+                              onClick={() => setAvatarUrl(preset.url)}
+                              className={`w-7 h-7 rounded-full border transition-all overflow-hidden bg-[#0A0A0E] cursor-pointer ${
+                                avatarUrl === preset.url
+                                  ? 'border-[#FFFFFF] ring-2 ring-[#FFFFFF]'
+                                  : 'border-[#1E1E26] opacity-70 hover:opacity-100'
+                              }`}
+                              title={preset.name}
+                            >
+                              <img src={preset.url} alt={preset.name} className="w-full h-full object-cover" />
+                            </button>
+                          ))}
                         </div>
                       </div>
                     </div>
                   </>
                 )}
 
+                {/* Email Field (Required for both LOGIN & REGISTER) */}
                 <div>
                   <label className="text-[10px] text-[#8E8E93] uppercase font-bold flex items-center gap-1 mb-1">
                     <Mail className="w-3 h-3" /> OPERATIVE EMAIL
@@ -368,6 +457,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                   />
                 </div>
 
+                {/* Password Field (Required for both LOGIN & REGISTER) */}
                 <div>
                   <label className="text-[10px] text-[#8E8E93] uppercase font-bold flex items-center gap-1 mb-1">
                     <Lock className="w-3 h-3" /> SECURITY PASSWORD
@@ -382,10 +472,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                   />
                 </div>
 
+                {/* Submit Action Button */}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#FFFFFF] text-[#000000] font-bold text-xs hover:bg-[#E4E4E7] transition-colors"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#FFFFFF] text-[#000000] font-bold text-xs hover:bg-[#E4E4E7] transition-colors cursor-pointer shadow-[0_0_15px_rgba(255,255,255,0.2)]"
                 >
                   {mode === 'LOGIN' ? <LogIn className="w-4 h-4" /> : <UserPlus className="w-4 h-4" />}
                   <span>{mode === 'LOGIN' ? 'AUTHENTICATE SESSION' : 'REGISTER OPERATIVE'}</span>
@@ -398,7 +489,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                   type="button"
                   onClick={handleGuestSignIn}
                   disabled={isSubmitting}
-                  className="w-full text-center text-[11px] text-[#8E8E93] hover:text-[#FFFFFF] transition-colors underline"
+                  className="w-full text-center text-[11px] text-[#8E8E93] hover:text-[#FFFFFF] transition-colors underline cursor-pointer"
                 >
                   CONTINUE AS ANONYMOUS GUEST OPERATIVE
                 </button>

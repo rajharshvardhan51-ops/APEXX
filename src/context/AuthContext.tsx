@@ -15,12 +15,20 @@ import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, db, googleProvider } from '@/lib/firebase';
 import { useApexStore } from '@/store/useApexStore';
 
+export interface UserRegistrationDetails {
+  fullName: string;
+  nickname: string;
+  dateOfBirth: string;
+  gender: string;
+  avatarUrl?: string;
+}
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (email: string, pass: string) => Promise<void>;
-  signUpWithEmail: (email: string, pass: string, nickname?: string, avatarUrl?: string) => Promise<void>;
+  signUpWithEmail: (email: string, pass: string, details: UserRegistrationDetails) => Promise<void>;
   updateUserProfileData: (nickname: string, avatarUrl?: string) => Promise<void>;
   signInAsGuest: () => Promise<void>;
   logout: () => Promise<void>;
@@ -41,57 +49,84 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Sync user profile to Firestore & Zustand
-  const syncUserProfile = async (currentUser: User) => {
+  // Sync user profile to Firestore, Local Storage Registry & Zustand Store
+  const syncUserProfile = async (currentUser: User, freshDetails?: UserRegistrationDetails) => {
     try {
+      const emailKey = (currentUser.email || currentUser.uid).toLowerCase();
+      const localKey = 'apexx_profile_' + emailKey;
+
+      let localSaved: any = null;
+      if (typeof window !== 'undefined') {
+        const raw = localStorage.getItem(localKey);
+        if (raw) {
+          try { localSaved = JSON.parse(raw); } catch (e) {}
+        }
+      }
+
       const userRef = doc(db, 'users', currentUser.uid);
       const userSnap = await getDoc(userRef);
 
-      const storeName = useApexStore.getState().username;
-      const storeAvatar = useApexStore.getState().avatarUrl;
+      let nickname = freshDetails?.nickname?.trim() || localSaved?.nickname || currentUser.displayName || '';
+      let fullName = freshDetails?.fullName?.trim() || localSaved?.fullName || '';
+      let dateOfBirth = freshDetails?.dateOfBirth || localSaved?.dateOfBirth || '';
+      let gender = freshDetails?.gender || localSaved?.gender || '';
+      let avatarUrl = freshDetails?.avatarUrl || localSaved?.avatarUrl || currentUser.photoURL || '';
 
-      if (!userSnap.exists()) {
-        // Fresh user registration: reset state
-        const effectiveName =
-          currentUser.displayName || (storeName && storeName !== 'NEW OPERATIVE' ? storeName : currentUser.email?.split('@')[0].toUpperCase()) || 'NEW OPERATIVE';
-        const effectiveAvatar = currentUser.photoURL || storeAvatar || '';
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        nickname = nickname || data.nickname || data.displayName || currentUser.email?.split('@')[0].toUpperCase() || 'OPERATIVE';
+        fullName = fullName || data.fullName || '';
+        dateOfBirth = dateOfBirth || data.dateOfBirth || '';
+        gender = gender || data.gender || '';
+        avatarUrl = avatarUrl || data.photoURL || data.avatarUrl || '';
+      } else {
+        nickname = nickname || currentUser.email?.split('@')[0].toUpperCase() || 'OPERATIVE';
+      }
 
-        useApexStore.setState({
-          username: effectiveName,
-          avatarUrl: effectiveAvatar,
-        });
+      // Update Zustand Store with Nickname as the active username!
+      useApexStore.setState({
+        username: nickname,
+        nickname: nickname,
+        fullName: fullName,
+        dateOfBirth: dateOfBirth,
+        gender: gender,
+        avatarUrl: avatarUrl,
+      });
 
-        await setDoc(userRef, {
+      // Update Local Registry cache
+      const profilePayload = {
+        uid: currentUser.uid,
+        email: currentUser.email,
+        displayName: nickname,
+        nickname,
+        fullName,
+        dateOfBirth,
+        gender,
+        photoURL: avatarUrl,
+        lastLogin: new Date().toISOString(),
+      };
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(localKey, JSON.stringify(profilePayload));
+        localStorage.setItem('apexx_last_active_user', JSON.stringify(profilePayload));
+      }
+
+      // Sync Firestore Document
+      await setDoc(
+        userRef,
+        {
           uid: currentUser.uid,
           email: currentUser.email,
-          displayName: effectiveName,
-          photoURL: effectiveAvatar,
-          createdAt: serverTimestamp(),
+          displayName: nickname,
+          nickname,
+          fullName,
+          dateOfBirth,
+          gender,
+          photoURL: avatarUrl,
           lastLogin: serverTimestamp(),
-          level: 1,
-          currentXp: 0,
-          streak: 0,
-        });
-      } else {
-        const data = userSnap.data();
-        const effectiveName = data.displayName || currentUser.displayName || storeName;
-        const effectiveAvatar = data.photoURL || currentUser.photoURL || storeAvatar;
-
-        useApexStore.setState({
-          username: effectiveName || 'NEW OPERATIVE',
-          avatarUrl: effectiveAvatar || '',
-        });
-
-        await setDoc(
-          userRef,
-          {
-            lastLogin: serverTimestamp(),
-            displayName: effectiveName,
-            photoURL: effectiveAvatar,
-          },
-          { merge: true }
-        );
-      }
+        },
+        { merge: true }
+      );
     } catch (err) {
       console.warn('[Firebase Auth] Firestore profile sync note:', err);
     }
@@ -141,17 +176,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signInWithEmail = async (email: string, pass: string) => {
+    const emailKey = email.trim().toLowerCase();
+    const localKey = 'apexx_profile_' + emailKey;
+    let savedNickname = '';
+
+    if (typeof window !== 'undefined') {
+      const raw = localStorage.getItem(localKey);
+      if (raw) {
+        try {
+          const parsed = JSON.parse(raw);
+          if (parsed.nickname) savedNickname = parsed.nickname;
+        } catch (e) {}
+      }
+    }
+
     try {
-      await signInWithEmailAndPassword(auth, email, pass);
+      const cred = await signInWithEmailAndPassword(auth, email, pass);
+      await syncUserProfile(cred.user);
     } catch (err: any) {
       if (isApiKeyInvalidError(err)) {
-        console.warn('[Firebase Auth] API key unconfigured, creating local email operative session');
-        const effectiveName = email.split('@')[0].toUpperCase();
-        useApexStore.setState({ username: effectiveName });
+        console.warn('[Firebase Auth] API key unconfigured, creating local email operative session for:', email);
+        const effectiveNickname = savedNickname || email.split('@')[0].toUpperCase();
+        useApexStore.setState({ username: effectiveNickname, nickname: effectiveNickname });
         setUser({
           uid: 'op-' + Date.now(),
           email: email,
-          displayName: effectiveName,
+          displayName: effectiveNickname,
           photoURL: useApexStore.getState().avatarUrl || '',
           isAnonymous: false,
         } as unknown as User);
@@ -161,15 +211,38 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signUpWithEmail = async (email: string, pass: string, nickname?: string, avatarUrl?: string) => {
-    const effectiveNickname = nickname?.trim() || email.split('@')[0].toUpperCase();
-    const effectiveAvatar = avatarUrl || '';
+  const signUpWithEmail = async (
+    email: string,
+    pass: string,
+    details: UserRegistrationDetails
+  ) => {
+    const effectiveNickname = details.nickname.trim() || email.split('@')[0].toUpperCase();
+    const effectiveAvatar = details.avatarUrl || '';
 
-    // Always update local store immediately
+    // Always update local store immediately with Nickname
     useApexStore.setState({
       username: effectiveNickname,
+      nickname: effectiveNickname,
+      fullName: details.fullName.trim(),
+      dateOfBirth: details.dateOfBirth,
+      gender: details.gender,
       avatarUrl: effectiveAvatar,
     });
+
+    const emailKey = email.trim().toLowerCase();
+    const localKey = 'apexx_profile_' + emailKey;
+    const profilePayload = {
+      email,
+      nickname: effectiveNickname,
+      fullName: details.fullName.trim(),
+      dateOfBirth: details.dateOfBirth,
+      gender: details.gender,
+      avatarUrl: effectiveAvatar,
+    };
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(localKey, JSON.stringify(profilePayload));
+    }
 
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, pass);
@@ -179,7 +252,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           photoURL: effectiveAvatar,
         });
       }
-      await syncUserProfile(cred.user);
+      await syncUserProfile(cred.user, details);
     } catch (err: any) {
       if (isApiKeyInvalidError(err)) {
         console.warn('[Firebase Auth] API key unconfigured, created local operative account for:', effectiveNickname);
@@ -203,6 +276,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     useApexStore.setState({
       username: effectiveName,
+      nickname: effectiveName,
       avatarUrl: effectiveAvatar,
     });
 
@@ -217,6 +291,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           userRef,
           {
             displayName: effectiveName,
+            nickname: effectiveName,
             photoURL: effectiveAvatar,
           },
           { merge: true }
@@ -236,7 +311,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         ? useApexStore.getState().username
         : 'GUEST OPERATIVE';
 
-      useApexStore.setState({ username: guestName });
+      useApexStore.setState({ username: guestName, nickname: guestName });
       setUser({
         uid: 'guest-' + Date.now(),
         email: 'guest@apexx.local',

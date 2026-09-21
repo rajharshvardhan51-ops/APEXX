@@ -32,6 +32,10 @@ export interface HabitLogEntry {
 export interface ApexStoreState {
   // Profile State
   username: string;
+  fullName: string;
+  nickname: string;
+  dateOfBirth: string;
+  gender: string;
   honorific: string;
   avatarUrl: string;
   level: number;
@@ -85,6 +89,10 @@ export const useApexStore = create<ApexStoreState>()(
   persist(
     (set, get) => ({
       username: 'NEW OPERATIVE',
+      fullName: '',
+      nickname: '',
+      dateOfBirth: '',
+      gender: '',
       honorific: 'SIR',
       avatarUrl: '',
       level: 1,
