@@ -138,10 +138,10 @@ export const JarvisVoiceHud: React.FC<JarvisVoiceHudProps> = ({ voiceJarvis }) =
           </div>
 
           {/* Voice Command Hints Pill */}
-          <div className="relative z-10 flex items-center justify-between text-[10px] text-[#8E8E93] bg-[#000000] px-3 py-1.5 rounded-lg border border-[#1E1E26]">
-            <span>VOICE CONTROLS:</span>
+          <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between text-[10px] text-[#8E8E93] bg-[#000000] p-2.5 rounded-lg border border-[#1E1E26] gap-1">
+            <span className="font-bold text-[#8E8E93]">TRY ASKING:</span>
             <span className="text-[#FFFFFF] font-bold text-glow-sm">
-              &quot;SHUT UP&quot; / &quot;STOP&quot; to silence | &quot;CONTINUE&quot; to resume | &quot;HEY APEX&quot; to query
+              &quot;How&apos;s the weather?&quot; | &quot;What time is it?&quot; | &quot;Today&apos;s date?&quot; | &quot;What&apos;s my level?&quot;
             </span>
           </div>
 
