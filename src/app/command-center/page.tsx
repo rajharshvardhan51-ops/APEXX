@@ -6,6 +6,8 @@ import DailyMissionsPanel, { QuestItem } from '@/components/dashboard/DailyMissi
 import TelemetryWidgetsGrid from '@/components/dashboard/TelemetryWidgetsGrid';
 import SummitTopology from '@/components/canvas/SummitTopology';
 import GraduationModal from '@/components/dashboard/GraduationModal';
+import DailyGoalMicroQuotaCard from '@/components/dashboard/DailyGoalMicroQuotaCard';
+import WeeklyPerformanceDeltaReport from '@/components/analytics/WeeklyPerformanceDeltaReport';
 import { useApexStore } from '@/store/useApexStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, X, Zap, Clock, ShieldCheck, Mountain, ExternalLink } from 'lucide-react';
@@ -43,6 +45,9 @@ export default function CommandCenterPage() {
       {/* Hero Telemetry Banner */}
       <HeroBanner />
 
+      {/* Daily Goal Specific Micro-Quota Card: What You Specifically Need To Do TODAY */}
+      <DailyGoalMicroQuotaCard />
+
       {/* 3D Summit Topology Visual Horizon */}
       <div className="space-y-2">
         <div
@@ -68,6 +73,9 @@ export default function CommandCenterPage() {
         <SummitTopology completionIndex={completionIndex} />
       </div>
 
+      {/* Weekly Work Done & Variance Delta Report (More vs Less Work Comparison) */}
+      <WeeklyPerformanceDeltaReport />
+
       {/* Main Command Center Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left 2 Columns: Daily Missions Panel */}
@@ -80,15 +88,15 @@ export default function CommandCenterPage() {
 
         {/* Right 1 Column: Telemetry Quick Readouts & Focus Launcher */}
         <div className="space-y-4">
-          <div className="bg-[#08080A] border border-[#1E1E26] hover:border-[#383848] rounded-xl p-5 shadow-[0_4px_25px_rgba(0,0,0,0.95)] flex flex-col space-y-4 transition-all duration-200">
+          <div className="bg-[#08080A] border border-[#1E1E26] hover:border-[#383848] rounded-xl p-5 shadow-[0_4px_25px_rgba(0,0,0,0.95)] flex flex-col space-y-4 transition-all duration-200 font-mono">
             <div className="flex items-center gap-2 border-b border-[#1E1E26] pb-3">
               <Zap className="w-4 h-4 text-[#FFFFFF] fill-[#FFFFFF]" />
-              <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-[#FFFFFF]">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#FFFFFF]">
                 [ ENGINE // FOCUS_SPRINT ]
               </h3>
             </div>
 
-            <p className="font-mono text-xs text-[#8E8E93] leading-relaxed">
+            <p className="text-xs text-[#8E8E93] leading-relaxed">
               Launch a high-intensity Pomodoro focus session on active directives to gain 1.5x XP multipliers.
             </p>
 
@@ -103,7 +111,7 @@ export default function CommandCenterPage() {
                   durationMins: 25,
                 })
               }
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#FFFFFF] text-[#000000] font-mono text-xs font-extrabold tracking-wider hover:bg-[#E4E4E7] transition-all shadow-[0_0_15px_rgba(255,255,255,0.25)]"
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#FFFFFF] text-[#000000] font-mono text-xs font-extrabold tracking-wider hover:bg-[#E4E4E7] transition-all shadow-[0_0_15px_rgba(255,255,255,0.25)] cursor-pointer"
             >
               <Play className="w-4 h-4 fill-current text-[#000000]" /> LAUNCH 25-MIN SPRINT
             </button>
@@ -143,7 +151,7 @@ export default function CommandCenterPage() {
             >
               <button
                 onClick={() => setActiveFocusQuest(null)}
-                className="absolute top-4 right-4 text-[#8E8E93] hover:text-[#FFFFFF] transition-colors"
+                className="absolute top-4 right-4 text-[#8E8E93] hover:text-[#FFFFFF] transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -152,9 +160,9 @@ export default function CommandCenterPage() {
                 <Clock className="w-4 h-4 text-[#FFFFFF]" /> [ MODE: FOCUS_SPRINT_ACTIVE ]
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-1 font-mono">
                 <h3 className="text-lg font-bold text-[#FFFFFF]">{activeFocusQuest.title}</h3>
-                <div className="flex items-center gap-2 font-mono text-xs text-[#8E8E93]">
+                <div className="flex items-center gap-2 text-xs text-[#8E8E93]">
                   <span>CATEGORY: {activeFocusQuest.category}</span> •
                   <span className="text-[#FFFFFF] font-bold">REWARD: +{activeFocusQuest.xp} XP</span>
                 </div>
@@ -175,14 +183,14 @@ export default function CommandCenterPage() {
                     handleQuestToggle(activeFocusQuest.id, activeFocusQuest.xp, true);
                     setActiveFocusQuest(null);
                   }}
-                  className="flex-1 py-2.5 rounded-lg bg-[#FFFFFF] text-[#000000] font-mono text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#E4E4E7] transition-all shadow-[0_0_15px_rgba(255,255,255,0.25)]"
+                  className="flex-1 py-2.5 rounded-lg bg-[#FFFFFF] text-[#000000] font-mono text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#E4E4E7] transition-all shadow-[0_0_15px_rgba(255,255,255,0.25)] cursor-pointer"
                 >
                   <ShieldCheck className="w-4 h-4" /> COMPLETE & CLAIM XP
                 </button>
 
                 <button
                   onClick={() => setActiveFocusQuest(null)}
-                  className="px-4 py-2.5 rounded-lg bg-[#050507] text-[#E4E4E7] font-mono text-xs border border-[#1E1E26] hover:border-[#FFFFFF] transition-colors"
+                  className="px-4 py-2.5 rounded-lg bg-[#050507] text-[#E4E4E7] font-mono text-xs border border-[#1E1E26] hover:border-[#FFFFFF] transition-colors cursor-pointer"
                 >
                   CANCEL
                 </button>
@@ -194,5 +202,3 @@ export default function CommandCenterPage() {
     </div>
   );
 }
-
-

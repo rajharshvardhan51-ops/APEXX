@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import GrowthHeatmap from '@/components/analytics/GrowthHeatmap';
 import GrowthLedgerCharts from '@/components/analytics/GrowthLedgerCharts';
+import WeeklyPerformanceDeltaReport from '@/components/analytics/WeeklyPerformanceDeltaReport';
 import HistoricalProgressReport from '@/components/analytics/HistoricalProgressReport';
 import UserGoalSetupModal from '@/components/goals/UserGoalSetupModal';
 import { Activity, Code, BookOpen, Flame, ArrowUpRight, TrendingUp, Target } from 'lucide-react';
@@ -115,6 +116,9 @@ export default function AnalyticsPage() {
           </div>
         </motion.div>
       </div>
+
+      {/* 7-Day Weekly Performance & Variance Delta Report */}
+      <WeeklyPerformanceDeltaReport />
 
       {/* Date, Day, Month, Year Filtered Operational Reports */}
       <HistoricalProgressReport />
