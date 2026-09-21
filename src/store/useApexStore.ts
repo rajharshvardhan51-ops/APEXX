@@ -38,6 +38,9 @@ export interface ApexStoreState {
   gender: string;
   honorific: string;
   avatarUrl: string;
+  macroAim: string;
+  sideHobbies: string;
+  newHobbiesToDevelop: string;
   level: number;
   currentXp: number;
   xpToNextLevel: number;
@@ -82,6 +85,7 @@ export interface ApexStoreState {
   clearRolloverNotification: () => void;
   toggleSoundEnabled: () => void;
   setMasterVolume: (volume: number) => void;
+  setGoalProfile: (goals: { macroAim?: string; sideHobbies?: string; newHobbiesToDevelop?: string }) => void;
   resetAllDataToZero: () => void;
 }
 
@@ -95,6 +99,9 @@ export const useApexStore = create<ApexStoreState>()(
       gender: '',
       honorific: 'SIR',
       avatarUrl: '',
+      macroAim: 'Full-Stack Developer & Founder',
+      sideHobbies: 'Guitar, Fitness, Photography',
+      newHobbiesToDevelop: 'Cybersecurity, Martial Arts, Chess',
       level: 1,
       currentXp: 0,
       xpToNextLevel: 500, // Level 1 target: 500 XP
@@ -297,6 +304,14 @@ export const useApexStore = create<ApexStoreState>()(
 
       setMasterVolume: (volume: number) => {
         set({ masterVolume: Math.min(1, Math.max(0, volume)) });
+      },
+
+      setGoalProfile: (goals) => {
+        set((state) => ({
+          macroAim: goals.macroAim !== undefined ? goals.macroAim : state.macroAim,
+          sideHobbies: goals.sideHobbies !== undefined ? goals.sideHobbies : state.sideHobbies,
+          newHobbiesToDevelop: goals.newHobbiesToDevelop !== undefined ? goals.newHobbiesToDevelop : state.newHobbiesToDevelop,
+        }));
       },
     }),
     {

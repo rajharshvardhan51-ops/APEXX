@@ -60,24 +60,30 @@ model User {
 }
 
 model Profile {
-  id              String   @id @default(uuid()) @db.Uuid
-  userId          String   @unique @map("user_id") @db.Uuid
-  level           Int      @default(1)
-  currentXp       Int      @default(0) @map("current_xp")
-  xpToNextLevel   Int      @default(500) @map("xp_to_next_level")
-  streak          Int      @default(0)
-  currentTitle    String   @default("INITIATE") @map("current_title")
-  honorific       String   @default("SIR")
-  equippedFrame   String   @default("TITAN") @map("equipped_frame")
-  avatarUrl       String?  @map("avatar_url")
-  categoryXp      Json     @map("category_xp")
-  completionIndex Float    @default(0.0) @map("completion_index")
-  streakShields   Int      @default(0) @map("streak_shields")
-  lastActiveDate  String   @map("last_active_date")
-  dayCount        Int      @default(0) @map("day_count")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  id                  String   @id @default(uuid()) @db.Uuid
+  userId              String   @unique @map("user_id") @db.Uuid
+  level               Int      @default(1)
+  currentXp           Int      @default(0) @map("current_xp")
+  xpToNextLevel       Int      @default(500) @map("xp_to_next_level")
+  streak              Int      @default(0)
+  currentTitle        String   @default("INITIATE") @map("current_title")
+  honorific           String   @default("SIR")
+  equippedFrame       String   @default("TITAN") @map("equipped_frame")
+  avatarUrl           String?  @map("avatar_url")
+  categoryXp          Json     @map("category_xp")
+  completionIndex     Float    @default(0.0) @map("completion_index")
+  streakShields       Int      @default(0) @map("streak_shields")
+  lastActiveDate      String   @map("last_active_date")
+  dayCount            Int      @default(0) @map("day_count")
+  
+  // User Goal & Hobby Onboarding Profiles
+  macroAim            String   @default("Full-Stack Developer & Founder") @map("macro_aim")
+  sideHobbies         String   @default("Guitar, Fitness, Photography") @map("side_hobbies")
+  newHobbiesToDevelop String   @default("Cybersecurity, Martial Arts, Chess") @map("new_hobbies_to_develop")
 
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("profiles")
 }
@@ -86,17 +92,22 @@ model DailyRecord {
   id                   String   @id @default(uuid()) @db.Uuid
   userId               String   @map("user_id") @db.Uuid
   date                 String   @db.VarChar(10) // YYYY-MM-DD
+  dayName              String   @default("Monday") @map("day_name") // Day of week (e.g. Tuesday)
+  monthName            String   @default("September") @map("month_name") // Month (e.g. September)
+  year                 Int      @default(2026) // Year (e.g. 2026)
   completedQuestsCount Int      @default(0) @map("completed_quests_count")
   totalQuestsCount     Int      @default(0) @map("total_quests_count")
   consistencyScore     Float    @default(0.0) @map("consistency_score")
   statusCode           String   @default("UNLOGGED") @map("status_code")
   xpEarned             Int      @default(0) @map("xp_earned")
+  summaryNote          String?  @map("summary_note")
   createdAt            DateTime @default(now()) @map("created_at")
 
   user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, date])
   @@index([userId, date])
+  @@index([userId, monthName, year])
   @@map("daily_records")
 }
 
@@ -137,7 +148,8 @@ model Goal {
   userId      String    @map("user_id") @db.Uuid
   milestoneId String    @map("milestone_id")
   title       String
-  category    String    @default("GRADUATION")
+  category    String    @default("MACRO_SUMMIT") // MACRO_SUMMIT | SIDE_HOBBY | NEW_HOBBY | GRADUATION
+  horizonYear Int?      @map("horizon_year")
   completed   Boolean   @default(false)
   completedAt DateTime? @map("completed_at")
   createdAt   DateTime  @default(now()) @map("created_at")

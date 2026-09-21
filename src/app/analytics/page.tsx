@@ -1,14 +1,17 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import GrowthHeatmap from '@/components/analytics/GrowthHeatmap';
 import GrowthLedgerCharts from '@/components/analytics/GrowthLedgerCharts';
-import { Activity, Code, BookOpen, Flame, ArrowUpRight, TrendingUp } from 'lucide-react';
+import HistoricalProgressReport from '@/components/analytics/HistoricalProgressReport';
+import UserGoalSetupModal from '@/components/goals/UserGoalSetupModal';
+import { Activity, Code, BookOpen, Flame, ArrowUpRight, TrendingUp, Target } from 'lucide-react';
 import { useApexStore } from '@/store/useApexStore';
 
 export default function AnalyticsPage() {
-  const { streak, habitLogs, categoryXp } = useApexStore();
+  const { streak, habitLogs, categoryXp, macroAim } = useApexStore();
+  const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
 
   const codingHrs = categoryXp?.DEV ? (categoryXp.DEV / 100).toFixed(1) : '0.0';
   const readingPages = categoryXp?.ACADEMICS ? Math.floor(categoryXp.ACADEMICS / 10) : 0;
@@ -21,10 +24,10 @@ export default function AnalyticsPage() {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.6)]"
+        className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.6)] font-mono"
       >
         <div className="space-y-1">
-          <div className="flex items-center gap-2 font-mono text-xs text-[#FFFFFF] font-bold tracking-widest uppercase">
+          <div className="flex items-center gap-2 text-xs text-[#FFFFFF] font-bold tracking-widest uppercase">
             <Activity className="w-4 h-4 text-[#FFFFFF]" /> TELEMETRY ANALYTICS & GROWTH LEDGER
           </div>
           <h1 className="text-2xl font-extrabold text-[#FFFFFF] font-sans">
@@ -32,8 +35,13 @@ export default function AnalyticsPage() {
           </h1>
         </div>
 
-        <div className="flex items-center gap-2 bg-[#050507] px-3.5 py-2 rounded-lg border border-[#383848] font-mono text-xs text-[#FFFFFF]">
-          <TrendingUp className="w-4 h-4 text-[#FFFFFF]" /> 365-DAY TOPOGRAPHIC METRICS SYNCHRONIZED
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setIsGoalModalOpen(true)}
+            className="flex items-center gap-2 bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] px-3.5 py-2 rounded-lg font-bold text-xs transition-all cursor-pointer shadow-[0_0_12px_rgba(255,255,255,0.2)]"
+          >
+            <Target className="w-4 h-4 text-[#000000]" /> UPDATE GOALS & HOBBIES
+          </button>
         </div>
       </motion.div>
 
@@ -108,11 +116,17 @@ export default function AnalyticsPage() {
         </motion.div>
       </div>
 
+      {/* Date, Day, Month, Year Filtered Operational Reports */}
+      <HistoricalProgressReport />
+
       {/* 365-Day Chronological Heatmap Grid */}
       <GrowthHeatmap />
 
       {/* Multi-variable Trend Vector Charts */}
       <GrowthLedgerCharts />
+
+      {/* User Goal Setup & Onboarding Modal */}
+      <UserGoalSetupModal isOpen={isGoalModalOpen} onClose={() => setIsGoalModalOpen(false)} />
     </div>
   );
 }
