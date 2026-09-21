@@ -7,6 +7,8 @@ import MobileBottomNav from '@/components/layout/MobileBottomNav';
 import MobileDrawer from '@/components/layout/MobileDrawer';
 import MobileInstallBanner from '@/components/ui/MobileInstallBanner';
 
+import LocalDataMigrationModal from '@/components/auth/LocalDataMigrationModal';
+
 interface AppShellProps {
   children: React.ReactNode;
 }
@@ -46,6 +48,9 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
         isOpenOverride={isInstallBannerOpen ? true : undefined}
         onCloseOverride={() => setIsInstallBannerOpen(false)}
       />
+
+      {/* Local to PostgreSQL Data Migration Dialog */}
+      <LocalDataMigrationModal />
     </>
   );
 };
