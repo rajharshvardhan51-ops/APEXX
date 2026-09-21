@@ -29,13 +29,13 @@ export const JarvisVoiceHud: React.FC<JarvisVoiceHudProps> = ({ voiceJarvis }) =
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#000000]/85 backdrop-blur-md select-none font-mono">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#000000]/85 backdrop-blur-md select-none font-mono">
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ duration: 0.25 }}
-          className="relative w-full max-w-xl overflow-hidden rounded-2xl bg-[#08080A] border border-[#383848] p-6 shadow-[0_0_60px_rgba(255,255,255,0.15)] text-[#FFFFFF] space-y-6"
+          className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto rounded-2xl bg-[#08080A] border border-[#383848] p-4 sm:p-6 shadow-[0_0_60px_rgba(255,255,255,0.15)] text-[#FFFFFF] space-y-4 sm:space-y-6"
         >
           {/* Cyber Dot Grid Background */}
           <div className="absolute inset-0 bg-cyber-grid opacity-25 pointer-events-none" />

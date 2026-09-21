@@ -47,6 +47,10 @@ export const Sidebar: React.FC = () => {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setIsCollapsed(true);
+    }
+
     const updateTime = () => {
       const now = new Date();
       const timeStr = now.toLocaleTimeString('en-US', {

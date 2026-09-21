@@ -65,13 +65,13 @@ export const WeatherForecastModal: React.FC<WeatherForecastModalProps> = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#000000]/80 backdrop-blur-md">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#000000]/80 backdrop-blur-md">
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
           transition={{ duration: 0.25 }}
-          className="relative w-full max-w-2xl overflow-hidden rounded-xl bg-[#08080A] border border-[#383848] shadow-[0_0_50px_rgba(255,255,255,0.15)] text-[#FFFFFF] p-6 space-y-6"
+          className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-xl bg-[#08080A] border border-[#383848] shadow-[0_0_50px_rgba(255,255,255,0.15)] text-[#FFFFFF] p-4 sm:p-6 space-y-4 sm:space-y-6"
         >
           {/* Cyber Background Grid */}
           <div className="absolute inset-0 bg-cyber-grid opacity-20 pointer-events-none" />

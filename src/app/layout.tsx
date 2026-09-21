@@ -82,7 +82,7 @@ export default function RootLayout({
             <Header />
 
             {/* Scrollable Main Canvas */}
-            <main className="flex-1 overflow-y-auto bg-cyber-grid bg-scanline p-6 relative">
+            <main className="flex-1 overflow-y-auto bg-cyber-grid bg-scanline p-3 sm:p-6 relative">
               {children}
             </main>
           </div>

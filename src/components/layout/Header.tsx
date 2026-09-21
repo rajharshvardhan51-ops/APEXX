@@ -63,11 +63,11 @@ export const Header: React.FC<HeaderProps> = ({ onSyncNode }) => {
 
   return (
     <>
-      <header className="sticky top-0 z-20 h-16 bg-[#060608] backdrop-blur-md border-b border-[#1E1E26] px-6 flex items-center justify-between select-none font-mono">
+      <header className="sticky top-0 z-20 h-16 bg-[#060608] backdrop-blur-md border-b border-[#1E1E26] px-3 sm:px-6 flex items-center justify-between select-none font-mono">
         {/* Telemetry Left: Mobile Brand & Level & Title */}
-        <div className="flex items-center gap-4 sm:gap-6">
+        <div className="flex items-center gap-2 sm:gap-6">
           {/* Mobile / Collapsed View Brand Icon */}
-          <div className="md:hidden flex items-center shrink-0 pr-2 border-r border-[#1E1E26]">
+          <div className="md:hidden flex items-center shrink-0 pr-1.5 border-r border-[#1E1E26]">
             <ApexLogo variant="icon-only" size="sm" glow={true} />
           </div>
 
@@ -85,17 +85,17 @@ export const Header: React.FC<HeaderProps> = ({ onSyncNode }) => {
           </div>
 
           {/* Level & XP Telemetry Bar */}
-          <div className="flex items-center gap-4 bg-[#000000] px-4 py-1.5 rounded-md border border-[#1E1E26]">
-            <div className="flex items-center gap-1.5">
-              <Zap className="w-4 h-4 text-[#FFFFFF] fill-[#FFFFFF]" />
+          <div className="flex items-center gap-2 sm:gap-4 bg-[#000000] px-2.5 sm:px-4 py-1.5 rounded-md border border-[#1E1E26]">
+            <div className="flex items-center gap-1">
+              <Zap className="w-3.5 h-3.5 text-[#FFFFFF] fill-[#FFFFFF]" />
               <span className="text-xs font-extrabold text-[#FFFFFF] text-glow-sm">LVL {level}</span>
             </div>
 
-            <div className="flex flex-col w-48 gap-1">
-              <div className="flex items-center justify-between text-[10px]">
-                <span className="text-[#8E8E93]">XP PROGRESS</span>
+            <div className="flex flex-col w-24 sm:w-48 gap-1">
+              <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                <span className="text-[#8E8E93] hidden sm:inline">XP PROGRESS</span>
                 <span className="text-[#FFFFFF] font-bold">
-                  {currentXp.toLocaleString()} / {xpToNextLevel.toLocaleString()} ({xpPercentage}%)
+                  {currentXp} / {xpToNextLevel}
                 </span>
               </div>
 
@@ -113,11 +113,11 @@ export const Header: React.FC<HeaderProps> = ({ onSyncNode }) => {
         </div>
 
         {/* Header Right Action Trigger & Sync Telemetry */}
-        <div className="flex items-center gap-3">
-          {/* J.A.R.V.I.S. "HEY APEX" Voice Trigger Button */}
+        <div className="flex items-center gap-1.5 sm:gap-3">
+          {/* J.A.R.V.I.S. "HEY APEX" Voice Trigger Button (Visible on Mobile) */}
           <button
             onClick={triggerVoiceBriefing}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-xs font-bold transition-all cursor-pointer group ${
+            className={`flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-md border text-xs font-bold transition-all cursor-pointer group ${
               isSpeaking || isListening
                 ? 'bg-[#FFFFFF] text-[#000000] border-[#FFFFFF] shadow-glow-white'
                 : 'bg-[#000000] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border-[#383848] hover:border-[#FFFFFF]'
@@ -125,8 +125,8 @@ export const Header: React.FC<HeaderProps> = ({ onSyncNode }) => {
             title="Click to trigger J.A.R.V.I.S. voice work briefing"
           >
             <Mic className={`w-3.5 h-3.5 ${isSpeaking ? 'animate-bounce text-[#000000]' : isListening ? 'animate-pulse text-[#000000]' : 'text-[#FFFFFF] group-hover:text-[#000000]'}`} />
-            <span className="font-mono uppercase tracking-wider hidden md:inline">
-              HEY APEX
+            <span className="font-mono uppercase tracking-wider text-[10px] sm:text-xs">
+              <span className="hidden sm:inline">HEY </span>APEX
             </span>
           </button>
 
