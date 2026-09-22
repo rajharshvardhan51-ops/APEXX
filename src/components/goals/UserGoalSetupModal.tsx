@@ -166,18 +166,18 @@ export const UserGoalSetupModal: React.FC<UserGoalSetupModalProps> = ({ isOpen, 
             )}
 
             {/* Actions */}
-            <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#1E1E26]">
+            <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 pt-2 border-t border-[#1E1E26]">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-3 py-2 rounded-lg bg-[#000000] text-[#8E8E93] hover:text-[#FFFFFF] border border-[#1E1E26] text-xs font-bold transition-all cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2.5 min-h-[44px] rounded-lg bg-[#000000] text-[#8E8E93] hover:text-[#FFFFFF] border border-[#1E1E26] text-xs font-bold transition-all cursor-pointer text-center"
               >
                 CANCEL
               </button>
               <button
                 type="submit"
                 disabled={isSaving}
-                className="px-4 py-2 rounded-lg bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] text-xs font-bold flex items-center gap-2 shadow-[0_0_15px_rgba(255,255,255,0.25)] transition-all cursor-pointer"
+                className="w-full sm:w-auto px-4 py-2.5 min-h-[44px] rounded-lg bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] text-xs font-bold flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(255,255,255,0.25)] transition-all cursor-pointer"
               >
                 <Check className="w-4 h-4" />
                 <span>{isSaving ? 'PERSISTING...' : 'SAVE GOALS & HOBBIES'}</span>

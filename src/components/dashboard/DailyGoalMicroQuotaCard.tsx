@@ -150,10 +150,10 @@ export const DailyGoalMicroQuotaCard: React.FC = () => {
                   {!isDone && (
                     <button
                       onClick={() => handleExecuteTask(task.id, task.xpReward)}
-                      className="px-3 py-1.5 rounded bg-[#18181F] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#383848] text-[10px] font-bold transition-all cursor-pointer flex items-center gap-1 shrink-0 self-end sm:self-center"
+                      className="w-full sm:w-auto px-3.5 py-2 rounded-md bg-[#18181F] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#383848] text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shrink-0 min-h-[40px]"
                     >
                       <span>COMPLETE TASK</span>
-                      <ArrowRight className="w-3 h-3" />
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   )}
                 </div>

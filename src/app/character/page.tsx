@@ -48,11 +48,11 @@ export default function CharacterPage() {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-6 shadow-[0_4px_25px_rgba(0,0,0,0.8)] flex flex-col md:flex-row items-center justify-between gap-6"
+        className="bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-4 sm:p-6 shadow-[0_4px_25px_rgba(0,0,0,0.8)] flex flex-col md:flex-row items-center justify-between gap-5 sm:gap-6"
       >
-        <div className="flex items-center gap-5">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-5">
           {/* Avatar Frame Seed Preview */}
-          <div className={`w-20 h-20 bg-[#18181F] flex items-center justify-center transition-all duration-300 relative overflow-hidden ${frameSeedStyles[(equippedFrame as FrameSeed) || 'TITAN']}`}>
+          <div className={`w-20 h-20 bg-[#18181F] flex items-center justify-center transition-all duration-300 relative overflow-hidden shrink-0 ${frameSeedStyles[(equippedFrame as FrameSeed) || 'TITAN']}`}>
             {avatarUrl ? (
               <img src={avatarUrl} alt={username || 'Operative'} className="w-full h-full object-cover" />
             ) : (
@@ -64,14 +64,14 @@ export default function CharacterPage() {
           </div>
 
           <div className="space-y-1">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
               <h1 className="text-xl font-extrabold text-[#FFFFFF] tracking-tight">{username || 'OPERATIVE'}</h1>
               <span className="text-[10px] bg-[#18181F] text-[#E4E4E7] border border-[#383848] px-2 py-0.5 rounded font-bold uppercase tracking-wider">
                 [{currentTitle || 'INITIATE'}]
               </span>
             </div>
 
-            <p className="text-xs text-[#E4E4E7] font-bold tracking-wider flex items-center gap-1.5">
+            <p className="text-xs text-[#E4E4E7] font-bold tracking-wider flex items-center justify-center sm:justify-start gap-1.5">
               <Shield className="w-3.5 h-3.5 text-[#FFFFFF]" /> LEVEL {level} // {level >= 40 ? 'S-CLASS OPERATIVE MONARCH' : 'OPERATIVE MATRIX'}
             </p>
 
@@ -82,14 +82,14 @@ export default function CharacterPage() {
         </div>
 
         {/* Frame Seed Selector Buttons */}
-        <div className="flex flex-col space-y-1.5 text-right">
+        <div className="flex flex-col space-y-1.5 text-center sm:text-right w-full md:w-auto">
           <span className="text-[10px] text-[#8E8E93] uppercase tracking-wider font-semibold">AVATAR FRAME SEEDS</span>
-          <div className="flex flex-wrap items-center justify-end gap-1.5">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-1.5">
             {(['ROUND', 'SEED', 'CORE', 'SHADOW', 'OBSIDIAN', 'VOLCANIC', 'TITAN'] as FrameSeed[]).map((seed) => (
               <button
                 key={seed}
                 onClick={() => setEquippedFrame(seed)}
-                className={`px-2 py-1 rounded text-[9px] font-bold transition-all ${
+                className={`px-2.5 py-1.5 min-h-[34px] rounded text-[9px] font-bold transition-all cursor-pointer ${
                   equippedFrame === seed
                     ? 'bg-[#FFFFFF] text-[#000000] border border-[#FFFFFF] shadow-[0_0_10px_rgba(255,255,255,0.3)]'
                     : 'bg-[#050507] text-[#8E8E93] border border-[#1E1E26] hover:text-[#FFFFFF] hover:border-[#383848]'
@@ -103,10 +103,10 @@ export default function CharacterPage() {
       </motion.div>
 
       {/* Tab Navigation Bar */}
-      <div className="flex items-center gap-2 border-b border-[#1E1E26] pb-2 overflow-x-auto">
+      <div className="flex items-center gap-2 border-b border-[#1E1E26] pb-2 overflow-x-auto no-scrollbar scroll-smooth">
         <button
           onClick={() => setActiveTab('SHEET')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold tracking-wider transition-all ${
+          className={`flex items-center gap-2 px-3.5 py-2.5 min-h-[44px] shrink-0 rounded-lg text-xs font-bold tracking-wider transition-all cursor-pointer ${
             activeTab === 'SHEET'
               ? 'bg-[#18181F] text-[#FFFFFF] border border-[#383848] shadow-[0_0_12px_rgba(255,255,255,0.1)]'
               : 'bg-[#0A0A0E] text-[#8E8E93] border border-[#1E1E26] hover:text-[#FFFFFF] hover:border-[#383848]'
@@ -117,7 +117,7 @@ export default function CharacterPage() {
 
         <button
           onClick={() => setActiveTab('SKILL_TREE')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold tracking-wider transition-all ${
+          className={`flex items-center gap-2 px-3.5 py-2.5 min-h-[44px] shrink-0 rounded-lg text-xs font-bold tracking-wider transition-all cursor-pointer ${
             activeTab === 'SKILL_TREE'
               ? 'bg-[#18181F] text-[#FFFFFF] border border-[#383848] shadow-[0_0_12px_rgba(255,255,255,0.1)]'
               : 'bg-[#0A0A0E] text-[#8E8E93] border border-[#1E1E26] hover:text-[#FFFFFF] hover:border-[#383848]'
@@ -128,7 +128,7 @@ export default function CharacterPage() {
 
         <button
           onClick={() => setActiveTab('ACHIEVEMENTS')}
-          className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-bold tracking-wider transition-all ${
+          className={`flex items-center gap-2 px-3.5 py-2.5 min-h-[44px] shrink-0 rounded-lg text-xs font-bold tracking-wider transition-all cursor-pointer ${
             activeTab === 'ACHIEVEMENTS'
               ? 'bg-[#18181F] text-[#FFFFFF] border border-[#383848] shadow-[0_0_12px_rgba(255,255,255,0.1)]'
               : 'bg-[#0A0A0E] text-[#8E8E93] border border-[#1E1E26] hover:text-[#FFFFFF] hover:border-[#383848]'

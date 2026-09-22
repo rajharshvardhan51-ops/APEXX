@@ -73,7 +73,7 @@ export default function HabitsPage() {
       </motion.div>
 
       {/* Horizontal Tabs Bar */}
-      <div className="flex items-center gap-2 border-b border-[#1E1E26] pb-2 overflow-x-auto">
+      <div className="flex items-center gap-2 border-b border-[#1E1E26] pb-2 overflow-x-auto no-scrollbar scroll-smooth">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -82,7 +82,7 @@ export default function HabitsPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`relative flex items-center gap-2 px-4 py-2.5 rounded-lg font-mono text-xs font-bold tracking-wider transition-all duration-200 shrink-0 ${
+              className={`relative flex items-center gap-2 px-3.5 py-2.5 min-h-[44px] rounded-lg font-mono text-xs font-bold tracking-wider transition-all duration-200 shrink-0 cursor-pointer ${
                 isActive
                   ? 'bg-[#18181F] text-[#FFFFFF] border border-[#383848] shadow-[0_0_12px_rgba(255,255,255,0.1)]'
                   : 'bg-[#0A0A0E] text-[#8E8E93] hover:text-[#FFFFFF] border border-[#1E1E26]'

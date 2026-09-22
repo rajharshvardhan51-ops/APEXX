@@ -108,8 +108,8 @@ export const GrowthHeatmap: React.FC = () => {
       </div>
 
       {/* Month Headers */}
-      <div className="overflow-x-auto pb-2">
-        <div className="min-w-[720px] flex flex-col space-y-2">
+      <div className="overflow-x-auto pb-2 scroll-smooth">
+        <div className="min-w-[700px] flex flex-col space-y-2">
           <div className="grid grid-cols-12 text-[10px] text-[#8E8E93] font-bold text-center">
             {months.map((m) => (
               <span key={m}>{m}</span>

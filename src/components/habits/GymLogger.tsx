@@ -164,7 +164,7 @@ export const GymLogger: React.FC<GymLoggerProps> = ({ onLogSet }) => {
             </div>
 
             {/* Weight, Reps, Duration Inputs Grid */}
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="space-y-1.5">
                 <label className="font-mono text-[10px] text-[#8E8E93] uppercase tracking-wider block">
                   WEIGHT (KG)
@@ -174,7 +174,7 @@ export const GymLogger: React.FC<GymLoggerProps> = ({ onLogSet }) => {
                   step="0.5"
                   value={weightKg}
                   onChange={(e) => setWeightKg(e.target.value)}
-                  className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2 font-mono text-xs text-[#FFFFFF] outline-none"
+                  className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2.5 font-mono text-xs text-[#FFFFFF] outline-none min-h-[42px]"
                   required
                 />
               </div>
@@ -187,7 +187,7 @@ export const GymLogger: React.FC<GymLoggerProps> = ({ onLogSet }) => {
                   type="number"
                   value={reps}
                   onChange={(e) => setReps(e.target.value)}
-                  className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2 font-mono text-xs text-[#FFFFFF] outline-none"
+                  className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2.5 font-mono text-xs text-[#FFFFFF] outline-none min-h-[42px]"
                   required
                 />
               </div>
@@ -200,7 +200,7 @@ export const GymLogger: React.FC<GymLoggerProps> = ({ onLogSet }) => {
                   type="number"
                   value={durationMins}
                   onChange={(e) => setDurationMins(e.target.value)}
-                  className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2 font-mono text-xs text-[#FFFFFF] outline-none"
+                  className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2.5 font-mono text-xs text-[#FFFFFF] outline-none min-h-[42px]"
                   required
                 />
               </div>
@@ -208,7 +208,7 @@ export const GymLogger: React.FC<GymLoggerProps> = ({ onLogSet }) => {
 
             <button
               type="submit"
-              className="w-full py-3 rounded-lg bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+              className="w-full py-3 min-h-[44px] rounded-lg bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 shadow-[0_0_15px_rgba(255,255,255,0.3)] cursor-pointer"
             >
               <Plus className="w-4 h-4" /> LOG EXERCISE SET (+60 XP)
             </button>

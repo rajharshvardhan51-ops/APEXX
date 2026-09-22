@@ -263,7 +263,7 @@ export const CorePreferencesForm: React.FC = () => {
         {/* Action CTA */}
         <button
           type="submit"
-          className="w-full py-3 rounded-lg bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+          className="w-full py-3 min-h-[44px] cursor-pointer rounded-lg bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(255,255,255,0.3)]"
         >
           COMMIT SETTINGS
         </button>

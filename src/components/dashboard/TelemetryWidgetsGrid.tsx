@@ -194,7 +194,7 @@ export const TelemetryWidgetsGrid: React.FC<TelemetryWidgetsGridProps> = ({
                 [ VECTOR // CONSISTENCY_TREND ]
               </h3>
             </div>
-            <div className="flex items-center gap-3 font-mono text-[10px]">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 font-mono text-[10px]">
               <span className="flex items-center gap-1 text-[#FFFFFF]">
                 <span className="w-2 h-2 rounded-full bg-[#FFFFFF]" /> CONSISTENCY
               </span>

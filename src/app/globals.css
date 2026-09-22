@@ -199,5 +199,19 @@ body {
   padding-top: max(0.5rem, env(safe-area-inset-top, 0.5rem));
 }
 
+/* Touch Target Minimum Sizing */
+.touch-target {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 
-
+/* Hide scrollbar for clean horizontal scroll tabs on mobile */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

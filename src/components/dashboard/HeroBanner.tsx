@@ -55,15 +55,15 @@ export const HeroBanner: React.FC = () => {
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35 }}
-        className="relative overflow-hidden rounded-xl bg-[#08080A] border border-[#1E1E26] p-6 shadow-[0_4px_25px_rgba(0,0,0,0.95)]"
+        className="relative overflow-hidden rounded-xl bg-[#08080A] border border-[#1E1E26] p-4 sm:p-6 shadow-[0_4px_25px_rgba(0,0,0,0.95)]"
       >
         {/* Background Subtle Cyber Grid & Scanline */}
         <div className="absolute inset-0 bg-cyber-grid opacity-30 pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-6">
           {/* Left Side: Telemetry Tag & Greeting & Terminal Box */}
           <div className="space-y-3 max-w-2xl">
-            <div className="flex items-center gap-2 font-mono text-xs text-[#FFFFFF] font-bold tracking-widest uppercase">
+            <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-[#FFFFFF] font-bold tracking-widest uppercase">
               <span className="hud-tag flex items-center gap-1.5 border-[#383848] text-[#FFFFFF] text-glow-sm">
                 <Sparkles className="w-3 h-3 text-[#FFFFFF] animate-pulse" />
                 [ NODE: ONLINE ]
@@ -71,23 +71,23 @@ export const HeroBanner: React.FC = () => {
               <span className="hud-tag text-[#8E8E93]">[ SECTOR: COMMAND_CORE ]</span>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3.5 sm:gap-4">
               {/* User Profile Picture Avatar */}
-              <div className="relative w-14 h-14 rounded-xl border-2 border-[#FFFFFF] bg-[#18181F] overflow-hidden shrink-0 shadow-[0_0_20px_rgba(255,255,255,0.4)] flex items-center justify-center">
+              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl border-2 border-[#FFFFFF] bg-[#18181F] overflow-hidden shrink-0 shadow-[0_0_20px_rgba(255,255,255,0.4)] flex items-center justify-center">
                 {avatarUrl ? (
                   <img src={avatarUrl} alt={greetingDisplayName} className="w-full h-full object-cover" />
                 ) : (
-                  <User className="w-8 h-8 text-[#FFFFFF]" />
+                  <User className="w-7 h-7 sm:w-8 sm:h-8 text-[#FFFFFF]" />
                 )}
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#FFFFFF] tracking-tight font-mono uppercase text-glow">
+              <h1 className="text-lg sm:text-2xl md:text-3xl font-extrabold text-[#FFFFFF] tracking-tight font-mono uppercase text-glow leading-snug break-words">
                 WELCOME BACK, <span className="text-[#FFFFFF] underline decoration-[#383848] text-glow">{greetingDisplayName}</span>
               </h1>
             </div>
 
             {/* Dynamic Technical Terminal Box */}
-            <div className="flex items-center gap-2.5 bg-[#000000] px-3.5 py-2.5 rounded-lg border border-[#1E1E26] text-xs font-mono text-[#8E8E93]">
+            <div className="flex items-center gap-2.5 bg-[#000000] px-3 sm:px-3.5 py-2.5 rounded-lg border border-[#1E1E26] text-xs font-mono text-[#8E8E93]">
               <Terminal className="w-4 h-4 text-[#FFFFFF] shrink-0" />
               <motion.span
                 key={quoteIndex}
@@ -95,7 +95,7 @@ export const HeroBanner: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 5 }}
                 transition={{ duration: 0.25 }}
-                className="truncate text-[#E4E4E7] font-medium"
+                className="truncate text-[#E4E4E7] font-medium text-[11px] sm:text-xs"
               >
                 {terminalQuotes[quoteIndex]}
               </motion.span>
@@ -104,17 +104,17 @@ export const HeroBanner: React.FC = () => {
           </div>
 
           {/* Right Side: Environmental Telemetry Status Readouts */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-3 font-mono text-xs">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-3 font-mono text-xs">
             {/* Location (Interactive Button) */}
             <button
               onClick={() => setIsWeatherModalOpen(true)}
               title="Click to view live weather forecast & geolocation details"
-              className="flex flex-col p-2.5 rounded-lg bg-[#000000] border border-[#1E1E26] hover:border-[#FFFFFF] hover:shadow-glow-white text-left transition-all duration-200 cursor-pointer group"
+              className="flex flex-col p-2.5 rounded-lg bg-[#000000] border border-[#1E1E26] hover:border-[#FFFFFF] hover:shadow-glow-white text-left transition-all duration-200 cursor-pointer group min-h-[44px]"
             >
               <span className="text-[9px] text-[#8E8E93] group-hover:text-[#FFFFFF] flex items-center gap-1 uppercase tracking-wider font-bold transition-colors">
                 <MapPin className="w-3 h-3 text-[#FFFFFF] group-hover:animate-bounce" /> [ LOC ]
               </span>
-              <span className="font-mono text-xs font-extrabold text-[#FFFFFF] text-glow-sm mt-1.5 truncate">
+              <span className="font-mono text-xs font-extrabold text-[#FFFFFF] text-glow-sm mt-1 truncate">
                 {loading ? 'LOCATING...' : locationCode}
               </span>
             </button>
@@ -123,30 +123,30 @@ export const HeroBanner: React.FC = () => {
             <button
               onClick={() => setIsWeatherModalOpen(true)}
               title="Click to view live weather forecast & environment details"
-              className="flex flex-col p-2.5 rounded-lg bg-[#000000] border border-[#1E1E26] hover:border-[#FFFFFF] hover:shadow-glow-white text-left transition-all duration-200 cursor-pointer group"
+              className="flex flex-col p-2.5 rounded-lg bg-[#000000] border border-[#1E1E26] hover:border-[#FFFFFF] hover:shadow-glow-white text-left transition-all duration-200 cursor-pointer group min-h-[44px]"
             >
               <span className="text-[9px] text-[#8E8E93] group-hover:text-[#FFFFFF] flex items-center gap-1 uppercase tracking-wider font-bold transition-colors">
                 <Thermometer className="w-3 h-3 text-[#FFFFFF]" /> [ ENV ]
               </span>
-              <span className="font-mono text-xs font-extrabold text-[#FFFFFF] text-glow-sm mt-1.5">
+              <span className="font-mono text-xs font-extrabold text-[#FFFFFF] text-glow-sm mt-1 truncate">
                 {loading ? '--°C / --%' : `${temperature}°C / ${humidity}%`}
               </span>
             </button>
 
             {/* Consistency Rate */}
-            <div className="flex flex-col p-2.5 rounded-lg bg-[#000000] border border-[#1E1E26]">
+            <div className="flex flex-col p-2.5 rounded-lg bg-[#000000] border border-[#1E1E26] min-h-[44px]">
               <span className="text-[9px] text-[#8E8E93] flex items-center gap-1 uppercase tracking-wider font-bold">
                 <Activity className="w-3 h-3 text-[#FFFFFF]" /> [ SYNC ]
               </span>
-              <span className="font-mono text-xs font-extrabold text-[#FFFFFF] text-glow-sm mt-1.5">{syncPercentage}</span>
+              <span className="font-mono text-xs font-extrabold text-[#FFFFFF] text-glow-sm mt-1">{syncPercentage}</span>
             </div>
 
             {/* Growth Index */}
-            <div className="flex flex-col p-2.5 rounded-lg bg-[#000000] border border-[#1E1E26]">
+            <div className="flex flex-col p-2.5 rounded-lg bg-[#000000] border border-[#1E1E26] min-h-[44px]">
               <span className="text-[9px] text-[#8E8E93] flex items-center gap-1 uppercase tracking-wider font-bold">
                 <TrendingUp className="w-3 h-3 text-[#FFFFFF]" /> [ GROWTH ]
               </span>
-              <span className="font-mono text-xs font-extrabold text-[#FFFFFF] text-glow-sm mt-1.5">
+              <span className="font-mono text-xs font-extrabold text-[#FFFFFF] text-glow-sm mt-1">
                 {growthPercentage}
               </span>
             </div>

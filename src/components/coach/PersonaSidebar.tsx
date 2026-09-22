@@ -61,7 +61,7 @@ export const PersonaSidebar: React.FC<PersonaSidebarProps> = ({
   onClearLogs,
 }) => {
   return (
-    <div className="bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-5 shadow-[0_4px_25px_rgba(0,0,0,0.8)] space-y-5 font-mono select-none flex flex-col justify-between h-[640px]">
+    <div className="bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-4 sm:p-5 shadow-[0_4px_25px_rgba(0,0,0,0.8)] space-y-5 font-mono select-none flex flex-col justify-between h-auto lg:h-[640px]">
       <div className="space-y-4">
         {/* Header */}
         <div className="flex items-center gap-2 border-b border-[#1E1E26] pb-3">

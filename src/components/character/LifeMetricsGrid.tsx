@@ -43,7 +43,7 @@ export const LifeMetricsGrid: React.FC = () => {
   const { categoryXp, addXp } = useApexStore();
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
       {metricConfigs.map((config, idx) => {
         const Icon = config.icon;
         const totalCategoryXp = categoryXp?.[config.category] || 0;
@@ -61,22 +61,22 @@ export const LifeMetricsGrid: React.FC = () => {
             className="bg-[#08080A] border border-[#1E1E26] hover:border-[#FFFFFF]/60 p-4 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.8)] flex flex-col justify-between space-y-3 font-mono transition-all duration-200 group"
           >
             {/* Header: Icon & Category Level */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2.5 min-w-0">
                 <div className="p-2 rounded-lg bg-[#000000] border border-[#1E1E26] shrink-0 text-[#FFFFFF]">
                   <Icon className="w-4 h-4" />
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col min-w-0">
                   <span className="text-[10px] text-[#8E8E93] uppercase tracking-wider">
                     {config.category}
                   </span>
-                  <h3 className="text-xs font-bold text-[#FFFFFF] truncate max-w-[150px]">
+                  <h3 className="text-xs font-bold text-[#FFFFFF] truncate">
                     {config.name}
                   </h3>
                 </div>
               </div>
 
-              <div className="flex items-center gap-1 bg-[#000000] px-2.5 py-1 rounded border border-[#1E1E26]">
+              <div className="flex items-center gap-1 bg-[#000000] px-2.5 py-1 rounded border border-[#1E1E26] shrink-0">
                 <Zap className="w-3 h-3 text-[#FFFFFF]" />
                 <span className="text-xs font-bold text-[#FFFFFF]">LVL {level}</span>
               </div>

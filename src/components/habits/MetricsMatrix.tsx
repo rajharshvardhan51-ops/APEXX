@@ -120,7 +120,7 @@ export const MetricsMatrix: React.FC<MetricsMatrixProps> = ({ onSaveMetrics }) =
         </div>
 
         {/* Girth Circumference Inputs */}
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div className="space-y-1">
             <label className="text-[10px] text-[#8E8E93] uppercase tracking-wider block">
               CHEST (CM)
@@ -130,7 +130,7 @@ export const MetricsMatrix: React.FC<MetricsMatrixProps> = ({ onSaveMetrics }) =
               step="0.5"
               value={chestCm}
               onChange={(e) => setChestCm(e.target.value)}
-              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2 text-xs text-[#FFFFFF] outline-none"
+              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2.5 text-xs text-[#FFFFFF] outline-none min-h-[42px]"
               required
             />
           </div>
@@ -144,7 +144,7 @@ export const MetricsMatrix: React.FC<MetricsMatrixProps> = ({ onSaveMetrics }) =
               step="0.5"
               value={waistCm}
               onChange={(e) => setWaistCm(e.target.value)}
-              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2 text-xs text-[#FFFFFF] outline-none"
+              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2.5 text-xs text-[#FFFFFF] outline-none min-h-[42px]"
               required
             />
           </div>
@@ -158,7 +158,7 @@ export const MetricsMatrix: React.FC<MetricsMatrixProps> = ({ onSaveMetrics }) =
               step="0.5"
               value={armsCm}
               onChange={(e) => setArmsCm(e.target.value)}
-              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2 text-xs text-[#FFFFFF] outline-none"
+              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2.5 text-xs text-[#FFFFFF] outline-none min-h-[42px]"
               required
             />
           </div>
@@ -166,7 +166,7 @@ export const MetricsMatrix: React.FC<MetricsMatrixProps> = ({ onSaveMetrics }) =
 
         <button
           type="submit"
-          className={`w-full py-3 rounded-lg border font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 ${
+          className={`w-full py-3 min-h-[44px] cursor-pointer rounded-lg border font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 ${
             savedSuccess
               ? 'bg-[#FFFFFF] text-[#000000] border-[#FFFFFF] shadow-[0_0_15px_rgba(255,255,255,0.4)]'
               : 'bg-[#18181F] hover:bg-[#383848] border-[#383848] text-[#FFFFFF] shadow-[0_0_12px_rgba(255,255,255,0.15)]'

@@ -41,7 +41,7 @@ export const CoachChatLog: React.FC<CoachChatLogProps> = ({
   };
 
   return (
-    <div className="bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-5 shadow-[0_4px_25px_rgba(0,0,0,0.8)] space-y-4 font-mono flex flex-col h-[640px]">
+    <div className="bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-4 sm:p-5 shadow-[0_4px_25px_rgba(0,0,0,0.8)] space-y-4 font-mono flex flex-col h-[520px] sm:h-[640px] max-h-[75vh]">
       {/* Terminal Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#1E1E26] pb-3 shrink-0">
         <div className="flex items-center gap-2">
@@ -55,7 +55,7 @@ export const CoachChatLog: React.FC<CoachChatLogProps> = ({
         <div className="flex items-center gap-2 text-xs">
           <button
             onClick={() => setActiveTab('CHAT')}
-            className={`px-3 py-1 rounded font-bold transition-all ${
+            className={`px-3 py-1.5 min-h-[34px] rounded font-bold transition-all cursor-pointer ${
               activeTab === 'CHAT'
                 ? 'bg-[#18181F] text-[#FFFFFF] border border-[#383848] shadow-[0_0_8px_rgba(255,255,255,0.15)]'
                 : 'bg-[#050507] text-[#8E8E93] border border-[#1E1E26] hover:text-[#FFFFFF]'
@@ -66,7 +66,7 @@ export const CoachChatLog: React.FC<CoachChatLogProps> = ({
 
           <button
             onClick={() => setActiveTab('PREDICTIVE')}
-            className={`px-3 py-1 rounded font-bold transition-all ${
+            className={`px-3 py-1.5 min-h-[34px] rounded font-bold transition-all cursor-pointer ${
               activeTab === 'PREDICTIVE'
                 ? 'bg-[#18181F] text-[#FFFFFF] border border-[#383848] shadow-[0_0_8px_rgba(255,255,255,0.15)]'
                 : 'bg-[#050507] text-[#8E8E93] border border-[#1E1E26] hover:text-[#FFFFFF]'

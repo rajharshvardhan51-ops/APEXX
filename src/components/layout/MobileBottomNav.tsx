@@ -29,7 +29,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onOpenDrawer }
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#060608]/95 backdrop-blur-md border-t border-[#1E1E26] px-2 py-1.5 pb-safe flex items-center justify-around select-none">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[#060608]/95 backdrop-blur-md border-t border-[#1E1E26] px-1 py-1 pb-safe flex items-center justify-around select-none">
       {mainNavTabs.map((tab) => {
         const isActive = pathname === tab.href;
         const Icon = tab.icon;
@@ -38,7 +38,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onOpenDrawer }
           <Link
             key={tab.name}
             href={tab.href}
-            className={`relative flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-md text-[10px] font-mono transition-all ${
+            className={`relative flex flex-col items-center justify-center flex-1 py-1.5 px-0.5 min-h-[48px] rounded-md text-[10px] font-mono transition-all ${
               isActive ? 'text-[#FFFFFF]' : 'text-[#8E8E93] hover:text-[#FFFFFF]'
             }`}
           >
@@ -50,7 +50,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onOpenDrawer }
               />
             )}
             <Icon className={`w-5 h-5 mb-0.5 transition-transform ${isActive ? 'scale-110 text-[#FFFFFF]' : 'text-[#71717A]'}`} />
-            <span className="truncate tracking-tight font-medium">{tab.name}</span>
+            <span className="truncate tracking-tight font-medium text-[9px] sm:text-[10px]">{tab.name}</span>
           </Link>
         );
       })}
@@ -58,11 +58,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onOpenDrawer }
       {/* Menu / Drawer Open Button */}
       <button
         onClick={onOpenDrawer}
-        className="flex flex-col items-center justify-center flex-1 py-1 px-1 rounded-md text-[10px] font-mono text-[#8E8E93] hover:text-[#FFFFFF] transition-all"
+        className="flex flex-col items-center justify-center flex-1 py-1.5 px-0.5 min-h-[48px] rounded-md text-[10px] font-mono text-[#8E8E93] hover:text-[#FFFFFF] transition-all cursor-pointer"
         aria-label="Open Mobile Menu Drawer"
       >
         <Menu className="w-5 h-5 mb-0.5 text-[#71717A]" />
-        <span className="truncate tracking-tight font-medium">Menu</span>
+        <span className="truncate tracking-tight font-medium text-[9px] sm:text-[10px]">Menu</span>
       </button>
     </nav>
   );
