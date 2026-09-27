@@ -128,7 +128,7 @@ export const Sidebar: React.FC = () => {
 
 
       {/* Navigation Links */}
-      <nav className="flex-1 py-4 px-2 space-y-1.5 overflow-y-auto">
+      <nav className="flex-1 py-4 px-3 space-y-1.5 overflow-y-auto font-sans">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -137,23 +137,23 @@ export const Sidebar: React.FC = () => {
             <Link
               key={item.name}
               href={item.href}
-              className={`relative flex items-center gap-3 px-3 py-2.5 rounded-md font-mono text-xs transition-all duration-200 group ${
+              className={`relative flex items-center gap-3 px-3.5 py-2.5 min-h-[44px] rounded-xl text-xs transition-all duration-200 group ${
                 isActive
-                  ? 'bg-[#18181F] text-[#FFFFFF] border border-[#383848] shadow-[0_0_12px_rgba(255,255,255,0.12)]'
-                  : 'text-[#E4E4E7]/80 hover:text-[#FFFFFF] hover:bg-[#121217] border border-transparent'
+                  ? 'bg-[#181A26] text-[#FFFFFF] border border-[#383C52] shadow-[0_0_12px_rgba(255,255,255,0.08)]'
+                  : 'text-[#94949E] hover:text-[#FFFFFF] hover:bg-[#12141F] border border-transparent'
               }`}
             >
               {isActive && (
                 <motion.div
                   layoutId="activeIndicator"
-                  className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-[#FFFFFF] rounded-r shadow-[0_0_8px_#FFFFFF]"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#FFFFFF] rounded-r-full shadow-[0_0_8px_#FFFFFF]"
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 />
               )}
 
               <Icon
                 className={`w-4 h-4 shrink-0 transition-colors ${
-                  isActive ? 'text-[#FFFFFF]' : 'text-[#71717A] group-hover:text-[#FFFFFF]'
+                  isActive ? 'text-[#FFFFFF]' : 'text-[#717180] group-hover:text-[#FFFFFF]'
                 }`}
               />
 
@@ -166,9 +166,9 @@ export const Sidebar: React.FC = () => {
                     transition={{ duration: 0.15 }}
                     className="flex items-center justify-between w-full overflow-hidden"
                   >
-                    <span className="truncate tracking-wide font-medium">{item.name}</span>
+                    <span className="truncate tracking-wide font-medium text-xs">{item.name}</span>
                     {item.badge && (
-                      <span className="ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#000000] text-[#E4E4E7] border border-[#27272A] shrink-0">
+                      <span className="ml-auto text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#08090E] text-[#E4E4E7] border border-[#232634] shrink-0">
                         {item.badge}
                       </span>
                     )}

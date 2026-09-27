@@ -52,20 +52,20 @@ export default function CommandCenterPage() {
       <div className="space-y-2">
         <div
           onClick={() => setIsGraduationModalOpen(true)}
-          className="flex items-center justify-between font-mono text-xs text-[#8E8E93] bg-[#08080A] hover:bg-[#0E0E14] p-3 rounded-lg border border-[#1E1E26] hover:border-[#FFFFFF] cursor-pointer transition-all duration-200 group"
+          className="flex items-center justify-between font-sans text-xs text-[#94949E] bg-[#0B0C12] hover:bg-[#12141F] p-4 rounded-xl border border-[#1C1E2A] hover:border-[#FFFFFF] cursor-pointer transition-all duration-200 group active:scale-[0.99]"
           title="Click to open 4-Year Ascent Protocol Roadmap"
         >
-          <span className="flex items-center gap-2 font-bold uppercase tracking-wider text-[#FFFFFF]">
-            <Mountain className="w-4 h-4 text-[#FFFFFF]" />
-            [ SECTOR: TOPOLOGY_MATRIX // 4-YEAR ASCENT PROTOCOL ]
-            <ExternalLink className="w-3.5 h-3.5 text-[#8E8E93] group-hover:text-[#FFFFFF] ml-1 opacity-80 transition-colors" />
+          <span className="flex items-center gap-2.5 font-bold tracking-tight text-[#FFFFFF] text-sm">
+            <Mountain className="w-4.5 h-4.5 text-[#FFFFFF]" />
+            4-Year Ascent Horizon Roadmap
+            <ExternalLink className="w-3.5 h-3.5 text-[#94949E] group-hover:text-[#FFFFFF] ml-1 opacity-80 transition-colors" />
           </span>
           <div className="flex items-center gap-3">
-            <span className="hud-tag border-[#383848] text-[#FFFFFF]">
-              COMPLETION: {completionIndex.toFixed(1)}%
+            <span className="hud-tag border-[#232634] text-[#FFFFFF] font-mono rounded-full px-3 py-1">
+              Completion: {completionIndex.toFixed(1)}%
             </span>
-            <span className="text-[10px] text-[#8E8E93] group-hover:text-[#FFFFFF] hidden sm:inline transition-colors">
-              [ CLICK TO OPEN ROADMAP ]
+            <span className="text-xs text-[#94949E] group-hover:text-[#FFFFFF] hidden sm:inline transition-colors font-medium">
+              Click to view roadmap
             </span>
           </div>
         </div>
@@ -88,15 +88,15 @@ export default function CommandCenterPage() {
 
         {/* Right 1 Column: Telemetry Quick Readouts & Focus Launcher */}
         <div className="space-y-4">
-          <div className="bg-[#08080A] border border-[#1E1E26] hover:border-[#383848] rounded-xl p-5 shadow-[0_4px_25px_rgba(0,0,0,0.95)] flex flex-col space-y-4 transition-all duration-200 font-mono">
-            <div className="flex items-center gap-2 border-b border-[#1E1E26] pb-3">
+          <div className="bg-[#0B0C12] border border-[#1C1E2A] hover:border-[#383C52] rounded-2xl p-6 shadow-[0_4px_25px_rgba(0,0,0,0.6)] flex flex-col space-y-4 transition-all duration-200 font-sans">
+            <div className="flex items-center gap-2.5 border-b border-[#1C1E2A] pb-3">
               <Zap className="w-4 h-4 text-[#FFFFFF] fill-[#FFFFFF]" />
-              <h3 className="text-xs font-bold uppercase tracking-wider text-[#FFFFFF]">
-                [ ENGINE // FOCUS_SPRINT ]
+              <h3 className="text-sm font-bold text-[#FFFFFF] tracking-tight">
+                Focus Sprint Launcher
               </h3>
             </div>
 
-            <p className="text-xs text-[#8E8E93] leading-relaxed">
+            <p className="text-xs text-[#94949E] leading-relaxed font-sans">
               Launch a high-intensity Pomodoro focus session on active directives to gain 1.5x XP multipliers.
             </p>
 
@@ -111,9 +111,9 @@ export default function CommandCenterPage() {
                   durationMins: 25,
                 })
               }
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#FFFFFF] text-[#000000] font-mono text-xs font-extrabold tracking-wider hover:bg-[#E4E4E7] transition-all shadow-[0_0_15px_rgba(255,255,255,0.25)] cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#FFFFFF] text-[#000000] font-sans text-xs font-extrabold tracking-wide hover:bg-[#E4E4E7] transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)] active:scale-95 min-h-[44px] cursor-pointer"
             >
-              <Play className="w-4 h-4 fill-current text-[#000000]" /> LAUNCH 25-MIN SPRINT
+              <Play className="w-4 h-4 fill-current text-[#000000]" /> Launch 25-Min Sprint
             </button>
           </div>
         </div>
@@ -147,33 +147,33 @@ export default function CommandCenterPage() {
               initial={{ scale: 0.95, y: 15 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 15 }}
-              className="bg-[#08080C] border border-[#1E1E26] rounded-xl p-6 max-w-lg w-full shadow-[0_0_30px_rgba(255,255,255,0.15)] relative space-y-5"
+              className="bg-[#0B0C12] border border-[#1C1E2A] rounded-2xl p-6 max-w-lg w-full shadow-[0_0_30px_rgba(255,255,255,0.15)] relative space-y-5 font-sans"
             >
               <button
                 onClick={() => setActiveFocusQuest(null)}
-                className="absolute top-4 right-4 text-[#8E8E93] hover:text-[#FFFFFF] transition-colors cursor-pointer"
+                className="absolute top-4 right-4 text-[#94949E] hover:text-[#FFFFFF] transition-colors cursor-pointer w-8 h-8 rounded-lg flex items-center justify-center hover:bg-[#181A26]"
               >
                 <X className="w-5 h-5" />
               </button>
 
-              <div className="flex items-center gap-2 font-mono text-xs text-[#FFFFFF] font-bold">
-                <Clock className="w-4 h-4 text-[#FFFFFF]" /> [ MODE: FOCUS_SPRINT_ACTIVE ]
+              <div className="flex items-center gap-2 text-xs text-[#FFFFFF] font-bold">
+                <Clock className="w-4 h-4 text-[#FFFFFF]" /> Focus Session Active
               </div>
 
-              <div className="space-y-1 font-mono">
+              <div className="space-y-1">
                 <h3 className="text-lg font-bold text-[#FFFFFF]">{activeFocusQuest.title}</h3>
-                <div className="flex items-center gap-2 text-xs text-[#8E8E93]">
-                  <span>CATEGORY: {activeFocusQuest.category}</span> •
-                  <span className="text-[#FFFFFF] font-bold">REWARD: +{activeFocusQuest.xp} XP</span>
+                <div className="flex items-center gap-2 text-xs text-[#94949E]">
+                  <span>Category: <span className="font-mono text-[#FFFFFF]">{activeFocusQuest.category}</span></span> •
+                  <span className="text-[#FFFFFF] font-bold font-mono">+{activeFocusQuest.xp} XP</span>
                 </div>
               </div>
 
-              <div className="p-6 rounded-lg bg-[#050507] border border-[#1E1E26] flex flex-col items-center justify-center space-y-2">
+              <div className="p-6 rounded-xl bg-[#06070B] border border-[#1C1E2A] flex flex-col items-center justify-center space-y-2">
                 <div className="font-mono text-4xl font-extrabold text-[#FFFFFF] tracking-widest animate-pulse">
                   25:00
                 </div>
-                <span className="font-mono text-[10px] text-[#8E8E93] uppercase tracking-wider">
-                  [ TELEMETRY // TIMER_ENGAGED ]
+                <span className="font-sans text-xs text-[#94949E] uppercase tracking-wider font-semibold">
+                  Timer Engaged
                 </span>
               </div>
 
@@ -183,16 +183,16 @@ export default function CommandCenterPage() {
                     handleQuestToggle(activeFocusQuest.id, activeFocusQuest.xp, true);
                     setActiveFocusQuest(null);
                   }}
-                  className="flex-1 py-2.5 rounded-lg bg-[#FFFFFF] text-[#000000] font-mono text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#E4E4E7] transition-all shadow-[0_0_15px_rgba(255,255,255,0.25)] cursor-pointer"
+                  className="flex-1 py-3 min-h-[48px] rounded-xl bg-[#FFFFFF] text-[#000000] font-sans text-xs font-bold flex items-center justify-center gap-2 hover:bg-[#E4E4E7] transition-all active:scale-95 shadow-sm cursor-pointer"
                 >
-                  <ShieldCheck className="w-4 h-4" /> COMPLETE & CLAIM XP
+                  <ShieldCheck className="w-4.5 h-4.5" /> Complete & Claim XP
                 </button>
 
                 <button
                   onClick={() => setActiveFocusQuest(null)}
-                  className="px-4 py-2.5 rounded-lg bg-[#050507] text-[#E4E4E7] font-mono text-xs border border-[#1E1E26] hover:border-[#FFFFFF] transition-colors cursor-pointer"
+                  className="px-5 py-3 min-h-[48px] rounded-xl bg-[#06070B] text-[#E4E4E7] font-sans text-xs font-semibold border border-[#1C1E2A] hover:border-[#FFFFFF] transition-colors active:scale-95 cursor-pointer"
                 >
-                  CANCEL
+                  Cancel
                 </button>
               </div>
             </motion.div>

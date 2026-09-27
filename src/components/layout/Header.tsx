@@ -64,61 +64,61 @@ export const Header: React.FC<HeaderProps> = ({ onSyncNode, onOpenDrawer }) => {
 
   return (
     <>
-      <header className="sticky top-0 z-20 h-14 sm:h-16 bg-[#060608] backdrop-blur-md border-b border-[#1E1E26] px-2 sm:px-6 flex items-center justify-between select-none font-mono">
+      <header className="sticky top-0 z-20 h-16 bg-[#08090E]/90 backdrop-blur-xl border-b border-[#1C1E2A] px-3 sm:px-6 flex items-center justify-between select-none">
         {/* Telemetry Left: Mobile Brand & Level & Title */}
-        <div className="flex items-center gap-1.5 sm:gap-6">
+        <div className="flex items-center gap-2 sm:gap-6">
           {/* Mobile / Collapsed View Brand Icon & Drawer Toggle */}
-          <div className="md:hidden flex items-center shrink-0 pr-1 border-r border-[#1E1E26] gap-1">
+          <div className="md:hidden flex items-center shrink-0 pr-2 border-r border-[#1C1E2A] gap-1.5">
             {onOpenDrawer && (
               <button
                 onClick={onOpenDrawer}
-                className="w-8 h-8 rounded bg-[#121217] hover:bg-[#FFFFFF] text-[#8E8E93] hover:text-[#000000] border border-[#1E1E26] flex items-center justify-center transition-colors cursor-pointer"
+                className="w-10 h-10 rounded-xl bg-[#12131C] hover:bg-[#FFFFFF] text-[#94949E] hover:text-[#000000] border border-[#232634] flex items-center justify-center transition-all cursor-pointer active:scale-95"
                 aria-label="Open Navigation Drawer"
               >
-                <Menu className="w-4 h-4" />
+                <Menu className="w-5 h-5" />
               </button>
             )}
             <ApexLogo variant="icon-only" size="sm" glow={true} />
           </div>
 
           {/* Title Badge */}
-          <div className="hidden lg:flex items-center gap-2.5 px-3 py-1.5 rounded-md bg-[#000000] border border-[#1E1E26]">
+          <div className="hidden lg:flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-[#11121A] border border-[#232634]">
             <Award className="w-4 h-4 text-[#FFFFFF]" />
             <div className="flex flex-col">
-              <span className="text-[9px] uppercase tracking-widest text-[#8E8E93]">
-                CURRENT TITLE
+              <span className="text-[9px] uppercase tracking-wider text-[#94949E] font-mono font-medium">
+                Title
               </span>
-              <span className="text-xs font-bold text-[#FFFFFF] tracking-wider text-glow-sm">
+              <span className="text-xs font-bold text-[#FFFFFF] tracking-wide">
                 {title}
               </span>
             </div>
           </div>
 
           {/* Level & XP Telemetry Bar */}
-          <div className="flex items-center gap-1.5 sm:gap-4 bg-[#000000] px-2 sm:px-4 py-1.5 rounded-md border border-[#1E1E26]">
-            <div className="flex items-center gap-1 shrink-0">
-              <Zap className="w-3.5 h-3.5 text-[#FFFFFF] fill-[#FFFFFF]" />
-              <span className="text-xs font-extrabold text-[#FFFFFF] text-glow-sm">LVL {level}</span>
+          <div className="flex items-center gap-2 sm:gap-4 bg-[#11121A] px-3 sm:px-4 py-2 rounded-xl border border-[#232634]">
+            <div className="flex items-center gap-1.5 shrink-0">
+              <Zap className="w-4 h-4 text-[#FFFFFF] fill-[#FFFFFF]" />
+              <span className="text-xs font-extrabold text-[#FFFFFF] font-mono">LVL {level}</span>
             </div>
 
-            <div className="flex flex-col w-16 sm:w-48 gap-1">
-              <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
-                <span className="text-[#8E8E93] hidden sm:inline">XP PROGRESS</span>
+            <div className="flex flex-col w-20 sm:w-44 gap-1">
+              <div className="flex items-center justify-between text-[10px] font-mono">
+                <span className="text-[#94949E] hidden sm:inline font-medium">XP Progress</span>
                 <span className="text-[#FFFFFF] font-bold hidden sm:inline">
                   {currentXp} / {xpToNextLevel}
                 </span>
-                <span className="text-[#FFFFFF] font-bold sm:hidden text-[9px]">
+                <span className="text-[#FFFFFF] font-bold sm:hidden text-[10px]">
                   {xpPercentage}%
                 </span>
               </div>
 
               {/* XP Progress Track */}
-              <div className="h-1.5 w-full bg-[#1E1E26] rounded-sm overflow-hidden p-[1px]">
+              <div className="h-1.5 w-full bg-[#1C1E2A] rounded-full overflow-hidden p-[1px]">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${xpPercentage}%` }}
                   transition={{ duration: 0.6, ease: 'easeOut' }}
-                  className="h-full bg-gradient-to-r from-[#71717A] to-[#FFFFFF] rounded-sm shadow-[0_0_8px_rgba(255,255,255,0.4)]"
+                  className="h-full bg-gradient-to-r from-[#8E8E9B] to-[#FFFFFF] rounded-full shadow-[0_0_8px_rgba(255,255,255,0.4)]"
                 />
               </div>
             </div>
@@ -126,64 +126,64 @@ export const Header: React.FC<HeaderProps> = ({ onSyncNode, onOpenDrawer }) => {
         </div>
 
         {/* Header Right Action Trigger & Sync Telemetry */}
-        <div className="flex items-center gap-1 sm:gap-2.5">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           {/* J.A.R.V.I.S. "HEY APEX" Voice Trigger Button */}
           <button
             onClick={triggerVoiceBriefing}
-            className={`flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-md border text-xs font-bold transition-all cursor-pointer group min-h-[36px] ${
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-bold transition-all cursor-pointer group min-h-[42px] active:scale-95 ${
               isSpeaking || isListening
                 ? 'bg-[#FFFFFF] text-[#000000] border-[#FFFFFF] shadow-glow-white'
-                : 'bg-[#000000] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border-[#383848] hover:border-[#FFFFFF]'
+                : 'bg-[#11121A] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border-[#232634] hover:border-[#FFFFFF]'
             }`}
             title="Click to trigger J.A.R.V.I.S. voice work briefing"
             aria-label="Hey Apex Voice Briefing"
           >
-            <Mic className={`w-3.5 h-3.5 ${isSpeaking ? 'animate-bounce text-[#000000]' : isListening ? 'animate-pulse text-[#000000]' : 'text-[#FFFFFF] group-hover:text-[#000000]'}`} />
-            <span className="font-mono uppercase tracking-wider text-[10px] sm:text-xs hidden sm:inline">
-              HEY APEX
+            <Mic className={`w-4 h-4 ${isSpeaking ? 'animate-bounce text-[#000000]' : isListening ? 'animate-pulse text-[#000000]' : 'text-[#FFFFFF] group-hover:text-[#000000]'}`} />
+            <span className="font-sans font-semibold tracking-wide text-xs hidden sm:inline">
+              Voice AI
             </span>
           </button>
 
           {/* Firebase Operative Auth Trigger Button */}
           <button
             onClick={() => setIsAuthModalOpen(true)}
-            className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-md bg-[#000000] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#1E1E26] hover:border-[#FFFFFF] text-xs font-bold transition-all group min-h-[36px]"
+            className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#11121A] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#232634] hover:border-[#FFFFFF] text-xs font-semibold transition-all group min-h-[42px] active:scale-95"
             title={user ? `Signed in as ${username || user.email || 'Operative'}` : 'Sign in with Firebase'}
             aria-label="Operative Auth"
           >
             {user && avatarUrl ? (
-              <div className="w-4 h-4 rounded-full overflow-hidden border border-[#FFFFFF] shrink-0">
+              <div className="w-5 h-5 rounded-full overflow-hidden border border-[#FFFFFF] shrink-0">
                 <img src={avatarUrl} alt={username} className="w-full h-full object-cover" />
               </div>
             ) : user ? (
-              <UserCheck className="w-3.5 h-3.5 text-[#FFFFFF] group-hover:text-[#000000]" />
+              <UserCheck className="w-4 h-4 text-[#FFFFFF] group-hover:text-[#000000]" />
             ) : (
-              <LogIn className="w-3.5 h-3.5 text-[#FFFFFF]" />
+              <LogIn className="w-4 h-4 text-[#FFFFFF]" />
             )}
-            <span className="truncate max-w-[80px] sm:max-w-[120px] font-mono uppercase text-[10px] sm:text-xs hidden sm:inline">
-              {user ? (username || (user.email ? user.email.split('@')[0] : 'GUEST')) : 'AUTHENTICATE'}
+            <span className="truncate max-w-[80px] sm:max-w-[120px] font-sans text-xs hidden sm:inline">
+              {user ? (username || (user.email ? user.email.split('@')[0] : 'Account')) : 'Sign In'}
             </span>
           </button>
 
           {/* Node Sync Status Telemetry Pill */}
           <div
-            className={`flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-md border text-xs font-bold transition-all min-h-[36px] ${
+            className={`hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-medium transition-all min-h-[42px] ${
               syncStatus.isOnline
-                ? 'bg-[#000000] text-[#FFFFFF] border-[#383848]'
-                : 'bg-[#000000] text-[#E4E4E7] border-[#27272A]'
+                ? 'bg-[#11121A] text-[#FFFFFF] border-[#232634]'
+                : 'bg-[#11121A] text-[#94949E] border-[#232634]'
             }`}
           >
             {syncStatus.isOnline ? (
-              <Wifi className="w-3.5 h-3.5 text-[#FFFFFF] animate-pulse" />
+              <Wifi className="w-4 h-4 text-[#FFFFFF] animate-pulse" />
             ) : (
-              <WifiOff className="w-3.5 h-3.5 text-[#8E8E93]" />
+              <WifiOff className="w-4 h-4 text-[#94949E]" />
             )}
-            <span className="hidden md:inline">
-              {syncStatus.isOnline ? 'NODE SYNC: ACTIVE' : 'NODE SYNC: OFFLINE'}
+            <span className="font-sans text-xs">
+              {syncStatus.isOnline ? 'Online' : 'Offline'}
             </span>
             {syncStatus.pendingCount > 0 && (
-              <span className="text-[9px] bg-[#1E1E26] px-1.5 py-0.5 rounded text-[#FFFFFF]">
-                {syncStatus.pendingCount} QUEUED
+              <span className="text-[10px] bg-[#1C1E2A] px-2 py-0.5 rounded-full text-[#FFFFFF] font-mono">
+                {syncStatus.pendingCount}
               </span>
             )}
           </div>
@@ -192,12 +192,12 @@ export const Header: React.FC<HeaderProps> = ({ onSyncNode, onOpenDrawer }) => {
           <button
             onClick={handleSync}
             disabled={syncStatus.isSyncing}
-            className={`relative group overflow-hidden flex items-center gap-1.5 px-2.5 sm:px-4 py-1.5 rounded-md text-xs font-bold tracking-wider transition-all duration-200 border min-h-[36px] ${
+            className={`relative group overflow-hidden flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all duration-200 border min-h-[42px] active:scale-95 cursor-pointer ${
               syncedSuccess
                 ? 'bg-[#FFFFFF]/20 text-[#FFFFFF] border-[#FFFFFF] shadow-[0_0_15px_rgba(255,255,255,0.4)]'
-                : 'bg-[#08080A] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border-[#1E1E26] hover:border-[#FFFFFF]'
+                : 'bg-[#11121A] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border-[#232634] hover:border-[#FFFFFF]'
             }`}
-            aria-label="Sync Node"
+            aria-label="Sync Data"
           >
             <motion.div
               animate={{ rotate: syncStatus.isSyncing ? 360 : 0 }}
@@ -210,12 +210,12 @@ export const Header: React.FC<HeaderProps> = ({ onSyncNode, onOpenDrawer }) => {
               )}
             </motion.div>
 
-            <span className="hidden sm:inline">
+            <span className="hidden sm:inline font-sans">
               {syncStatus.isSyncing
-                ? 'SYNCING...'
+                ? 'Syncing...'
                 : syncedSuccess
-                ? 'SYNCED'
-                : 'SYNC NODE'}
+                ? 'Synced'
+                : 'Sync'}
             </span>
           </button>
         </div>

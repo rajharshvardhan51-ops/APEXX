@@ -25,12 +25,12 @@ interface TabConfig {
 }
 
 const tabs: TabConfig[] = [
-  { id: 'GYM', label: '[GYM]', icon: Dumbbell },
-  { id: 'CODING', label: '[CODING]', icon: Code },
-  { id: 'READING', label: '[READING]', icon: BookOpen },
-  { id: 'PRACTICE LOG', label: '[PRACTICE LOG]', icon: Music },
-  { id: 'JOURNALING', label: '[JOURNALING]', icon: FileText },
-  { id: 'GOALS MATRIX', label: '[GOALS MATRIX]', icon: Target },
+  { id: 'GYM', label: 'Gym Workout', icon: Dumbbell },
+  { id: 'CODING', label: 'Coding Sprint', icon: Code },
+  { id: 'READING', label: 'Tech Reading', icon: BookOpen },
+  { id: 'PRACTICE LOG', label: 'Practice Log', icon: Music },
+  { id: 'JOURNALING', label: 'Journaling', icon: FileText },
+  { id: 'GOALS MATRIX', label: 'Goals Matrix', icon: Target },
 ];
 
 export default function HabitsPage() {
@@ -46,34 +46,34 @@ export default function HabitsPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 pb-8">
+    <div className="max-w-7xl mx-auto space-y-6 pb-8 select-none font-sans">
       {/* Header Banner */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.6)]"
+        className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0B0C12] border border-[#1C1E2A] rounded-2xl p-6 shadow-[0_4px_25px_rgba(0,0,0,0.6)]"
       >
         <div className="space-y-1">
-          <div className="flex items-center gap-2 font-mono text-xs text-[#FFFFFF] font-bold tracking-widest uppercase">
-            <Activity className="w-4 h-4 text-[#FFFFFF]" /> HABIT TELEMETRY & PROGRESSION
+          <div className="flex items-center gap-2 text-xs text-[#94949E] font-semibold tracking-wide">
+            <Activity className="w-4 h-4 text-[#FFFFFF]" /> Habit Telemetry & Progression
           </div>
           <h1 className="text-2xl font-extrabold text-[#FFFFFF] font-sans">
-            HABIT TRACKERS <span className="text-[#8E8E93]">.OS</span>
+            Habit Trackers <span className="text-[#94949E] font-normal text-lg">.OS</span>
           </h1>
         </div>
 
-        <div className="flex items-center gap-3 bg-[#050507] px-4 py-2 rounded-lg border border-[#383848] font-mono text-xs">
+        <div className="flex items-center gap-3 bg-[#06070B] px-4 py-2.5 rounded-xl border border-[#232634] text-xs">
           <Zap className="w-4 h-4 text-[#FFFFFF] fill-current" />
           <div className="flex flex-col">
-            <span className="text-[10px] text-[#8E8E93] uppercase">TOTAL HABIT XP</span>
-            <span className="font-extrabold text-[#FFFFFF]">+{totalHabitXp.toLocaleString()} XP</span>
+            <span className="text-[10px] text-[#94949E] uppercase font-medium">Total Habit XP</span>
+            <span className="font-extrabold text-[#FFFFFF] font-mono">+{totalHabitXp.toLocaleString()} XP</span>
           </div>
         </div>
       </motion.div>
 
       {/* Horizontal Tabs Bar */}
-      <div className="flex items-center gap-2 border-b border-[#1E1E26] pb-2 overflow-x-auto no-scrollbar scroll-smooth">
+      <div className="flex items-center gap-2 border-b border-[#1C1E2A] pb-3 overflow-x-auto no-scrollbar scroll-smooth">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -82,22 +82,14 @@ export default function HabitsPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`relative flex items-center gap-2 px-3.5 py-2.5 min-h-[44px] rounded-lg font-mono text-xs font-bold tracking-wider transition-all duration-200 shrink-0 cursor-pointer ${
+              className={`relative flex items-center gap-2.5 px-4 py-2.5 min-h-[44px] rounded-xl text-xs font-semibold tracking-wide transition-all duration-200 shrink-0 cursor-pointer active:scale-95 ${
                 isActive
-                  ? 'bg-[#18181F] text-[#FFFFFF] border border-[#383848] shadow-[0_0_12px_rgba(255,255,255,0.1)]'
-                  : 'bg-[#0A0A0E] text-[#8E8E93] hover:text-[#FFFFFF] border border-[#1E1E26]'
+                  ? 'bg-[#FFFFFF] text-[#000000] shadow-sm font-bold'
+                  : 'bg-[#0B0C12] text-[#94949E] hover:text-[#FFFFFF] border border-[#1C1E2A]'
               }`}
             >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#FFFFFF]' : 'text-[#8E8E93]'}`} />
+              <Icon className={`w-4 h-4 ${isActive ? 'text-[#000000]' : 'text-[#717180]'}`} />
               <span>{tab.label}</span>
-
-              {isActive && (
-                <motion.div
-                  layoutId="activeTabUnderline"
-                  className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#FFFFFF] shadow-[0_0_8px_rgba(255,255,255,0.4)]"
-                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                />
-              )}
             </button>
           );
         })}

@@ -128,38 +128,38 @@ export const DailyMissionsPanel: React.FC<DailyMissionsPanelProps> = ({
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: 0.1 }}
-      className="bg-[#08080A] border border-[#1E1E26] rounded-xl p-5 shadow-[0_4px_25px_rgba(0,0,0,0.95)] flex flex-col space-y-4"
+      className="bg-[#0B0C12] border border-[#1C1E2A] rounded-2xl p-5 sm:p-6 shadow-[0_4px_25px_rgba(0,0,0,0.6)] flex flex-col space-y-5"
     >
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#1E1E26] pb-3.5">
-        <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded bg-[#000000] text-[#FFFFFF] border border-[#1E1E26]">
-            <Target className="w-4 h-4 text-[#FFFFFF]" />
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[#1C1E2A] pb-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-[#12141F] text-[#FFFFFF] border border-[#232634]">
+            <Target className="w-5 h-5 text-[#FFFFFF]" />
           </div>
           <div>
-            <h2 className="font-mono text-xs font-bold uppercase tracking-wider text-[#FFFFFF] flex items-center gap-2">
-              [ DIRECTIVES // DAILY_QUEST_LOG ]
+            <h2 className="font-sans text-base font-bold text-[#FFFFFF] tracking-tight flex items-center gap-2">
+              Daily Quests & Directives
             </h2>
-            <p className="font-mono text-[11px] text-[#8E8E93] mt-0.5">
-              PROGRESS: <span className="text-[#FFFFFF] font-bold">{completedCount} / {quests.length}</span> COMPLETED ({totalXpAvailable} XP EARNED)
+            <p className="font-sans text-xs text-[#94949E] mt-0.5">
+              Progress: <span className="text-[#FFFFFF] font-bold">{completedCount} / {quests.length}</span> completed (<span className="font-mono text-[#FFFFFF]">+{totalXpAvailable} XP</span> earned)
             </p>
           </div>
         </div>
 
         {/* Filter Categories */}
-        <div className="flex flex-wrap items-center gap-1.5 font-mono text-[11px] pb-1 sm:pb-0">
-          <Filter className="w-3.5 h-3.5 text-[#8E8E93] shrink-0" />
+        <div className="flex flex-wrap items-center gap-2 font-sans text-xs pb-1 lg:pb-0">
+          <Filter className="w-4 h-4 text-[#717180] shrink-0" />
           {['ALL', 'DEV', 'FITNESS', 'ACADEMICS', 'MIND'].map((cat) => (
             <button
               key={cat}
               onClick={() => handleFilterClick(cat)}
-              className={`px-2.5 py-1 rounded text-[10px] font-bold uppercase font-mono transition-all duration-150 border cursor-pointer min-h-[32px] ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all duration-150 border cursor-pointer min-h-[36px] active:scale-95 ${
                 activeCategoryFilter === cat
-                  ? 'bg-[#FFFFFF] text-[#000000] border-[#FFFFFF]'
-                  : 'bg-[#000000] text-[#8E8E93] hover:text-[#FFFFFF] border-[#1E1E26]'
+                  ? 'bg-[#FFFFFF] text-[#000000] border-[#FFFFFF] shadow-sm'
+                  : 'bg-[#06070B] text-[#94949E] hover:text-[#FFFFFF] border-[#1C1E2A]'
               }`}
             >
-              [{cat}]
+              {cat}
             </button>
           ))}
         </div>
@@ -179,23 +179,23 @@ export const DailyMissionsPanel: React.FC<DailyMissionsPanelProps> = ({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.15 }}
-                className={`relative group flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-lg border transition-all duration-200 ${
+                className={`relative group flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl border transition-all duration-200 ${
                   isJustCompleted
                     ? 'bg-[#FFFFFF]/10 border-[#FFFFFF] shadow-[0_0_15px_rgba(255,255,255,0.3)]'
                     : quest.completed
-                    ? 'bg-[#000000]/80 border-[#1E1E26] text-[#71717A]'
-                    : 'bg-[#000000] hover:bg-[#121217] border-[#1E1E26] hover:border-[#FFFFFF]/60 text-[#FFFFFF]'
+                    ? 'bg-[#08090E]/60 border-[#1C1E2A] text-[#717180]'
+                    : 'bg-[#06070B] hover:bg-[#11131E] border-[#1C1E2A] hover:border-[#383C52] text-[#FFFFFF]'
                 }`}
               >
                 {/* Left: Checkbox Switch & Quest Info */}
-                <div className="flex items-start sm:items-center gap-3">
-                  {/* Mechanical Terminal Switch Checkbox */}
+                <div className="flex items-start sm:items-center gap-3.5">
+                  {/* Mechanical Checkbox Button */}
                   <button
                     onClick={() => toggleQuest(quest.id)}
-                    className={`w-6 h-6 rounded-md border transition-all duration-150 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0 cursor-pointer ${
+                    className={`w-7 h-7 rounded-lg border transition-all duration-150 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0 cursor-pointer active:scale-90 ${
                       quest.completed
                         ? 'bg-[#FFFFFF] border-[#FFFFFF] text-[#000000] shadow-[0_0_10px_rgba(255,255,255,0.4)]'
-                        : 'bg-[#000000] border-[#1E1E26] hover:border-[#FFFFFF] text-transparent'
+                        : 'bg-[#0A0B10] border-[#232634] hover:border-[#FFFFFF] text-transparent'
                     }`}
                     aria-label={`Toggle quest ${quest.title}`}
                   >
@@ -205,26 +205,26 @@ export const DailyMissionsPanel: React.FC<DailyMissionsPanelProps> = ({
                   <div className="flex flex-col space-y-1">
                     <div className="flex items-center gap-2">
                       <span
-                        className={`text-xs font-medium tracking-wide transition-all duration-150 ${
-                          quest.completed ? 'line-through text-[#71717A]' : 'text-[#FFFFFF]'
+                        className={`text-sm font-sans font-medium tracking-normal transition-all duration-150 leading-snug ${
+                          quest.completed ? 'line-through text-[#717180]' : 'text-[#FFFFFF]'
                         }`}
                       >
                         {quest.title}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2.5">
                       <span
-                        className={`font-mono text-[9px] font-bold px-1.5 py-0.5 rounded border uppercase ${getCategoryTag(
+                        className={`font-mono text-[10px] font-bold px-2 py-0.5 rounded-full border ${getCategoryTag(
                           quest.category
                         )}`}
                       >
-                        [{quest.category}]
+                        {quest.category}
                       </span>
 
                       {quest.durationMins && (
-                        <span className="font-mono text-[10px] text-[#8E8E93]">
-                          EST: {quest.durationMins} MINS
+                        <span className="font-sans text-xs text-[#94949E]">
+                          Est: <span className="font-mono text-[#FFFFFF]">{quest.durationMins} mins</span>
                         </span>
                       )}
                     </div>
@@ -232,16 +232,16 @@ export const DailyMissionsPanel: React.FC<DailyMissionsPanelProps> = ({
                 </div>
 
                 {/* Right: XP Pill & Focus Trigger Button */}
-                <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#1E1E26]/50">
+                <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#1C1E2A]/60">
                   {/* XP Reward Pill */}
                   <span
-                    className={`font-mono text-xs font-extrabold px-2.5 py-1 rounded border flex items-center gap-1 shrink-0 ${
+                    className={`font-mono text-xs font-bold px-3 py-1.5 rounded-xl border flex items-center gap-1.5 shrink-0 ${
                       quest.completed
-                        ? 'bg-[#000000] text-[#FFFFFF] border-[#383848]'
-                        : 'bg-[#000000] text-[#FFFFFF] border-[#1E1E26]'
+                        ? 'bg-[#08090E] text-[#94949E] border-[#232634]'
+                        : 'bg-[#12141F] text-[#FFFFFF] border-[#232634]'
                     }`}
                   >
-                    <Zap className="w-3 h-3 text-[#FFFFFF] fill-[#FFFFFF]" /> +{quest.xp} XP
+                    <Zap className="w-3.5 h-3.5 text-[#FFFFFF] fill-[#FFFFFF]" /> +{quest.xp} XP
                   </span>
 
                   {/* Focus Quest Trigger Button */}
@@ -251,15 +251,15 @@ export const DailyMissionsPanel: React.FC<DailyMissionsPanelProps> = ({
                         playTerminalClick();
                         onStartFocusQuest && onStartFocusQuest(quest);
                       }}
-                      className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-[#000000] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#1E1E26] hover:border-[#FFFFFF] font-mono text-[11px] font-bold transition-all duration-150 shrink-0 cursor-pointer min-h-[36px]"
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] font-sans text-xs font-bold transition-all duration-150 shrink-0 cursor-pointer min-h-[40px] active:scale-95 shadow-sm"
                     >
-                      <Play className="w-3 h-3 fill-current" /> FOCUS
+                      <Play className="w-3.5 h-3.5 fill-current" /> Focus
                     </button>
                   )}
 
                   {quest.completed && (
-                    <span className="font-mono text-[10px] text-[#FFFFFF] flex items-center gap-1 uppercase font-bold">
-                      <ShieldCheck className="w-3.5 h-3.5" /> CLAIMED
+                    <span className="font-sans text-xs text-[#94949E] flex items-center gap-1 font-semibold">
+                      <ShieldCheck className="w-4 h-4 text-[#FFFFFF]" /> Done
                     </span>
                   )}
                 </div>
