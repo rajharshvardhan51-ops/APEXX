@@ -60,6 +60,7 @@ function openDB(): Promise<IDBDatabase> {
 
 // Low-level IndexedDB Store helper
 async function getStoreItem<T>(storeName: string, key: string): Promise<T | null> {
+  if (typeof window === 'undefined' || !window?.indexedDB) return null;
   try {
     const db = await openDB();
     return new Promise((resolve, reject) => {
@@ -76,6 +77,7 @@ async function getStoreItem<T>(storeName: string, key: string): Promise<T | null
 }
 
 async function setStoreItem(storeName: string, key: string, value: unknown): Promise<void> {
+  if (typeof window === 'undefined' || !window?.indexedDB) return;
   try {
     const db = await openDB();
     return new Promise((resolve, reject) => {
@@ -91,6 +93,7 @@ async function setStoreItem(storeName: string, key: string, value: unknown): Pro
 }
 
 async function removeStoreItem(storeName: string, key: string): Promise<void> {
+  if (typeof window === 'undefined' || !window?.indexedDB) return;
   try {
     const db = await openDB();
     return new Promise((resolve, reject) => {
