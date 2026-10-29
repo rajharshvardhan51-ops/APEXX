@@ -38,6 +38,8 @@ body {
   color: #FFFFFF;
   font-family: var(--font-sans), var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow-x: hidden;
+  max-width: 100vw;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Technical HUD Scrollbar */
@@ -185,10 +187,31 @@ body {
 /* Mobile & Safe Area Insets for iOS & Android */
 * {
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+html, body {
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Prevent iOS Safari auto-zoom on input focus by guaranteeing 16px on mobile viewports */
+@media (max-width: 639px) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
 }
 
 .pb-safe {
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));
+}
+
+.pb-safe-nav {
+  padding-bottom: calc(5rem + max(0.75rem, env(safe-area-inset-bottom, 0.75rem)));
 }
 
 .mb-safe {
@@ -199,12 +222,37 @@ body {
   padding-top: max(0.5rem, env(safe-area-inset-top, 0.5rem));
 }
 
+.pl-safe {
+  padding-left: max(0.5rem, env(safe-area-inset-left, 0.5rem));
+}
+
+.pr-safe {
+  padding-right: max(0.5rem, env(safe-area-inset-right, 0.5rem));
+}
+
+/* 100dvh Dynamic Viewport Height Utility for Mobile Browser URL bars */
+.h-dvh {
+  height: 100dvh;
+}
+
+.min-h-dvh {
+  min-height: 100dvh;
+}
+
 /* Touch Target Minimum Sizing */
 .touch-target {
-  min-height: 48px;
+  min-height: 44px;
+  min-width: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+.active-tactile {
+  transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.active-tactile:active {
+  transform: scale(0.95);
 }
 
 /* Hide scrollbar for clean horizontal scroll tabs on mobile */

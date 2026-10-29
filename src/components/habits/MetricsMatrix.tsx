@@ -64,14 +64,14 @@ export const MetricsMatrix: React.FC<MetricsMatrixProps> = ({ onSaveMetrics }) =
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: 0.2 }}
-      className="bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.6)] space-y-4 relative"
+      className="bg-[#0A0A0E] border border-[#1E1E26] rounded-2xl p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.6)] space-y-4 relative"
     >
       <XpNotificationFloat xp={floatXp} id={floatId} />
 
       <div className="flex items-center justify-between border-b border-[#1E1E26] pb-3 mb-2">
         <div className="flex items-center gap-2">
           <Activity className="w-4 h-4 text-[#FFFFFF]" />
-          <h2 className="font-mono text-sm font-bold uppercase tracking-wider text-[#FFFFFF]">
+          <h2 className="font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-[#FFFFFF]">
             BODY METRICS MATRIX
           </h2>
         </div>
@@ -89,10 +89,11 @@ export const MetricsMatrix: React.FC<MetricsMatrixProps> = ({ onSaveMetrics }) =
             </label>
             <input
               type="number"
+              inputMode="decimal"
               step="0.1"
               value={weightKg}
               onChange={(e) => setWeightKg(e.target.value)}
-              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2 text-xs text-[#FFFFFF] outline-none"
+              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-xl px-3 py-2.5 text-base sm:text-xs text-[#FFFFFF] outline-none min-h-[44px]"
               required
             />
           </div>
@@ -103,19 +104,20 @@ export const MetricsMatrix: React.FC<MetricsMatrixProps> = ({ onSaveMetrics }) =
             </label>
             <input
               type="number"
+              inputMode="numeric"
               value={heightCm}
               onChange={(e) => setHeightCm(e.target.value)}
-              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2 text-xs text-[#FFFFFF] outline-none"
+              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-xl px-3 py-2.5 text-base sm:text-xs text-[#FFFFFF] outline-none min-h-[44px]"
               required
             />
           </div>
         </div>
 
         {/* Calculated BMI Badge */}
-        <div className="p-3 rounded-lg bg-[#050507] border border-[#1E1E26] flex items-center justify-between">
+        <div className="p-3 rounded-xl bg-[#050507] border border-[#1E1E26] flex items-center justify-between">
           <span className="text-[11px] text-[#8E8E93]">CALCULATED BMI INDEX:</span>
-          <span className="text-xs font-bold text-[#FFFFFF] bg-[#18181F] px-2 py-0.5 rounded border border-[#383848]">
-            {bmiCalculated} (NORMAL RANGE)
+          <span className="text-xs font-bold text-[#FFFFFF] bg-[#18181F] px-2.5 py-1 rounded-lg border border-[#383848]">
+            {bmiCalculated} (NORMAL)
           </span>
         </div>
 
@@ -127,10 +129,11 @@ export const MetricsMatrix: React.FC<MetricsMatrixProps> = ({ onSaveMetrics }) =
             </label>
             <input
               type="number"
+              inputMode="decimal"
               step="0.5"
               value={chestCm}
               onChange={(e) => setChestCm(e.target.value)}
-              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2.5 text-xs text-[#FFFFFF] outline-none min-h-[42px]"
+              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-xl px-3 py-2.5 text-base sm:text-xs text-[#FFFFFF] outline-none min-h-[44px]"
               required
             />
           </div>
@@ -141,10 +144,11 @@ export const MetricsMatrix: React.FC<MetricsMatrixProps> = ({ onSaveMetrics }) =
             </label>
             <input
               type="number"
+              inputMode="decimal"
               step="0.5"
               value={waistCm}
               onChange={(e) => setWaistCm(e.target.value)}
-              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2.5 text-xs text-[#FFFFFF] outline-none min-h-[42px]"
+              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-xl px-3 py-2.5 text-base sm:text-xs text-[#FFFFFF] outline-none min-h-[44px]"
               required
             />
           </div>
@@ -155,10 +159,11 @@ export const MetricsMatrix: React.FC<MetricsMatrixProps> = ({ onSaveMetrics }) =
             </label>
             <input
               type="number"
+              inputMode="decimal"
               step="0.5"
               value={armsCm}
               onChange={(e) => setArmsCm(e.target.value)}
-              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2.5 text-xs text-[#FFFFFF] outline-none min-h-[42px]"
+              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-xl px-3 py-2.5 text-base sm:text-xs text-[#FFFFFF] outline-none min-h-[44px]"
               required
             />
           </div>
@@ -166,7 +171,7 @@ export const MetricsMatrix: React.FC<MetricsMatrixProps> = ({ onSaveMetrics }) =
 
         <button
           type="submit"
-          className={`w-full py-3 min-h-[44px] cursor-pointer rounded-lg border font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 ${
+          className={`w-full py-3 min-h-[48px] cursor-pointer rounded-xl border font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 active:scale-95 touch-manipulation ${
             savedSuccess
               ? 'bg-[#FFFFFF] text-[#000000] border-[#FFFFFF] shadow-[0_0_15px_rgba(255,255,255,0.4)]'
               : 'bg-[#18181F] hover:bg-[#383848] border-[#383848] text-[#FFFFFF] shadow-[0_0_12px_rgba(255,255,255,0.15)]'

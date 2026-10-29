@@ -15,7 +15,6 @@ const backupSchema = z.object({
 });
 
 export const BackupDisasterRecovery: React.FC = () => {
-  const storeState = useApexStore();
   const [rawJsonPayload, setRawJsonPayload] = useState('');
   const [statusMessage, setStatusMessage] = useState<{ text: string; isError: boolean } | null>(null);
   const [showPurgeModal, setShowPurgeModal] = useState(false);
@@ -90,13 +89,12 @@ export const BackupDisasterRecovery: React.FC = () => {
     setTimeout(() => setStatusMessage(null), 4000);
   };
 
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: 0.1 }}
-      className="bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-5 shadow-[0_4px_25px_rgba(0,0,0,0.8)] space-y-5 font-mono select-none"
+      className="bg-[#0A0A0E] border border-[#1E1E26] rounded-2xl p-4 sm:p-5 shadow-[0_4px_25px_rgba(0,0,0,0.8)] space-y-4 sm:space-y-5 font-mono select-none"
     >
       {/* Status Feedback Banner */}
       <AnimatePresence>
@@ -105,13 +103,13 @@ export const BackupDisasterRecovery: React.FC = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className={`p-3 rounded-lg border text-xs font-bold flex items-center gap-2 ${
+            className={`p-3.5 rounded-xl border text-xs font-bold flex items-center gap-2 ${
               statusMessage.isError
                 ? 'bg-[#18181F] border-[#383848] text-[#FFFFFF] shadow-[0_0_15px_rgba(255,255,255,0.2)]'
                 : 'bg-[#000000] border-[#FFFFFF] text-[#FFFFFF] shadow-[0_0_15px_rgba(255,255,255,0.3)]'
             }`}
           >
-            {statusMessage.isError ? <AlertTriangle className="w-4 h-4 text-[#FFFFFF]" /> : <CheckCircle2 className="w-4 h-4 text-[#FFFFFF]" />}
+            {statusMessage.isError ? <AlertTriangle className="w-4 h-4 text-[#FFFFFF] shrink-0" /> : <CheckCircle2 className="w-4 h-4 text-[#FFFFFF] shrink-0" />}
             <span className="truncate">{statusMessage.text}</span>
           </motion.div>
         )}
@@ -125,7 +123,7 @@ export const BackupDisasterRecovery: React.FC = () => {
       </div>
 
       {/* Export Database Section */}
-      <div className="p-4 rounded-lg bg-[#050507] border border-[#1E1E26] space-y-3">
+      <div className="p-4 rounded-xl bg-[#050507] border border-[#1E1E26] space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-[#FFFFFF] flex items-center gap-1.5">
             <Download className="w-3.5 h-3.5 text-[#FFFFFF]" /> EXPORT DATABASE STATE
@@ -138,14 +136,14 @@ export const BackupDisasterRecovery: React.FC = () => {
         <button
           type="button"
           onClick={handleExportJson}
-          className="w-full py-2.5 rounded-lg bg-[#18181F] hover:bg-[#383848] border border-[#1E1E26] hover:border-[#FFFFFF] text-[#FFFFFF] text-xs font-bold uppercase flex items-center justify-center gap-2 transition-colors"
+          className="w-full py-3 min-h-[46px] rounded-xl bg-[#18181F] hover:bg-[#383848] border border-[#1E1E26] hover:border-[#FFFFFF] text-[#FFFFFF] text-xs font-bold uppercase flex items-center justify-center gap-2 transition-colors active:scale-95 touch-manipulation cursor-pointer"
         >
           <Download className="w-3.5 h-3.5" /> DOWNLOAD JSON BACKUP
         </button>
       </div>
 
       {/* Restore Backup Section */}
-      <div className="p-4 rounded-lg bg-[#050507] border border-[#1E1E26] space-y-3">
+      <div className="p-4 rounded-xl bg-[#050507] border border-[#1E1E26] space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-[#FFFFFF] flex items-center gap-1.5">
             <Upload className="w-3.5 h-3.5 text-[#FFFFFF]" /> RESTORE SYSTEM BACKUP
@@ -157,12 +155,12 @@ export const BackupDisasterRecovery: React.FC = () => {
           value={rawJsonPayload}
           onChange={(e) => setRawJsonPayload(e.target.value)}
           placeholder="Paste raw JSON backup payload here to restore..."
-          className="w-full bg-[#0A0A0E] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg p-2.5 text-[11px] text-[#FFFFFF] placeholder-[#8E8E93] font-mono focus:outline-none transition-colors"
+          className="w-full bg-[#0A0A0E] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-xl p-3 text-base sm:text-xs text-[#FFFFFF] placeholder-[#8E8E93] font-mono focus:outline-none transition-colors"
         />
         <button
           type="button"
           onClick={handleRestoreJson}
-          className="w-full py-2.5 rounded-lg bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] text-xs font-bold uppercase flex items-center justify-center gap-2 transition-colors shadow-[0_0_12px_rgba(255,255,255,0.3)]"
+          className="w-full py-3 min-h-[46px] rounded-xl bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] text-xs font-bold uppercase flex items-center justify-center gap-2 transition-colors shadow-[0_0_12px_rgba(255,255,255,0.3)] active:scale-95 touch-manipulation cursor-pointer"
         >
           <Upload className="w-3.5 h-3.5" /> RESTORE SYSTEM BACKUP
         </button>
@@ -170,7 +168,7 @@ export const BackupDisasterRecovery: React.FC = () => {
 
       {/* Danger Zone: Purge Database Cache */}
       <div className="pt-2 border-t border-[#1E1E26]">
-        <div className="p-4 rounded-lg bg-[#050507] border border-[#383848] space-y-3">
+        <div className="p-4 rounded-xl bg-[#050507] border border-[#383848] space-y-3">
           <div className="flex items-center justify-between text-[#FFFFFF]">
             <span className="text-xs font-bold flex items-center gap-1.5">
               <ShieldAlert className="w-4 h-4 text-[#FFFFFF]" /> SECURITY & PURGE PROTOCOL
@@ -183,7 +181,7 @@ export const BackupDisasterRecovery: React.FC = () => {
           <button
             type="button"
             onClick={() => setShowPurgeModal(true)}
-            className="w-full py-2.5 rounded-lg bg-[#18181F] hover:bg-[#383848] border border-[#383848] hover:border-[#FFFFFF] text-[#FFFFFF] text-xs font-bold uppercase flex items-center justify-center gap-2 transition-colors"
+            className="w-full py-3 min-h-[46px] rounded-xl bg-[#18181F] hover:bg-[#383848] border border-[#383848] hover:border-[#FFFFFF] text-[#FFFFFF] text-xs font-bold uppercase flex items-center justify-center gap-2 transition-colors active:scale-95 touch-manipulation cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" /> PURGE LOCAL DATABASE CACHE
           </button>
@@ -198,28 +196,28 @@ export const BackupDisasterRecovery: React.FC = () => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-[#0A0A0E] border border-[#FFFFFF] rounded-xl p-6 max-w-md w-full space-y-4 shadow-[0_0_30px_rgba(255,255,255,0.2)] font-mono text-center"
+              className="bg-[#0A0A0E] border border-[#FFFFFF] rounded-2xl p-5 sm:p-6 max-w-md w-full space-y-4 shadow-[0_0_30px_rgba(255,255,255,0.2)] font-mono text-center max-h-[90dvh] overflow-y-auto"
             >
               <ShieldAlert className="w-10 h-10 text-[#FFFFFF] mx-auto animate-pulse" />
-              <h3 className="text-base font-extrabold text-[#FFFFFF]">
+              <h3 className="text-sm sm:text-base font-extrabold text-[#FFFFFF]">
                 CONFIRM DATABASE PURGE?
               </h3>
-              <p className="text-xs text-[#8E8E93]">
+              <p className="text-xs text-[#8E8E93] leading-relaxed">
                 Are you sure you want to reset all XP progress, completed quests, habit streams, and titles back to baseline Level 1?
               </p>
 
-              <div className="flex items-center justify-center gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowPurgeModal(false)}
-                  className="px-4 py-2 rounded-lg bg-[#18181F] hover:bg-[#383848] text-[#FFFFFF] text-xs font-bold uppercase border border-[#1E1E26]"
+                  className="w-full sm:w-auto px-5 py-3 min-h-[44px] rounded-xl bg-[#18181F] hover:bg-[#383848] text-[#FFFFFF] text-xs font-bold uppercase border border-[#1E1E26] active:scale-95 touch-manipulation"
                 >
                   CANCEL
                 </button>
                 <button
                   type="button"
                   onClick={handlePurgeCache}
-                  className="px-4 py-2 rounded-lg bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] text-xs font-bold uppercase shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                  className="w-full sm:w-auto px-5 py-3 min-h-[44px] rounded-xl bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] text-xs font-bold uppercase shadow-[0_0_15px_rgba(255,255,255,0.3)] active:scale-95 touch-manipulation"
                 >
                   CONFIRM PURGE
                 </button>

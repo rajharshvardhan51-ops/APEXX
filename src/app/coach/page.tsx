@@ -5,8 +5,8 @@ import { motion } from 'framer-motion';
 import CoachChatLog, { ChatMessage } from '@/components/coach/CoachChatLog';
 import PersonaSidebar, { PersonaId, personas } from '@/components/coach/PersonaSidebar';
 import { Bot, Sparkles } from 'lucide-react';
-
 import { useApexStore } from '@/store/useApexStore';
+import { playTerminalClick } from '@/lib/audioEngine';
 
 const initialMessages: ChatMessage[] = [
   {
@@ -109,30 +109,57 @@ export default function CoachPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 pb-8 font-mono select-none">
+    <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6 pb-6 font-mono select-none">
       {/* Header Banner */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.6)]"
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-[#0A0A0E] border border-[#1E1E26] rounded-2xl p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.6)]"
       >
         <div className="space-y-1">
           <div className="flex items-center gap-2 font-mono text-xs text-[#FFFFFF] font-bold tracking-widest uppercase">
             <Bot className="w-4 h-4 text-[#FFFFFF]" /> AI MENTOR TERMINAL & INTELLIGENCE CORE
           </div>
-          <h1 className="text-2xl font-extrabold text-[#FFFFFF] font-sans">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-[#FFFFFF] font-sans">
             AI COACH TERMINAL <span className="text-[#8E8E93]">.OS</span>
           </h1>
         </div>
 
-        <div className="flex items-center gap-2 bg-[#050507] px-3.5 py-2 rounded-lg border border-[#383848] text-xs text-[#FFFFFF] font-bold">
+        <div className="flex items-center gap-2 bg-[#050507] px-3.5 py-2 rounded-xl border border-[#383848] text-xs text-[#FFFFFF] font-bold self-start sm:self-auto">
           <Sparkles className="w-4 h-4 text-[#FFFFFF]" /> ACTIVE MENTOR: [{activePersona.name.toUpperCase()}]
         </div>
       </motion.div>
 
-      {/* Main Grid: Left 70% Terminal Chat Log & Right 30% Persona Configuration */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Mobile Horizontal Persona Bar (Quick switching on phones without scrolling down) */}
+      <div className="block lg:hidden">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 -mx-2 px-2">
+          {personas.map((p) => {
+            const Icon = p.icon;
+            const isActive = activePersonaId === p.id;
+            return (
+              <button
+                key={p.id}
+                onClick={() => {
+                  playTerminalClick();
+                  setActivePersonaId(p.id);
+                }}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 border transition-all active:scale-95 touch-manipulation min-h-[42px] ${
+                  isActive
+                    ? 'bg-[#18181F] text-[#FFFFFF] border-[#FFFFFF] shadow-[0_0_10px_rgba(255,255,255,0.2)]'
+                    : 'bg-[#0A0A0E] text-[#8E8E93] border-[#1E1E26]'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                <span>{p.name}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Main Grid: Left Terminal Chat Log & Right Persona Configuration Sidebar */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Left Column (70%): Terminal Chat Log */}
         <div className="lg:col-span-2">
           <CoachChatLog
@@ -143,7 +170,7 @@ export default function CoachPage() {
           />
         </div>
 
-        {/* Right Column (30%): Persona Configuration Sidebar */}
+        {/* Right Column (30%): Persona Configuration Sidebar (Desktop full view + mobile settings) */}
         <div>
           <PersonaSidebar
             activePersonaId={activePersonaId}

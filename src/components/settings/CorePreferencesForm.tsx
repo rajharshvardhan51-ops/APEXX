@@ -63,7 +63,7 @@ export const CorePreferencesForm: React.FC = () => {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-5 shadow-[0_4px_25px_rgba(0,0,0,0.8)] space-y-5 font-mono select-none"
+      className="bg-[#0A0A0E] border border-[#1E1E26] rounded-2xl p-4 sm:p-5 shadow-[0_4px_25px_rgba(0,0,0,0.8)] space-y-4 sm:space-y-5 font-mono select-none"
     >
       {/* Toast Alert */}
       <AnimatePresence>
@@ -72,9 +72,9 @@ export const CorePreferencesForm: React.FC = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="p-3 rounded-lg bg-[#000000] border border-[#FFFFFF] text-[#FFFFFF] text-xs font-bold flex items-center gap-2 shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+            className="p-3.5 rounded-xl bg-[#000000] border border-[#FFFFFF] text-[#FFFFFF] text-xs font-bold flex items-center gap-2 shadow-[0_0_15px_rgba(255,255,255,0.3)]"
           >
-            <CheckCircle2 className="w-4 h-4 text-[#FFFFFF]" />
+            <CheckCircle2 className="w-4 h-4 text-[#FFFFFF] shrink-0" />
             <span>{toastMessage}</span>
           </motion.div>
         )}
@@ -97,7 +97,7 @@ export const CorePreferencesForm: React.FC = () => {
             <select
               value={honorific}
               onChange={(e) => setHonorific(e.target.value)}
-              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3 py-2.5 text-xs text-[#FFFFFF] focus:outline-none transition-colors cursor-pointer font-mono font-bold"
+              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-xl px-3 py-2.5 text-base sm:text-xs text-[#FFFFFF] focus:outline-none transition-colors cursor-pointer font-mono font-bold min-h-[44px]"
             >
               <option value="SIR">SIR</option>
               <option value="BOSS">BOSS</option>
@@ -118,7 +118,7 @@ export const CorePreferencesForm: React.FC = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. HARSH, ALEX, VICTOR..."
-              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3.5 py-2.5 text-xs text-[#FFFFFF] focus:outline-none transition-colors"
+              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-xl px-3.5 py-2.5 text-base sm:text-xs text-[#FFFFFF] focus:outline-none transition-colors min-h-[44px]"
             />
           </div>
         </div>
@@ -128,8 +128,8 @@ export const CorePreferencesForm: React.FC = () => {
           <label className="text-[10px] text-[#8E8E93] uppercase tracking-wider font-semibold flex items-center gap-1.5">
             <ImageIcon className="w-3.5 h-3.5 text-[#FFFFFF]" /> PROFILE PICTURE / AVATAR
           </label>
-          <div className="p-3 rounded-lg bg-[#050507] border border-[#1E1E26] flex items-center gap-4">
-            <div className="relative w-12 h-12 rounded-full border-2 border-[#FFFFFF] bg-[#18181F] overflow-hidden shrink-0 flex items-center justify-center shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+          <div className="p-3 sm:p-3.5 rounded-xl bg-[#050507] border border-[#1E1E26] flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+            <div className="relative w-14 h-14 rounded-full border-2 border-[#FFFFFF] bg-[#18181F] overflow-hidden shrink-0 flex items-center justify-center shadow-[0_0_10px_rgba(255,255,255,0.3)]">
               {avatarUrl ? (
                 <img src={avatarUrl} alt="Operative Avatar" className="w-full h-full object-cover" />
               ) : (
@@ -137,9 +137,9 @@ export const CorePreferencesForm: React.FC = () => {
               )}
             </div>
 
-            <div className="flex-1 space-y-1">
-              <div className="flex items-center gap-2">
-                <label className="cursor-pointer px-3 py-1.5 rounded bg-[#18181F] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#383848] text-[10px] font-bold flex items-center gap-1.5 transition-colors">
+            <div className="flex-1 w-full space-y-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <label className="cursor-pointer px-3.5 py-2 min-h-[40px] rounded-xl bg-[#18181F] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#383848] text-xs font-bold flex items-center gap-1.5 transition-colors active:scale-95 touch-manipulation">
                   <Upload className="w-3.5 h-3.5" /> UPLOAD IMAGE
                   <input
                     ref={fileInputRef}
@@ -153,7 +153,7 @@ export const CorePreferencesForm: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setAvatarUrl('')}
-                    className="px-2.5 py-1.5 rounded text-[10px] text-[#FF3B30] border border-[#FF3B30]/30 hover:bg-[#FF3B30]/10"
+                    className="px-3 py-2 min-h-[40px] rounded-xl text-xs text-[#FF3B30] border border-[#FF3B30]/30 hover:bg-[#FF3B30]/10 active:scale-95 touch-manipulation"
                   >
                     REMOVE
                   </button>
@@ -164,7 +164,7 @@ export const CorePreferencesForm: React.FC = () => {
                 value={avatarUrl.startsWith('data:') ? '' : avatarUrl}
                 onChange={(e) => setAvatarUrl(e.target.value)}
                 placeholder="Or paste avatar image URL..."
-                className="w-full bg-[#000000] border border-[#1E1E26] focus:border-[#FFFFFF] rounded px-2.5 py-1.5 text-[10px] text-[#FFFFFF] outline-none font-mono mt-1"
+                className="w-full bg-[#000000] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-xl px-3 py-2 text-base sm:text-xs text-[#FFFFFF] outline-none font-mono min-h-[40px]"
               />
             </div>
           </div>
@@ -178,7 +178,7 @@ export const CorePreferencesForm: React.FC = () => {
           <select
             value={mentor}
             onChange={(e) => setMentor(e.target.value)}
-            className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg px-3.5 py-2.5 text-xs text-[#FFFFFF] focus:outline-none transition-colors cursor-pointer"
+            className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-xl px-3.5 py-2.5 text-base sm:text-xs text-[#FFFFFF] focus:outline-none transition-colors cursor-pointer min-h-[44px]"
           >
             <option value="Jarvis (Polite & Analytical)">Jarvis (Polite & Analytical)</option>
             <option value="Stern Master (Tough Love & Discipline)">Stern Master (Tough Love & Discipline)</option>
@@ -190,20 +190,21 @@ export const CorePreferencesForm: React.FC = () => {
         {/* Gemini LLM API Key BYOK */}
         <div className="space-y-1.5">
           <label className="text-[10px] text-[#8E8E93] uppercase tracking-wider font-semibold flex items-center gap-1.5">
-            <Key className="w-3.5 h-3.5 text-[#FFFFFF]" /> GEMINI LLM API KEY (BYOK / FREE TIER)
+            <Key className="w-3.5 h-3.5 text-[#FFFFFF]" /> GEMINI LLM API KEY (BYOK)
           </label>
           <div className="relative">
             <input
               type={showApiKey ? 'text' : 'password'}
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
-              placeholder="Paste AIZA... API Key for live AI responses"
-              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-lg pl-3.5 pr-10 py-2.5 text-xs text-[#FFFFFF] placeholder-[#8E8E93] focus:outline-none transition-colors font-mono"
+              placeholder="Paste AIZA... API Key"
+              className="w-full bg-[#050507] border border-[#1E1E26] focus:border-[#FFFFFF] rounded-xl pl-3.5 pr-11 py-2.5 text-base sm:text-xs text-[#FFFFFF] placeholder-[#8E8E93] focus:outline-none transition-colors font-mono min-h-[44px]"
             />
             <button
               type="button"
               onClick={() => setShowApiKey(!showApiKey)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#8E8E93] hover:text-[#FFFFFF]"
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center text-[#8E8E93] hover:text-[#FFFFFF] active:scale-95 touch-manipulation"
+              aria-label="Toggle API key visibility"
             >
               {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
@@ -211,24 +212,25 @@ export const CorePreferencesForm: React.FC = () => {
         </div>
 
         {/* Cloud Sync Toggle */}
-        <div className="p-3 rounded-lg bg-[#050507] border border-[#1E1E26] flex items-center justify-between">
-          <div className="space-y-0.5 max-w-[240px]">
+        <div className="p-3.5 rounded-xl bg-[#050507] border border-[#1E1E26] flex items-center justify-between gap-3">
+          <div className="space-y-0.5 flex-1">
             <span className="text-xs font-bold text-[#FFFFFF] flex items-center gap-1.5">
-              <Cloud className="w-3.5 h-3.5 text-[#FFFFFF]" /> FIREBASE CLOUD SYNC ENGINE
+              <Cloud className="w-3.5 h-3.5 text-[#FFFFFF]" /> FIREBASE CLOUD SYNC
             </span>
             <p className="text-[10px] text-[#8E8E93] leading-snug">
-              Sync daily habits and deep telemetry directly to your private cloud backup.
+              Sync habits and telemetry directly to private cloud backup.
             </p>
           </div>
           <button
             type="button"
             onClick={() => setCloudSync(!cloudSync)}
-            className={`w-12 h-6 rounded-full transition-colors p-1 relative ${
+            className={`w-14 h-8 rounded-full transition-colors p-1 relative shrink-0 active:scale-95 touch-manipulation cursor-pointer ${
               cloudSync ? 'bg-[#FFFFFF]' : 'bg-[#1E1E26]'
             }`}
+            aria-label="Toggle Cloud Sync"
           >
             <div
-              className={`w-4 h-4 rounded-full bg-[#050507] transition-transform ${
+              className={`w-6 h-6 rounded-full bg-[#050507] transition-transform ${
                 cloudSync ? 'translate-x-6' : 'translate-x-0'
               }`}
             />
@@ -236,24 +238,25 @@ export const CorePreferencesForm: React.FC = () => {
         </div>
 
         {/* Daily Notifications Toggle */}
-        <div className="p-3 rounded-lg bg-[#050507] border border-[#1E1E26] flex items-center justify-between">
-          <div className="space-y-0.5 max-w-[240px]">
+        <div className="p-3.5 rounded-xl bg-[#050507] border border-[#1E1E26] flex items-center justify-between gap-3">
+          <div className="space-y-0.5 flex-1">
             <span className="text-xs font-bold text-[#FFFFFF] flex items-center gap-1.5">
-              <Bell className="w-3.5 h-3.5 text-[#FFFFFF]" /> DAILY NOTIFICATIONS REMINDERS
+              <Bell className="w-3.5 h-3.5 text-[#FFFFFF]" /> DAILY NOTIFICATIONS
             </span>
             <p className="text-[10px] text-[#8E8E93] leading-snug">
-              Auto-trigger warning alert if daily reports remain unsubmitted by 9:00 PM.
+              Warning alert if daily reports remain unsubmitted by 9:00 PM.
             </p>
           </div>
           <button
             type="button"
             onClick={() => setDailyNotifications(!dailyNotifications)}
-            className={`w-12 h-6 rounded-full transition-colors p-1 relative ${
+            className={`w-14 h-8 rounded-full transition-colors p-1 relative shrink-0 active:scale-95 touch-manipulation cursor-pointer ${
               dailyNotifications ? 'bg-[#FFFFFF]' : 'bg-[#1E1E26]'
             }`}
+            aria-label="Toggle Daily Notifications"
           >
             <div
-              className={`w-4 h-4 rounded-full bg-[#050507] transition-transform ${
+              className={`w-6 h-6 rounded-full bg-[#050507] transition-transform ${
                 dailyNotifications ? 'translate-x-6' : 'translate-x-0'
               }`}
             />
@@ -263,7 +266,7 @@ export const CorePreferencesForm: React.FC = () => {
         {/* Action CTA */}
         <button
           type="submit"
-          className="w-full py-3 min-h-[44px] cursor-pointer rounded-lg bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+          className="w-full py-3.5 min-h-[48px] cursor-pointer rounded-xl bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(255,255,255,0.3)] active:scale-95 touch-manipulation"
         >
           COMMIT SETTINGS
         </button>

@@ -98,13 +98,13 @@ export const MobileInstallBanner: React.FC<MobileInstallBannerProps> = ({
             className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm md:hidden"
           />
 
-          {/* Cyberpunk Mobile Install Card */}
+          {/* Cyberpunk Mobile Install Card - positioned safely above MobileBottomNav */}
           <motion.div
             initial={{ opacity: 0, y: 50, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed bottom-16 left-3 right-3 z-50 md:bottom-6 md:left-auto md:right-6 md:w-96 bg-[#060608] border border-[#383848] rounded-xl p-4 shadow-[0_0_25px_rgba(255,255,255,0.15)] text-[#FFFFFF] select-none font-mono"
+            className="fixed bottom-[calc(4.75rem+max(0.75rem,env(safe-area-inset-bottom,0.75rem)))] left-3 right-3 z-50 md:bottom-6 md:left-auto md:right-6 md:w-96 bg-[#060608] border border-[#383848] rounded-xl p-4 shadow-[0_0_25px_rgba(255,255,255,0.15)] text-[#FFFFFF] select-none font-mono"
           >
             {/* Header */}
             <div className="flex items-start justify-between pb-3 border-b border-[#1E1E26]">
@@ -119,10 +119,10 @@ export const MobileInstallBanner: React.FC<MobileInstallBannerProps> = ({
               </div>
               <button
                 onClick={handleDismiss}
-                className="w-6 h-6 rounded bg-[#121217] text-[#8E8E93] hover:text-[#FFFFFF] border border-[#1E1E26] flex items-center justify-center transition-colors"
+                className="w-7 h-7 rounded-lg bg-[#121217] text-[#8E8E93] hover:text-[#FFFFFF] border border-[#1E1E26] flex items-center justify-center transition-colors cursor-pointer"
                 aria-label="Dismiss Install Banner"
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -139,7 +139,7 @@ export const MobileInstallBanner: React.FC<MobileInstallBannerProps> = ({
                   <p className="text-[#8E8E93] text-[10px] uppercase font-bold">
                     INSTALL ON IPHONE / IPAD:
                   </p>
-                  <div className="flex items-center gap-2 p-2 bg-[#000000] rounded-md border border-[#1E1E26]">
+                  <div className="flex items-center gap-2 p-2.5 bg-[#000000] rounded-lg border border-[#1E1E26]">
                     <span className="w-5 h-5 rounded-full bg-[#18181F] text-[#FFFFFF] flex items-center justify-center font-bold text-[10px] shrink-0">
                       1
                     </span>
@@ -147,7 +147,7 @@ export const MobileInstallBanner: React.FC<MobileInstallBannerProps> = ({
                       Tap the <Share className="w-3.5 h-3.5 inline mx-1 text-[#FFFFFF]" /> <b>Share</b> button in Safari toolbar.
                     </span>
                   </div>
-                  <div className="flex items-center gap-2 p-2 bg-[#000000] rounded-md border border-[#1E1E26]">
+                  <div className="flex items-center gap-2 p-2.5 bg-[#000000] rounded-lg border border-[#1E1E26]">
                     <span className="w-5 h-5 rounded-full bg-[#18181F] text-[#FFFFFF] flex items-center justify-center font-bold text-[10px] shrink-0">
                       2
                     </span>
@@ -165,7 +165,7 @@ export const MobileInstallBanner: React.FC<MobileInstallBannerProps> = ({
                   <button
                     onClick={handleInstallClick}
                     disabled={!deferredPrompt}
-                    className="w-full mt-2 py-2.5 px-3 rounded-lg bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] font-mono text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_12px_rgba(255,255,255,0.25)] disabled:opacity-50"
+                    className="w-full mt-2 py-3 px-3 min-h-[44px] rounded-xl bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] font-mono text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-[0_0_12px_rgba(255,255,255,0.25)] disabled:opacity-50 cursor-pointer active:scale-95"
                   >
                     <Download className="w-4 h-4" />
                     <span>{deferredPrompt ? 'INSTALL APEX APP NOW' : 'ADD TO HOME SCREEN'}</span>
@@ -175,13 +175,13 @@ export const MobileInstallBanner: React.FC<MobileInstallBannerProps> = ({
             </div>
 
             {/* Footer dismissal */}
-            <div className="pt-2 border-t border-[#1E1E26] flex items-center justify-between text-[9px] text-[#8E8E93]">
+            <div className="pt-2 border-t border-[#1E1E26] flex items-center justify-between text-[10px] text-[#8E8E93]">
               <span className="flex items-center gap-1">
-                <Smartphone className="w-3 h-3 text-[#FFFFFF]" /> iOS & ANDROID COMPATIBLE
+                <Smartphone className="w-3.5 h-3.5 text-[#FFFFFF]" /> iOS & ANDROID COMPATIBLE
               </span>
               <button
                 onClick={handleDismiss}
-                className="hover:text-[#FFFFFF] underline cursor-pointer"
+                className="hover:text-[#FFFFFF] underline cursor-pointer py-1"
               >
                 Maybe Later
               </button>

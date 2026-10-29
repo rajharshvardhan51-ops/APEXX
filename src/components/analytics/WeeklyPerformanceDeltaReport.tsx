@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Activity, TrendingUp, TrendingDown, Award, Sparkles, CheckCircle2, AlertTriangle, ShieldAlert } from 'lucide-react';
+import { Activity, TrendingUp, TrendingDown, Sparkles } from 'lucide-react';
 import { useApexStore } from '@/store/useApexStore';
 import { calculateWeeklyWorkDelta } from '@/lib/targetQuotaEngine';
 
@@ -14,27 +14,27 @@ export const WeeklyPerformanceDeltaReport: React.FC = () => {
   const weeklyDelta = calculateWeeklyWorkDelta(growthLedgerHistory, habitLogs, 250);
 
   return (
-    <div className="hud-card p-4 sm:p-5 space-y-4 font-mono select-none border border-[#383848] shadow-[0_0_20px_rgba(255,255,255,0.05)]">
+    <div className="bg-[#0A0A0E] border border-[#383848] rounded-2xl p-4 sm:p-5 space-y-4 font-mono select-none shadow-[0_0_20px_rgba(255,255,255,0.05)]">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#1E1E26]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-[#1E1E26]">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-lg bg-[#000000] border border-[#383848] text-[#FFFFFF] shadow-glow-white">
+          <div className="p-2 rounded-xl bg-[#000000] border border-[#383848] text-[#FFFFFF] shadow-glow-white shrink-0">
             <Activity className="w-5 h-5 text-[#FFFFFF] animate-pulse" />
           </div>
           <div>
-            <div className="text-[10px] text-[#8E8E93] uppercase font-bold tracking-widest flex items-center gap-1">
-              <span>[ 7-DAY OPERATIONAL PERFORMANCE REPORT ]</span>
-              <span className="text-[#FFFFFF] bg-[#18181F] px-1.5 py-0.5 rounded border border-[#27272A]">
+            <div className="text-[10px] text-[#8E8E93] uppercase font-bold tracking-widest flex items-center gap-1.5 flex-wrap">
+              <span>[ 7-DAY OPERATIONAL REPORT ]</span>
+              <span className="text-[#FFFFFF] bg-[#18181F] px-1.5 py-0.5 rounded border border-[#27272A] text-[9px]">
                 WEEKLY AUDIT
               </span>
             </div>
-            <h2 className="text-sm font-extrabold text-[#FFFFFF] text-glow tracking-wide">
+            <h2 className="text-xs sm:text-sm font-extrabold text-[#FFFFFF] tracking-wide">
               WEEKLY WORK DONE & VARIANCE DELTA
             </h2>
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#000000] border border-[#383848] text-xs font-bold">
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#000000] border border-[#383848] text-xs font-bold self-start sm:self-auto">
           {weeklyDelta.isSurplus ? (
             <>
               <TrendingUp className="w-4 h-4 text-[#FFFFFF]" />
@@ -50,32 +50,32 @@ export const WeeklyPerformanceDeltaReport: React.FC = () => {
       </div>
 
       {/* Metric Telemetry Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs">
-        <div className="p-3 rounded-lg bg-[#000000] border border-[#1E1E26] space-y-1">
-          <span className="text-[9px] text-[#8E8E93] uppercase font-bold block">TARGET WEEKLY QUOTA</span>
-          <span className="font-extrabold text-sm text-[#FFFFFF]">
-            {weeklyDelta.targetWeeklyHours} HRS ({weeklyDelta.targetWeeklyXp} XP)
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 text-xs">
+        <div className="p-3 rounded-xl bg-[#000000] border border-[#1E1E26] space-y-1">
+          <span className="text-[9px] text-[#8E8E93] uppercase font-bold block">TARGET QUOTA</span>
+          <span className="font-extrabold text-xs sm:text-sm text-[#FFFFFF] block truncate">
+            {weeklyDelta.targetWeeklyHours}H ({weeklyDelta.targetWeeklyXp} XP)
           </span>
         </div>
 
-        <div className="p-3 rounded-lg bg-[#000000] border border-[#1E1E26] space-y-1">
-          <span className="text-[9px] text-[#8E8E93] uppercase font-bold block">ACTUAL WORK EXECUTED</span>
-          <span className="font-extrabold text-sm text-[#FFFFFF]">
-            {weeklyDelta.actualWeeklyHours} HRS ({weeklyDelta.actualWeeklyXp} XP)
+        <div className="p-3 rounded-xl bg-[#000000] border border-[#1E1E26] space-y-1">
+          <span className="text-[9px] text-[#8E8E93] uppercase font-bold block">ACTUAL WORK</span>
+          <span className="font-extrabold text-xs sm:text-sm text-[#FFFFFF] block truncate">
+            {weeklyDelta.actualWeeklyHours}H ({weeklyDelta.actualWeeklyXp} XP)
           </span>
         </div>
 
-        <div className="p-3 rounded-lg bg-[#000000] border border-[#1E1E26] space-y-1">
-          <span className="text-[9px] text-[#8E8E93] uppercase font-bold block">WORK VARIANCE DELTA</span>
-          <span className={`font-extrabold text-sm ${weeklyDelta.isSurplus ? 'text-[#FFFFFF]' : 'text-[#E4E4E7]'}`}>
+        <div className="p-3 rounded-xl bg-[#000000] border border-[#1E1E26] space-y-1">
+          <span className="text-[9px] text-[#8E8E93] uppercase font-bold block">VARIANCE DELTA</span>
+          <span className={`font-extrabold text-xs sm:text-sm block truncate ${weeklyDelta.isSurplus ? 'text-[#FFFFFF]' : 'text-[#E4E4E7]'}`}>
             {weeklyDelta.isSurplus ? `+${weeklyDelta.deltaXp} XP SURPLUS` : `${weeklyDelta.deltaXp} XP DEFICIT`}
           </span>
         </div>
 
-        <div className="p-3 rounded-lg bg-[#000000] border border-[#1E1E26] space-y-1">
-          <span className="text-[9px] text-[#8E8E93] uppercase font-bold block">WEEKLY PACE STATUS</span>
-          <span className="font-extrabold text-sm text-[#FFFFFF]">
-            {weeklyDelta.isSurplus ? 'AHEAD OF SCHEDULE 🎉' : 'CATCH-UP REQUIRED ⚠️'}
+        <div className="p-3 rounded-xl bg-[#000000] border border-[#1E1E26] space-y-1">
+          <span className="text-[9px] text-[#8E8E93] uppercase font-bold block">WEEKLY PACE</span>
+          <span className="font-extrabold text-xs sm:text-sm text-[#FFFFFF] block truncate">
+            {weeklyDelta.isSurplus ? 'AHEAD 🎉' : 'CATCH-UP ⚠️'}
           </span>
         </div>
       </div>
@@ -83,20 +83,20 @@ export const WeeklyPerformanceDeltaReport: React.FC = () => {
       {/* Day-by-Day 7-Day Comparison Bars */}
       <div className="space-y-2">
         <h3 className="text-xs font-bold text-[#FFFFFF] uppercase tracking-wider flex items-center justify-between pb-1 border-b border-[#1E1E26]">
-          <span>7-DAY DAILY BREAKDOWN (TARGET: 250 XP / DAY)</span>
+          <span>7-DAY DAILY BREAKDOWN</span>
           <span className="text-[10px] text-[#8E8E93]">SURPLUS vs DEFICIT</span>
         </h3>
 
-        <div className="grid grid-cols-7 gap-1.5 sm:gap-2 text-center text-xs">
+        <div className="grid grid-cols-7 gap-1 sm:gap-2 text-center text-xs">
           {weeklyDelta.dailyBreakdown.map((item) => {
             const percent = Math.min(100, Math.round((item.actualXp / item.targetXp) * 100));
 
             return (
-              <div key={item.dateStr} className="p-2 rounded-lg bg-[#000000] border border-[#1E1E26] flex flex-col items-center justify-between space-y-2">
-                <span className="text-[10px] text-[#8E8E93] font-bold uppercase">{item.dayName}</span>
+              <div key={item.dateStr} className="p-1 sm:p-2 rounded-xl bg-[#000000] border border-[#1E1E26] flex flex-col items-center justify-between space-y-1.5">
+                <span className="text-[9px] sm:text-[10px] text-[#8E8E93] font-bold uppercase">{item.dayName.slice(0, 3)}</span>
 
                 {/* Vertical Bar Representation */}
-                <div className="w-full h-16 bg-[#18181F] rounded relative flex items-end overflow-hidden p-[1px] border border-[#27272A]">
+                <div className="w-full h-14 sm:h-16 bg-[#18181F] rounded-md relative flex items-end overflow-hidden p-[1px] border border-[#27272A]">
                   <motion.div
                     initial={{ height: 0 }}
                     animate={{ height: `${percent}%` }}
@@ -105,9 +105,9 @@ export const WeeklyPerformanceDeltaReport: React.FC = () => {
                   />
                 </div>
 
-                <div className="text-[10px] font-bold">
+                <div className="text-[8px] sm:text-[10px] font-bold truncate w-full">
                   <span className={item.isSurplus ? 'text-[#FFFFFF]' : 'text-[#8E8E93]'}>
-                    {item.actualXp} XP
+                    {item.actualXp}
                   </span>
                 </div>
               </div>
@@ -117,8 +117,8 @@ export const WeeklyPerformanceDeltaReport: React.FC = () => {
       </div>
 
       {/* J.A.R.V.I.S. Operational Assessment */}
-      <div className="p-3 rounded-lg bg-[#000000] border border-[#383848] text-xs space-y-1">
-        <div className="flex items-center gap-1.5 font-bold text-[#FFFFFF] text-[11px] uppercase tracking-wider">
+      <div className="p-3 rounded-xl bg-[#000000] border border-[#383848] text-xs space-y-1">
+        <div className="flex items-center gap-1.5 font-bold text-[#FFFFFF] text-[10px] sm:text-[11px] uppercase tracking-wider">
           <Sparkles className="w-3.5 h-3.5 text-[#FFFFFF] animate-pulse" /> J.A.R.V.I.S. WEEKLY TACTICAL ASSESSMENT
         </div>
         <p className="text-[11px] text-[#E4E4E7] leading-relaxed">

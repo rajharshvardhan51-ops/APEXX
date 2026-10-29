@@ -85,9 +85,9 @@ export const TitleRegistry: React.FC<TitleRegistryProps> = ({ onEquipTitle }) =>
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="p-3 rounded-lg bg-[#000000] border border-[#FFFFFF] text-[#FFFFFF] text-xs font-bold flex items-center gap-2 shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+            className="p-3.5 rounded-xl bg-[#000000] border border-[#FFFFFF] text-[#FFFFFF] text-xs font-bold flex items-center gap-2 shadow-[0_0_15px_rgba(255,255,255,0.3)]"
           >
-            <CheckCircle2 className="w-4 h-4 text-[#FFFFFF]" />
+            <CheckCircle2 className="w-4 h-4 text-[#FFFFFF] shrink-0" />
             <span>{toastMessage}</span>
           </motion.div>
         )}
@@ -105,7 +105,7 @@ export const TitleRegistry: React.FC<TitleRegistryProps> = ({ onEquipTitle }) =>
         </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {titles.map((title) => {
           const isEquipped = title.status === 'EQUIPPED';
           const isAvailable = title.status === 'AVAILABLE';
@@ -114,7 +114,7 @@ export const TitleRegistry: React.FC<TitleRegistryProps> = ({ onEquipTitle }) =>
           return (
             <motion.div
               key={title.id}
-              whileHover={isAvailable ? { scale: 1.02 } : {}}
+              whileHover={isAvailable ? { scale: 1.01 } : {}}
               className={`p-4 rounded-xl border flex flex-col justify-between space-y-3 transition-all duration-200 ${
                 isEquipped
                   ? 'bg-[#18181F] border-[#FFFFFF] text-[#FFFFFF] shadow-[0_0_15px_rgba(255,255,255,0.2)]'
@@ -145,7 +145,7 @@ export const TitleRegistry: React.FC<TitleRegistryProps> = ({ onEquipTitle }) =>
 
               <div className="pt-2 border-t border-[#1E1E26]/50">
                 {isEquipped && (
-                  <span className="text-[10px] text-[#FFFFFF] font-semibold flex items-center gap-1">
+                  <span className="text-[10px] text-[#FFFFFF] font-semibold flex items-center gap-1 py-1">
                     <Shield className="w-3 h-3 text-[#FFFFFF]" /> ACTIVE OPERATIVE TITLE
                   </span>
                 )}
@@ -153,14 +153,14 @@ export const TitleRegistry: React.FC<TitleRegistryProps> = ({ onEquipTitle }) =>
                 {isAvailable && (
                   <button
                     onClick={() => handleEquip(title.id, title.name)}
-                    className="w-full py-1.5 rounded bg-[#000000] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#1E1E26] hover:border-[#FFFFFF] text-[10px] font-bold uppercase transition-colors"
+                    className="w-full py-2.5 min-h-[44px] rounded-xl bg-[#000000] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#000000] border border-[#1E1E26] hover:border-[#FFFFFF] text-xs font-bold uppercase transition-colors flex items-center justify-center active:scale-95 touch-manipulation cursor-pointer"
                   >
                     EQUIP TITLE
                   </button>
                 )}
 
                 {isLocked && (
-                  <span className="text-[9px] text-[#8E8E93] font-bold block uppercase truncate">
+                  <span className="text-[9px] text-[#8E8E93] font-bold block uppercase truncate py-1">
                     LOCKED: {title.unlockRequirement}
                   </span>
                 )}

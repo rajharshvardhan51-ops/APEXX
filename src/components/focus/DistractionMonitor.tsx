@@ -22,7 +22,7 @@ export const DistractionMonitor: React.FC<DistractionMonitorProps> = ({
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: 0.1 }}
-      className="bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.6)] space-y-4 font-mono select-none"
+      className="bg-[#0A0A0E] border border-[#1E1E26] rounded-2xl p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.6)] space-y-4 font-mono select-none"
     >
       <div className="flex items-center justify-between border-b border-[#1E1E26] pb-3">
         <div className="flex items-center gap-2">
@@ -36,42 +36,42 @@ export const DistractionMonitor: React.FC<DistractionMonitorProps> = ({
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
         {/* Focus Time Logged Today */}
-        <div className="p-3.5 rounded-lg bg-[#050507] border border-[#1E1E26] space-y-1">
+        <div className="p-3 sm:p-3.5 rounded-xl bg-[#050507] border border-[#1E1E26] space-y-1">
           <span className="text-[10px] text-[#8E8E93] uppercase flex items-center gap-1">
-            <Clock className="w-3 h-3 text-[#FFFFFF]" /> FOCUS TIME TODAY
+            <Clock className="w-3 h-3 text-[#FFFFFF]" /> FOCUS TIME
           </span>
-          <div className="text-2xl font-extrabold text-[#FFFFFF]">
+          <div className="text-xl sm:text-2xl font-extrabold text-[#FFFFFF]">
             {focusMinsToday} <span className="text-xs font-normal text-[#8E8E93]">MINS</span>
           </div>
         </div>
 
         {/* Today's Distractions Counter */}
-        <div className="p-3.5 rounded-lg bg-[#050507] border border-[#1E1E26] space-y-1">
+        <div className="p-3 sm:p-3.5 rounded-xl bg-[#050507] border border-[#1E1E26] space-y-1">
           <span className="text-[10px] text-[#8E8E93] uppercase flex items-center gap-1">
             <AlertTriangle className="w-3 h-3 text-[#FFFFFF]" /> DISTRACTIONS
           </span>
-          <div className="text-2xl font-extrabold text-[#FFFFFF]">
+          <div className="text-xl sm:text-2xl font-extrabold text-[#FFFFFF]">
             {distractionCount} <span className="text-xs font-normal text-[#8E8E93]">EVENTS</span>
           </div>
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row items-center gap-3 pt-1">
+      {/* Action Buttons - 48px Touch Targets */}
+      <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 pt-1">
         <button
           onClick={onLogDistraction}
-          className="w-full sm:flex-1 py-2.5 rounded-lg bg-[#18181F] hover:bg-[#383848] border border-[#1E1E26] hover:border-[#383848] text-[#FFFFFF] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors"
+          className="w-full sm:flex-1 py-3 min-h-[48px] rounded-xl bg-[#18181F] hover:bg-[#383848] border border-[#1E1E26] hover:border-[#383848] text-[#FFFFFF] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-95 touch-manipulation cursor-pointer"
         >
-          <AlertTriangle className="w-3.5 h-3.5 text-[#8E8E93]" /> LOG DISTRACTION (+1)
+          <AlertTriangle className="w-4 h-4 text-[#8E8E93]" /> LOG DISTRACTION (+1)
         </button>
 
         <button
           onClick={onForceComplete}
-          className="w-full sm:flex-1 py-2.5 rounded-lg bg-[#FFFFFF] hover:bg-[#E4E4E7] border border-[#FFFFFF] text-[#000000] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors shadow-[0_0_12px_rgba(255,255,255,0.3)]"
+          className="w-full sm:flex-1 py-3 min-h-[48px] rounded-xl bg-[#FFFFFF] hover:bg-[#E4E4E7] border border-[#FFFFFF] text-[#000000] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-[0_0_12px_rgba(255,255,255,0.3)] active:scale-95 touch-manipulation cursor-pointer"
         >
-          <CheckCircle2 className="w-3.5 h-3.5 text-[#000000]" /> FORCE COMPLETE
+          <CheckCircle2 className="w-4 h-4 text-[#000000]" /> FORCE COMPLETE
         </button>
       </div>
     </motion.div>

@@ -7,11 +7,11 @@ import GrowthLedgerCharts from '@/components/analytics/GrowthLedgerCharts';
 import WeeklyPerformanceDeltaReport from '@/components/analytics/WeeklyPerformanceDeltaReport';
 import HistoricalProgressReport from '@/components/analytics/HistoricalProgressReport';
 import UserGoalSetupModal from '@/components/goals/UserGoalSetupModal';
-import { Activity, Code, BookOpen, Flame, ArrowUpRight, TrendingUp, Target } from 'lucide-react';
+import { Activity, Code, BookOpen, Flame, ArrowUpRight, Target } from 'lucide-react';
 import { useApexStore } from '@/store/useApexStore';
 
 export default function AnalyticsPage() {
-  const { streak, habitLogs, categoryXp, macroAim } = useApexStore();
+  const { streak, categoryXp } = useApexStore();
   const [isGoalModalOpen, setIsGoalModalOpen] = useState(false);
 
   const codingHrs = categoryXp?.DEV ? (categoryXp.DEV / 100).toFixed(1) : '0.0';
@@ -19,27 +19,27 @@ export default function AnalyticsPage() {
   const growthScore = streak > 0 ? (Math.min(99.9, 50 + streak * 2.5)).toFixed(1) + '%' : '__%';
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 pb-8">
+    <div className="max-w-7xl mx-auto space-y-4 sm:space-y-6 pb-6 select-none font-sans">
       {/* Header Banner */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.6)] font-mono"
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 bg-[#0A0A0E] border border-[#1E1E26] rounded-2xl p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.6)] font-mono"
       >
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-xs text-[#FFFFFF] font-bold tracking-widest uppercase">
             <Activity className="w-4 h-4 text-[#FFFFFF]" /> TELEMETRY ANALYTICS & GROWTH LEDGER
           </div>
-          <h1 className="text-2xl font-extrabold text-[#FFFFFF] font-sans">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-[#FFFFFF] font-sans">
             GROWTH HEATMAPS & LEDGER <span className="text-[#8E8E93]">.OS</span>
           </h1>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-start sm:self-auto">
           <button
             onClick={() => setIsGoalModalOpen(true)}
-            className="flex items-center gap-2 bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] px-3.5 py-2 rounded-lg font-bold text-xs transition-all cursor-pointer shadow-[0_0_12px_rgba(255,255,255,0.2)]"
+            className="flex items-center gap-2 bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] px-4 py-2.5 min-h-[44px] rounded-xl font-bold text-xs transition-all cursor-pointer shadow-[0_0_12px_rgba(255,255,255,0.2)] active:scale-95 touch-manipulation"
           >
             <Target className="w-4 h-4 text-[#000000]" /> UPDATE GOALS & HOBBIES
           </button>
@@ -47,21 +47,21 @@ export default function AnalyticsPage() {
       </motion.div>
 
       {/* Top Row Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
         {/* Metric 1: Growth Score */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.05 }}
-          className="bg-[#0A0A0E] border border-[#1E1E26] hover:border-[#383848] p-4 rounded-xl space-y-2 font-mono shadow-[0_4px_20px_rgba(0,0,0,0.6)] transition-colors"
+          className="bg-[#0A0A0E] border border-[#1E1E26] hover:border-[#383848] p-3.5 sm:p-4 rounded-xl space-y-1.5 sm:space-y-2 font-mono shadow-[0_4px_20px_rgba(0,0,0,0.6)] transition-colors"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[10px] text-[#8E8E93] uppercase tracking-wider">GROWTH SCORE</span>
+            <span className="text-[9px] sm:text-[10px] text-[#8E8E93] uppercase tracking-wider">GROWTH SCORE</span>
             <Activity className="w-4 h-4 text-[#FFFFFF]" />
           </div>
-          <div className="text-2xl font-extrabold text-[#FFFFFF]">{growthScore}</div>
-          <div className="text-[10px] text-[#8E8E93] flex items-center gap-1">
-            <ArrowUpRight className="w-3 h-3 text-[#FFFFFF]" /> {streak > 0 ? 'CONSISTENCY INDEX (OPTIMAL)' : 'NO MATRIX HISTORY'}
+          <div className="text-xl sm:text-2xl font-extrabold text-[#FFFFFF]">{growthScore}</div>
+          <div className="text-[9px] sm:text-[10px] text-[#8E8E93] flex items-center gap-1 truncate">
+            <ArrowUpRight className="w-3 h-3 text-[#FFFFFF] shrink-0" /> {streak > 0 ? 'CONSISTENCY (OPTIMAL)' : 'NO HISTORY'}
           </div>
         </motion.div>
 
@@ -70,15 +70,15 @@ export default function AnalyticsPage() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.1 }}
-          className="bg-[#0A0A0E] border border-[#1E1E26] hover:border-[#383848] p-4 rounded-xl space-y-2 font-mono shadow-[0_4px_20px_rgba(0,0,0,0.6)] transition-colors"
+          className="bg-[#0A0A0E] border border-[#1E1E26] hover:border-[#383848] p-3.5 sm:p-4 rounded-xl space-y-1.5 sm:space-y-2 font-mono shadow-[0_4px_20px_rgba(0,0,0,0.6)] transition-colors"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[10px] text-[#8E8E93] uppercase tracking-wider">CODING VOLUME</span>
+            <span className="text-[9px] sm:text-[10px] text-[#8E8E93] uppercase tracking-wider">CODING VOL</span>
             <Code className="w-4 h-4 text-[#FFFFFF]" />
           </div>
-          <div className="text-2xl font-extrabold text-[#FFFFFF]">{codingHrs} <span className="text-xs font-normal text-[#8E8E93]">HRS</span></div>
-          <div className="text-[10px] text-[#8E8E93] flex items-center gap-1">
-            <ArrowUpRight className="w-3 h-3 text-[#FFFFFF]" /> +0.0 HRS THIS MONTH
+          <div className="text-xl sm:text-2xl font-extrabold text-[#FFFFFF]">{codingHrs} <span className="text-xs font-normal text-[#8E8E93]">HRS</span></div>
+          <div className="text-[9px] sm:text-[10px] text-[#8E8E93] flex items-center gap-1 truncate">
+            <ArrowUpRight className="w-3 h-3 text-[#FFFFFF] shrink-0" /> +0.0 HRS THIS MONTH
           </div>
         </motion.div>
 
@@ -87,15 +87,15 @@ export default function AnalyticsPage() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.15 }}
-          className="bg-[#0A0A0E] border border-[#1E1E26] hover:border-[#383848] p-4 rounded-xl space-y-2 font-mono shadow-[0_4px_20px_rgba(0,0,0,0.6)] transition-colors"
+          className="bg-[#0A0A0E] border border-[#1E1E26] hover:border-[#383848] p-3.5 sm:p-4 rounded-xl space-y-1.5 sm:space-y-2 font-mono shadow-[0_4px_20px_rgba(0,0,0,0.6)] transition-colors"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[10px] text-[#8E8E93] uppercase tracking-wider">READING LEDGER</span>
+            <span className="text-[9px] sm:text-[10px] text-[#8E8E93] uppercase tracking-wider">READING</span>
             <BookOpen className="w-4 h-4 text-[#FFFFFF]" />
           </div>
-          <div className="text-2xl font-extrabold text-[#FFFFFF]">{readingPages.toLocaleString()} <span className="text-xs font-normal text-[#8E8E93]">PAGES</span></div>
-          <div className="text-[10px] text-[#8E8E93] flex items-center gap-1">
-            <ArrowUpRight className="w-3 h-3 text-[#FFFFFF]" /> {readingPages > 0 ? `${Math.floor(readingPages / 60)} BOOKS & SPECS READ` : '0 BOOKS & SPECS READ'}
+          <div className="text-xl sm:text-2xl font-extrabold text-[#FFFFFF]">{readingPages.toLocaleString()} <span className="text-xs font-normal text-[#8E8E93]">PGS</span></div>
+          <div className="text-[9px] sm:text-[10px] text-[#8E8E93] flex items-center gap-1 truncate">
+            <ArrowUpRight className="w-3 h-3 text-[#FFFFFF] shrink-0" /> {readingPages > 0 ? `${Math.floor(readingPages / 60)} BOOKS READ` : '0 BOOKS'}
           </div>
         </motion.div>
 
@@ -104,15 +104,15 @@ export default function AnalyticsPage() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.2 }}
-          className="bg-[#0A0A0E] border border-[#1E1E26] hover:border-[#383848] p-4 rounded-xl space-y-2 font-mono shadow-[0_4px_20px_rgba(0,0,0,0.6)] transition-colors"
+          className="bg-[#0A0A0E] border border-[#1E1E26] hover:border-[#383848] p-3.5 sm:p-4 rounded-xl space-y-1.5 sm:space-y-2 font-mono shadow-[0_4px_20px_rgba(0,0,0,0.6)] transition-colors"
         >
           <div className="flex items-center justify-between">
-            <span className="text-[10px] text-[#8E8E93] uppercase tracking-wider">HABIT DEFENSE</span>
+            <span className="text-[9px] sm:text-[10px] text-[#8E8E93] uppercase tracking-wider">STREAK</span>
             <Flame className="w-4 h-4 text-[#FFFFFF]" />
           </div>
-          <div className="text-2xl font-extrabold text-[#FFFFFF]">{streak} <span className="text-xs font-normal text-[#8E8E93]">DAYS</span></div>
-          <div className="text-[10px] text-[#8E8E93] flex items-center gap-1">
-            {streak > 0 ? 'ACTIVE MATRIX STREAK' : 'NO ACTIVE STREAK'}
+          <div className="text-xl sm:text-2xl font-extrabold text-[#FFFFFF]">{streak} <span className="text-xs font-normal text-[#8E8E93]">DAYS</span></div>
+          <div className="text-[9px] sm:text-[10px] text-[#8E8E93] flex items-center gap-1 truncate">
+            {streak > 0 ? 'ACTIVE MATRIX STREAK' : 'NO STREAK'}
           </div>
         </motion.div>
       </div>

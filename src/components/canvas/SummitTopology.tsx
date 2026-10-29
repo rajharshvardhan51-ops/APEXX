@@ -4,7 +4,7 @@ import React, { useRef, useMemo, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
-import { Compass, Cpu, Maximize2, Radio, Terminal, Crosshair, Activity, Layers } from 'lucide-react';
+import { Compass, Cpu, Radio, Terminal, Crosshair, Activity, Layers, RotateCw } from 'lucide-react';
 import { useWeatherLocation } from '@/hooks/useWeatherLocation';
 
 export interface SummitTopologyProps {
@@ -95,10 +95,10 @@ const SummitPointCloud: React.FC<{ completionIndex: number }> = ({ completionInd
             weight *= 0.42;
           }
 
-          // Main Tall Back Spire Pinnacle (matching high center pinnacle in reference image)
+          // Main Tall Back Spire Pinnacle
           float mainSpire = exp(-dot((p - vec2(0.0, -0.15)) * vec2(1.2, 0.85), (p - vec2(0.0, -0.15)) * vec2(1.2, 0.85)) * 2.2) * 2.8;
 
-          // Front & Side Crown Pinnacles (Cluster of sharp peaks forming the alpine crown)
+          // Front & Side Crown Pinnacles
           float peakLeft  = exp(-dot((p - vec2(-0.45, 0.20)) * 2.4, (p - vec2(-0.45, 0.20)) * 2.4)) * 1.6;
           float peakRight = exp(-dot((p - vec2(0.50, 0.15)) * 2.2, (p - vec2(0.50, 0.15)) * 2.2)) * 1.7;
           float peakFront = exp(-dot((p - vec2(0.05, 0.40)) * 2.5, (p - vec2(0.05, 0.40)) * 2.5)) * 1.4;
@@ -166,7 +166,7 @@ const SummitPointCloud: React.FC<{ completionIndex: number }> = ({ completionInd
           float maxExpected = uMaxHeight * (0.65 + uCompletion * 2.8) + 0.01;
           float heightRatio = clamp(vElevation / maxExpected, 0.0, 1.0);
 
-          // Contour line glow highlight (creates horizontal & radial stippled wireframe lines)
+          // Contour line glow highlight
           float contourHighlight = smoothstep(0.82, 1.0, vContour) * 0.35;
 
           // Monochrome palette: silver slate base to pure glowing white peaks & contours
@@ -217,13 +217,13 @@ const SummitPointCloud: React.FC<{ completionIndex: number }> = ({ completionInd
 
 // Fallback Loader Component
 const SummitLoader: React.FC = () => (
-  <div className="w-full h-full min-h-[380px] bg-[#000000] border border-[#1E1E26] rounded-xl flex flex-col items-center justify-center space-y-4 p-6 relative overflow-hidden select-none">
-    <div className="w-12 h-12 rounded-full border-2 border-[#1E1E26] border-t-[#FFFFFF] animate-spin flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+  <div className="w-full h-[290px] sm:h-[440px] bg-[#000000] border border-[#1E1E26] rounded-2xl flex flex-col items-center justify-center space-y-3 p-6 relative overflow-hidden select-none">
+    <div className="w-10 h-10 rounded-full border-2 border-[#1E1E26] border-t-[#FFFFFF] animate-spin flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.2)]">
       <Cpu className="w-5 h-5 text-[#E0E0E0] animate-pulse" />
     </div>
 
     <div className="flex flex-col items-center font-mono space-y-1 text-center">
-      <span className="text-xs font-bold text-[#FFFFFF] tracking-wider uppercase flex items-center gap-2">
+      <span className="text-xs font-bold text-[#FFFFFF] tracking-wider uppercase flex items-center gap-1.5">
         <Radio className="w-3.5 h-3.5 text-[#E0E0E0] animate-ping" /> INITIALIZING RADAR TOPOLOGY ENGINE...
       </span>
       <span className="text-[10px] text-[#8E8E93]">
@@ -260,71 +260,45 @@ export const SummitTopology: React.FC<SummitTopologyProps> = ({
 
   return (
     <div
-      className={`relative w-full h-[440px] bg-[#000000] border border-[#1E1E26] rounded-xl overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.95)] select-none ${className}`}
+      className={`relative w-full h-[300px] sm:h-[440px] bg-[#000000] border border-[#1E1E26] rounded-2xl overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.95)] select-none ${className}`}
     >
       {/* Background Radar Scanline & Grid Mask */}
       <div className="absolute inset-0 bg-cyber-grid opacity-40 pointer-events-none z-10" />
 
-      {/* HUD Corner Brackets & Crosshair Reticles */}
-      <div className="absolute top-2 left-2 z-20 pointer-events-none text-[10px] font-mono text-[#8E8E93] flex items-center gap-1">
-        <span className="text-[#FFFFFF] font-bold text-glow-sm">[+</span>
-        <Crosshair className="w-3 h-3 text-[#FFFFFF] inline" />
-        <span>.0KCF-1109.9]</span>
-      </div>
-
-      <div className="absolute top-2 right-2 z-20 pointer-events-none text-[10px] font-mono text-[#8E8E93] flex items-center gap-1">
-        <span className="text-[#FFFFFF] font-bold text-glow-sm">-8/7C6</span>
-        <span>[ALT: 4850M+]</span>
-      </div>
-
-      <div className="absolute bottom-2 left-2 z-20 pointer-events-none text-[10px] font-mono text-[#8E8E93] flex items-center gap-1">
-        <span className="text-[#FFFFFF] font-bold text-glow-sm">[+.258</span>
-        <Layers className="w-3 h-3 text-[#FFFFFF] inline" />
-        <span>MATRIX]</span>
-      </div>
-
-      <div className="absolute bottom-2 right-2 z-20 pointer-events-none text-[10px] font-mono text-[#8E8E93] flex items-center gap-1">
-        <span>[RADAR: ACTIVE</span>
-        <span className="text-[#FFFFFF] font-bold text-glow-sm">+]</span>
-      </div>
-
-      {/* Perimeter Telemetry Header */}
-      <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none font-mono text-xs">
-        <div className="flex items-center gap-2 bg-[#000000]/95 backdrop-blur-md px-3.5 py-1.5 rounded border border-[#27272A] shadow-sm">
+      {/* Perimeter Telemetry Header (Responsive for Mobile screens) */}
+      <div className="absolute top-2.5 sm:top-4 left-2.5 sm:left-4 right-2.5 sm:right-4 z-20 flex items-center justify-between pointer-events-none font-mono text-xs">
+        <div className="flex items-center gap-1.5 bg-[#000000]/90 backdrop-blur-md px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl border border-[#27272A] shadow-sm">
           <Terminal className="w-3.5 h-3.5 text-[#FFFFFF]" />
-          <span className="text-[#FFFFFF] font-extrabold tracking-wider text-glow-sm">
-            SUMMIT TOPOLOGY // STIPPLED ELEVATION
+          <span className="text-[#FFFFFF] font-extrabold tracking-wider text-glow-sm text-[10px] sm:text-xs">
+            <span className="sm:hidden">SUMMIT 3D</span>
+            <span className="hidden sm:inline">SUMMIT TOPOLOGY // RADAR</span>
           </span>
         </div>
 
-        <div className="flex items-center gap-3 bg-[#000000]/95 backdrop-blur-md px-3.5 py-1.5 rounded border border-[#27272A] shadow-sm">
-          <Activity className="w-3.5 h-3.5 text-[#FFFFFF] animate-pulse" />
-          <span className="text-[#8E8E93]">APEX ELEVATION:</span>
-          <span className="text-[#FFFFFF] font-black tracking-wide text-glow-sm">
+        <div className="flex items-center gap-1.5 bg-[#000000]/90 backdrop-blur-md px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-xl border border-[#27272A] shadow-sm">
+          <Activity className="w-3 h-3 text-[#FFFFFF] animate-pulse" />
+          <span className="text-[#FFFFFF] font-black tracking-wide text-glow-sm text-[10px] sm:text-xs">
             {apexMeters}M ({activeCompletion.toFixed(1)}%)
           </span>
         </div>
       </div>
 
-      {/* Perimeter Coordinates & Technical Readouts Footer */}
-      <div className="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none font-mono text-[11px] text-[#8E8E93]">
-        <div className="flex items-center gap-2 bg-[#000000]/90 backdrop-blur-md px-3 py-1 rounded border border-[#27272A]">
-          <Compass className="w-3.5 h-3.5 text-[#FFFFFF]" />
+      {/* Perimeter Coordinates & Technical Readouts Footer (Responsive for Mobile) */}
+      <div className="absolute bottom-2.5 sm:bottom-4 left-2.5 sm:left-4 right-2.5 sm:right-4 z-20 flex items-center justify-between pointer-events-none font-mono text-[10px] sm:text-[11px] text-[#8E8E93]">
+        <div className="flex items-center gap-1.5 bg-[#000000]/90 backdrop-blur-md px-2 sm:px-3 py-1 rounded-lg border border-[#27272A]">
+          <Compass className="w-3 h-3 text-[#FFFFFF]" />
           <span className="text-[#FFFFFF] font-bold text-glow-sm">
-            LAT: {latitude.toFixed(4)}° {latitude >= 0 ? 'N' : 'S'} | LON: {longitude.toFixed(4)}° {longitude >= 0 ? 'E' : 'W'}
+            {latitude.toFixed(2)}° N | {longitude.toFixed(2)}° E
           </span>
         </div>
 
-        <div className="flex items-center gap-2 bg-[#000000]/90 backdrop-blur-md px-3 py-1 rounded border border-[#27272A]">
-          <Radio className="w-3.5 h-3.5 text-[#FFFFFF] animate-pulse" />
-          <span className="text-[#E4E4E7]">RADAR FREQ: 1420 MHz</span>
-          <span className="text-[9px] bg-[#18181F] text-[#FFFFFF] border border-[#27272A] px-1.5 py-0.5 rounded ml-1 font-bold text-glow-sm">
-            SWEEP 60FPS
-          </span>
+        <div className="flex items-center gap-1 bg-[#000000]/90 backdrop-blur-md px-2 sm:px-2.5 py-1 rounded-lg border border-[#27272A]">
+          <RotateCw className="w-3 h-3 text-[#FFFFFF]" />
+          <span className="text-[9px] text-[#E4E4E7]">DRAG TO ROTATE</span>
         </div>
       </div>
 
-      {/* Three.js R3F Canvas */}
+      {/* Three.js R3F Canvas - enableZoom false to prevent mobile page scrolling hijack */}
       <Canvas
         camera={{ position: [0, 3.4, 7.2], fov: 42 }}
         gl={{ antialias: true, alpha: true }}
@@ -337,7 +311,7 @@ export const SummitTopology: React.FC<SummitTopologyProps> = ({
         <SummitPointCloud completionIndex={activeCompletion} />
 
         <OrbitControls
-          enableZoom={true}
+          enableZoom={false}
           enablePan={false}
           maxPolarAngle={Math.PI / 2.02}
           minPolarAngle={0.05}
@@ -349,4 +323,3 @@ export const SummitTopology: React.FC<SummitTopologyProps> = ({
 };
 
 export default SummitTopology;
-

@@ -128,34 +128,34 @@ export const DailyMissionsPanel: React.FC<DailyMissionsPanelProps> = ({
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: 0.1 }}
-      className="bg-[#0B0C12] border border-[#1C1E2A] rounded-2xl p-5 sm:p-6 shadow-[0_4px_25px_rgba(0,0,0,0.6)] flex flex-col space-y-5"
+      className="bg-[#0B0C12] border border-[#1C1E2A] rounded-2xl p-4 sm:p-6 shadow-[0_4px_25px_rgba(0,0,0,0.6)] flex flex-col space-y-4 sm:space-y-5"
     >
       {/* Header Bar */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[#1C1E2A] pb-4">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 sm:gap-4 border-b border-[#1C1E2A] pb-4">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-[#12141F] text-[#FFFFFF] border border-[#232634]">
+          <div className="p-2 sm:p-2.5 rounded-xl bg-[#12141F] text-[#FFFFFF] border border-[#232634] shrink-0">
             <Target className="w-5 h-5 text-[#FFFFFF]" />
           </div>
-          <div>
-            <h2 className="font-sans text-base font-bold text-[#FFFFFF] tracking-tight flex items-center gap-2">
+          <div className="min-w-0">
+            <h2 className="font-sans text-sm sm:text-base font-bold text-[#FFFFFF] tracking-tight truncate">
               Daily Quests & Directives
             </h2>
-            <p className="font-sans text-xs text-[#94949E] mt-0.5">
-              Progress: <span className="text-[#FFFFFF] font-bold">{completedCount} / {quests.length}</span> completed (<span className="font-mono text-[#FFFFFF]">+{totalXpAvailable} XP</span> earned)
+            <p className="font-sans text-xs text-[#94949E] mt-0.5 truncate">
+              Progress: <span className="text-[#FFFFFF] font-bold">{completedCount} / {quests.length}</span> (<span className="font-mono text-[#FFFFFF]">+{totalXpAvailable} XP</span>)
             </p>
           </div>
         </div>
 
-        {/* Filter Categories */}
-        <div className="flex flex-wrap items-center gap-2 font-sans text-xs pb-1 lg:pb-0">
-          <Filter className="w-4 h-4 text-[#717180] shrink-0" />
+        {/* Filter Categories - Mobile Horizontal Scroll */}
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-1 -mx-1 px-1 sm:mx-0 sm:px-0 sm:flex-wrap">
+          <Filter className="w-3.5 h-3.5 text-[#717180] shrink-0 hidden sm:block mr-0.5" />
           {['ALL', 'DEV', 'FITNESS', 'ACADEMICS', 'MIND'].map((cat) => (
             <button
               key={cat}
               onClick={() => handleFilterClick(cat)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all duration-150 border cursor-pointer min-h-[36px] active:scale-95 ${
+              className={`px-3 sm:px-3 py-2 sm:py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all duration-150 border cursor-pointer min-h-[40px] sm:min-h-[36px] shrink-0 active:scale-95 touch-manipulation ${
                 activeCategoryFilter === cat
-                  ? 'bg-[#FFFFFF] text-[#000000] border-[#FFFFFF] shadow-sm'
+                  ? 'bg-[#FFFFFF] text-[#000000] border-[#FFFFFF] shadow-sm font-bold'
                   : 'bg-[#06070B] text-[#94949E] hover:text-[#FFFFFF] border-[#1C1E2A]'
               }`}
             >
@@ -179,7 +179,7 @@ export const DailyMissionsPanel: React.FC<DailyMissionsPanelProps> = ({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 0.15 }}
-                className={`relative group flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl border transition-all duration-200 ${
+                className={`relative group flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 p-3.5 sm:p-4 rounded-xl border transition-all duration-200 ${
                   isJustCompleted
                     ? 'bg-[#FFFFFF]/10 border-[#FFFFFF] shadow-[0_0_15px_rgba(255,255,255,0.3)]'
                     : quest.completed
@@ -188,11 +188,11 @@ export const DailyMissionsPanel: React.FC<DailyMissionsPanelProps> = ({
                 }`}
               >
                 {/* Left: Checkbox Switch & Quest Info */}
-                <div className="flex items-start sm:items-center gap-3.5">
-                  {/* Mechanical Checkbox Button */}
+                <div className="flex items-start sm:items-center gap-3">
+                  {/* Mechanical Checkbox Button - Touch-Optimized 38px/44px touch area */}
                   <button
                     onClick={() => toggleQuest(quest.id)}
-                    className={`w-7 h-7 rounded-lg border transition-all duration-150 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0 cursor-pointer active:scale-90 ${
+                    className={`w-8 h-8 sm:w-7 sm:h-7 rounded-lg border transition-all duration-150 flex items-center justify-center shrink-0 mt-0.5 sm:mt-0 cursor-pointer active:scale-90 touch-manipulation ${
                       quest.completed
                         ? 'bg-[#FFFFFF] border-[#FFFFFF] text-[#000000] shadow-[0_0_10px_rgba(255,255,255,0.4)]'
                         : 'bg-[#0A0B10] border-[#232634] hover:border-[#FFFFFF] text-transparent'
@@ -202,20 +202,18 @@ export const DailyMissionsPanel: React.FC<DailyMissionsPanelProps> = ({
                     <Check className="w-4 h-4 stroke-[3]" />
                   </button>
 
-                  <div className="flex flex-col space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`text-sm font-sans font-medium tracking-normal transition-all duration-150 leading-snug ${
-                          quest.completed ? 'line-through text-[#717180]' : 'text-[#FFFFFF]'
-                        }`}
-                      >
-                        {quest.title}
-                      </span>
-                    </div>
+                  <div className="flex flex-col space-y-1 min-w-0 flex-1">
+                    <span
+                      className={`text-xs sm:text-sm font-sans font-medium tracking-normal transition-all duration-150 leading-snug break-words ${
+                        quest.completed ? 'line-through text-[#717180]' : 'text-[#FFFFFF]'
+                      }`}
+                    >
+                      {quest.title}
+                    </span>
 
-                    <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span
-                        className={`font-mono text-[10px] font-bold px-2 py-0.5 rounded-full border ${getCategoryTag(
+                        className={`font-mono text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full border ${getCategoryTag(
                           quest.category
                         )}`}
                       >
@@ -223,8 +221,8 @@ export const DailyMissionsPanel: React.FC<DailyMissionsPanelProps> = ({
                       </span>
 
                       {quest.durationMins && (
-                        <span className="font-sans text-xs text-[#94949E]">
-                          Est: <span className="font-mono text-[#FFFFFF]">{quest.durationMins} mins</span>
+                        <span className="font-sans text-[11px] sm:text-xs text-[#94949E]">
+                          Est: <span className="font-mono text-[#FFFFFF]">{quest.durationMins}m</span>
                         </span>
                       )}
                     </div>
@@ -232,10 +230,10 @@ export const DailyMissionsPanel: React.FC<DailyMissionsPanelProps> = ({
                 </div>
 
                 {/* Right: XP Pill & Focus Trigger Button */}
-                <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#1C1E2A]/60">
+                <div className="flex items-center justify-between sm:justify-end gap-2.5 pt-2.5 sm:pt-0 border-t sm:border-t-0 border-[#1C1E2A]/60">
                   {/* XP Reward Pill */}
                   <span
-                    className={`font-mono text-xs font-bold px-3 py-1.5 rounded-xl border flex items-center gap-1.5 shrink-0 ${
+                    className={`font-mono text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1.5 rounded-xl border flex items-center gap-1.5 shrink-0 ${
                       quest.completed
                         ? 'bg-[#08090E] text-[#94949E] border-[#232634]'
                         : 'bg-[#12141F] text-[#FFFFFF] border-[#232634]'
@@ -251,14 +249,14 @@ export const DailyMissionsPanel: React.FC<DailyMissionsPanelProps> = ({
                         playTerminalClick();
                         onStartFocusQuest && onStartFocusQuest(quest);
                       }}
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] font-sans text-xs font-bold transition-all duration-150 shrink-0 cursor-pointer min-h-[40px] active:scale-95 shadow-sm"
+                      className="flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 rounded-xl bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] font-sans text-xs font-bold transition-all duration-150 shrink-0 cursor-pointer min-h-[44px] active:scale-95 shadow-sm touch-manipulation"
                     >
                       <Play className="w-3.5 h-3.5 fill-current" /> Focus
                     </button>
                   )}
 
                   {quest.completed && (
-                    <span className="font-sans text-xs text-[#94949E] flex items-center gap-1 font-semibold">
+                    <span className="font-sans text-xs text-[#94949E] flex items-center gap-1 font-semibold py-1">
                       <ShieldCheck className="w-4 h-4 text-[#FFFFFF]" /> Done
                     </span>
                   )}
@@ -273,5 +271,3 @@ export const DailyMissionsPanel: React.FC<DailyMissionsPanelProps> = ({
 };
 
 export default DailyMissionsPanel;
-
-

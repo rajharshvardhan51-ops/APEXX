@@ -16,9 +16,10 @@ import {
   ShieldAlert,
   Download,
   Bot,
-  Sparkles,
+  Zap,
 } from 'lucide-react';
 import ApexLogo from '@/components/brand/ApexLogo';
+import { useApexStore } from '@/store/useApexStore';
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -39,6 +40,10 @@ const menuItems = [
 
 export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose, onOpenInstall }) => {
   const pathname = usePathname();
+  const username = useApexStore((state) => state.username);
+  const level = useApexStore((state) => state.level);
+  const currentTitle = useApexStore((state) => state.currentTitle);
+  const avatarUrl = useApexStore((state) => state.avatarUrl);
 
   return (
     <AnimatePresence>
@@ -59,29 +64,44 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose, onO
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed top-0 left-0 bottom-0 z-50 w-[85vw] max-w-[340px] bg-[#0A0B10] border-r border-[#1C1E2A] text-[#FFFFFF] flex flex-col justify-between select-none md:hidden overflow-hidden shadow-2xl"
+            className="fixed top-0 left-0 bottom-0 z-50 w-[85vw] max-w-[340px] bg-[#0A0B10] border-r border-[#1C1E2A] text-[#FFFFFF] flex flex-col justify-between select-none md:hidden overflow-hidden shadow-2xl h-dvh"
           >
             {/* Drawer Header */}
-            <div className="p-4 border-b border-[#1C1E2A] flex items-center justify-between bg-[#0E0F16]">
+            <div className="p-4 pt-safe border-b border-[#1C1E2A] flex items-center justify-between bg-[#0E0F16]">
               <div className="flex items-center gap-2">
                 <ApexLogo variant="compact" size="sm" glow={true} />
               </div>
               <button
                 onClick={onClose}
-                className="w-10 h-10 rounded-xl bg-[#141622] hover:bg-[#FFFFFF] text-[#94949E] hover:text-[#000000] border border-[#232634] flex items-center justify-center transition-all cursor-pointer active:scale-95"
+                className="w-10 h-10 rounded-xl bg-[#141622] active:bg-[#FFFFFF] text-[#94949E] active:text-[#000000] border border-[#232634] flex items-center justify-center transition-all cursor-pointer active:scale-95"
                 aria-label="Close Mobile Drawer"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Status Telemetry Badge */}
+            {/* Operative Quick Telemetry Card */}
             <div className="px-4 py-3 bg-[#08090E] border-b border-[#1C1E2A] flex items-center justify-between text-xs font-sans">
-              <span className="text-[#94949E] flex items-center gap-2 font-medium">
-                <ShieldAlert className="w-4 h-4 text-[#FFFFFF]" /> APEX Mobile
-              </span>
-              <span className="px-2.5 py-0.5 rounded-full bg-[#181A26] text-[#FFFFFF] border border-[#2D3042] font-mono text-[10px] font-bold">
-                Online
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-7 h-7 rounded-lg overflow-hidden border border-[#FFFFFF]/60 bg-[#161824] shrink-0 flex items-center justify-center">
+                  {avatarUrl ? (
+                    <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                  ) : (
+                    <User className="w-4 h-4 text-[#FFFFFF]" />
+                  )}
+                </div>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-xs font-bold text-[#FFFFFF] truncate">
+                    {username || 'OPERATIVE'}
+                  </span>
+                  <span className="text-[10px] text-[#8E8E9B] truncate font-mono">
+                    {currentTitle || 'TITAN ARCHITECT'}
+                  </span>
+                </div>
+              </div>
+
+              <span className="px-2 py-0.5 rounded-full bg-[#181A26] text-[#FFFFFF] border border-[#2D3042] font-mono text-[10px] font-bold shrink-0 flex items-center gap-1">
+                <Zap className="w-3 h-3 text-[#FFFFFF]" /> LVL {level}
               </span>
             </div>
 
@@ -99,7 +119,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose, onO
                     className={`flex items-center gap-3.5 px-4 py-3 min-h-[48px] rounded-xl text-sm font-medium transition-all duration-200 active:scale-95 ${
                       isActive
                         ? 'bg-[#181A26] text-[#FFFFFF] border border-[#383C52] shadow-[0_0_12px_rgba(255,255,255,0.08)]'
-                        : 'text-[#94949E] hover:text-[#FFFFFF] hover:bg-[#12141F] border border-transparent'
+                        : 'text-[#94949E] hover:text-[#FFFFFF] active:bg-[#12141F] border border-transparent'
                     }`}
                   >
                     <Icon className={`w-5 h-5 shrink-0 ${isActive ? 'text-[#FFFFFF]' : 'text-[#717180]'}`} />
@@ -122,7 +142,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose, onO
                     onClose();
                     onOpenInstall();
                   }}
-                  className="w-full flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-xl bg-[#FFFFFF] hover:bg-[#E4E4E7] text-[#000000] font-sans text-xs font-bold tracking-wide transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)] active:scale-95 cursor-pointer min-h-[48px]"
+                  className="w-full flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-xl bg-[#FFFFFF] active:bg-[#E4E4E7] text-[#000000] font-sans text-xs font-bold tracking-wide transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)] active:scale-95 cursor-pointer min-h-[48px]"
                 >
                   <Download className="w-4.5 h-4.5" />
                   <span>Install APEX App</span>
@@ -132,7 +152,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({ isOpen, onClose, onO
               <div className="flex items-center justify-center gap-2 pt-1">
                 <div className="w-2 h-2 rounded-full bg-[#FFFFFF] animate-pulse" />
                 <span className="font-mono text-[10px] text-[#8E8E9B] tracking-wider uppercase">
-                  APEX OS v1.0
+                  APEX OS MOBILE v1.0
                 </span>
               </div>
             </div>

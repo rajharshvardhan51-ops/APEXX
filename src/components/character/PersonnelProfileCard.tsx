@@ -9,19 +9,14 @@ interface PersonnelProfileCardProps {
   onEditClick?: () => void;
 }
 
-export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCardProps) {
+export default function PersonnelProfileCard({ onEditClick: _onEditClick }: PersonnelProfileCardProps) {
   const {
     username,
     fullName,
     dateOfBirth,
     avatarUrl,
     level,
-    currentXp,
-    xpToNextLevel,
-    streak,
     currentTitle,
-    completedQuestIds,
-    completionIndex,
     setAvatarUrl,
     setUsername,
   } = useApexStore();
@@ -75,30 +70,28 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
   ];
 
   return (
-    <div className="w-full max-w-5xl mx-auto font-mono text-white select-none">
+    <div className="w-full max-w-5xl mx-auto font-mono text-white select-none overflow-hidden">
       {/* ------------------------------------------------------------- */}
       {/* TOP BRAND HEADER LOGO & HEXAGON INDICATORS */}
       {/* ------------------------------------------------------------- */}
-      <div className="flex items-center justify-between px-2 sm:px-4 mb-2">
-        {/* Left Stylized Logo & Title matching OSHIMA layout */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 font-extrabold text-2xl sm:text-3xl tracking-[0.25em] text-white">
-            {/* Triangular Vector Logo matching the reference image */}
-            <svg className="w-7 h-7 fill-white" viewBox="0 0 100 100">
+      <div className="flex items-center justify-between px-1 sm:px-4 mb-2">
+        {/* Left Stylized Logo & Title */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 font-extrabold text-xl sm:text-3xl tracking-[0.2em] sm:tracking-[0.25em] text-white">
+            <svg className="w-6 h-6 sm:w-7 sm:h-7 fill-white shrink-0" viewBox="0 0 100 100">
               <polygon points="50,10 90,90 70,90 50,45 30,90 10,90" />
             </svg>
             <span>OSHIMA</span>
           </div>
-          {/* Top Divider extension line */}
           <div className="hidden md:block h-[2px] bg-white w-32 lg:w-64 rounded-full opacity-80" />
         </div>
 
         {/* Right Hexagon Status Indicators */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-1.5 sm:gap-2.5">
           {[1, 2, 3].map((idx) => (
             <div
               key={idx}
-              className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center border border-white/80 hover:border-white transition-colors duration-200"
+              className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center border border-white/80"
               style={{
                 clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
               }}
@@ -117,23 +110,23 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
       {/* ------------------------------------------------------------- */}
       {/* MAIN PERSONNEL ID CARD FRAME */}
       {/* ------------------------------------------------------------- */}
-      <div className="relative bg-[#000000] border-2 border-white p-3 sm:p-5 md:p-7 shadow-[0_0_40px_rgba(255,255,255,0.15)] rounded-sm">
-        {/* Inner Border Line Overlay for classic retro-futuristic detail */}
-        <div className="absolute inset-1 border border-white/30 pointer-events-none" />
+      <div className="relative bg-[#000000] border-2 border-white p-3 sm:p-5 md:p-7 shadow-[0_0_40px_rgba(255,255,255,0.15)] rounded-2xl overflow-hidden">
+        {/* Inner Border Line Overlay */}
+        <div className="absolute inset-1 border border-white/30 pointer-events-none rounded-xl" />
 
-        {/* Quick Action Buttons (Edit / Customize) */}
+        {/* Quick Action Button (Edit / Customize) */}
         <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 flex items-center gap-2">
           <button
             onClick={() => setIsEditing(!isEditing)}
-            className="flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-extrabold uppercase bg-white text-black border border-white hover:bg-neutral-200 transition-all cursor-pointer shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 min-h-[38px] text-[10px] font-extrabold uppercase bg-white text-black border border-white hover:bg-neutral-200 transition-all cursor-pointer shadow-sm active:scale-95 touch-manipulation rounded-lg"
           >
-            <Edit3 className="w-3 h-3 text-black" />
-            <span>{isEditing ? 'CLOSE EDIT' : 'EDIT ID CARD'}</span>
+            <Edit3 className="w-3.5 h-3.5 text-black" />
+            <span>{isEditing ? 'CLOSE' : 'EDIT ID'}</span>
           </button>
         </div>
 
         {/* ------------------------------------------------------------- */}
-        {/* EDIT PROFILE DRAWER (MODAL PREVIEW) */}
+        {/* EDIT PROFILE DRAWER */}
         {/* ------------------------------------------------------------- */}
         <AnimatePresence>
           {isEditing && (
@@ -142,24 +135,24 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="mb-6 p-4 bg-[#0a0a0a] border border-white/60 space-y-4 overflow-hidden"
+              className="mb-5 p-3.5 sm:p-4 bg-[#0a0a0a] border border-white/60 rounded-xl space-y-4 overflow-hidden"
             >
               <div className="flex items-center justify-between border-b border-white/30 pb-2">
                 <span className="text-xs font-bold tracking-widest text-white flex items-center gap-2">
-                  <Sparkles className="w-3.5 h-3.5 text-white" /> EDIT PERSONNEL IDENTITY PROTOCOL
+                  <Sparkles className="w-3.5 h-3.5 text-white" /> EDIT PERSONNEL IDENTITY
                 </span>
-                <span className="text-[10px] text-neutral-400">[SYSTEM_CONFIG_V2]</span>
+                <span className="text-[10px] text-neutral-400">[CONFIG_V2]</span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                 <div>
-                  <label className="block text-[10px] font-bold text-neutral-400 mb-1">OPERATIVE NAME (LAST, FIRST)</label>
+                  <label className="block text-[10px] font-bold text-neutral-400 mb-1">OPERATIVE NAME</label>
                   <input
                     type="text"
                     value={customName}
                     onChange={(e) => setCustomName(e.target.value)}
                     placeholder="e.g. OSHIMA, ALEX"
-                    className="w-full bg-[#121212] border border-white/40 px-3 py-1.5 text-white font-mono focus:border-white focus:outline-none"
+                    className="w-full bg-[#121212] border border-white/40 px-3 py-2 text-base sm:text-xs text-white font-mono focus:border-white focus:outline-none rounded-lg min-h-[44px]"
                   />
                 </div>
 
@@ -170,14 +163,14 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
                     value={customAvatar}
                     onChange={(e) => setCustomAvatar(e.target.value)}
                     placeholder="https://..."
-                    className="w-full bg-[#121212] border border-white/40 px-3 py-1.5 text-white font-mono focus:border-white focus:outline-none"
+                    className="w-full bg-[#121212] border border-white/40 px-3 py-2 text-base sm:text-xs text-white font-mono focus:border-white focus:outline-none rounded-lg min-h-[44px]"
                   />
                 </div>
               </div>
 
               {/* Preset Avatars */}
               <div>
-                <span className="block text-[10px] font-bold text-neutral-400 mb-2">PRESET PERSONNEL PORTRAITS</span>
+                <span className="block text-[10px] font-bold text-neutral-400 mb-2">PRESET PORTRAITS</span>
                 <div className="flex flex-wrap gap-2">
                   {presetAvatars.map((url, idx) => (
                     <button
@@ -186,7 +179,7 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
                         setCustomAvatar(url);
                         setAvatarUrl(url);
                       }}
-                      className="w-12 h-12 border border-white/40 hover:border-white overflow-hidden transition-all cursor-pointer"
+                      className="w-11 h-11 border border-white/40 hover:border-white overflow-hidden transition-all cursor-pointer rounded-lg active:scale-95"
                     >
                       <img src={url} alt="Preset" className="w-full h-full object-cover filter grayscale" />
                     </button>
@@ -197,9 +190,9 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
               <div className="flex justify-end gap-2 pt-2">
                 <button
                   onClick={handleSaveProfile}
-                  className="px-4 py-1.5 bg-white text-black font-extrabold text-xs tracking-wider border border-white hover:bg-neutral-200 transition-colors"
+                  className="px-4 py-2.5 min-h-[44px] bg-white text-black font-extrabold text-xs tracking-wider border border-white hover:bg-neutral-200 transition-colors rounded-lg active:scale-95 touch-manipulation"
                 >
-                  SAVE & APPLY PROTOCOL
+                  SAVE & APPLY
                 </button>
               </div>
             </motion.div>
@@ -210,12 +203,9 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
         {/* CARD GRID: LEFT PORTRAIT + RIGHT METADATA */}
         {/* ------------------------------------------------------------- */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-6 items-stretch">
-          {/* ============================================================ */}
-          {/* LEFT SECTION: PORTRAIT PHOTO WITH DIAMOND GRID TEXTURE */}
-          {/* ============================================================ */}
+          {/* LEFT SECTION: PORTRAIT */}
           <div className="md:col-span-5 flex flex-col items-center justify-center relative">
-            <div className="w-full aspect-[4/5] max-w-[320px] bg-[#0d0d0d] border-2 border-white relative overflow-hidden flex items-center justify-center p-2 shadow-inner">
-              {/* Background Diamond Mesh / Raster Grid Pattern */}
+            <div className="w-full aspect-[4/5] max-w-[280px] sm:max-w-[320px] bg-[#0d0d0d] border-2 border-white relative overflow-hidden flex items-center justify-center p-2 shadow-inner rounded-xl">
               <svg className="absolute inset-0 w-full h-full opacity-25 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <pattern id="diamondGrid" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -225,8 +215,7 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
                 <rect width="100%" height="100%" fill="url(#diamondGrid)" />
               </svg>
 
-              {/* Portrait Image with High Contrast B&W Grayscale Filter */}
-              <div className="w-full h-full relative border border-white/60 overflow-hidden flex items-center justify-center bg-[#050505]">
+              <div className="w-full h-full relative border border-white/60 overflow-hidden flex items-center justify-center bg-[#050505] rounded-lg">
                 {avatarUrl ? (
                   <img
                     src={avatarUrl}
@@ -235,13 +224,12 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
                   />
                 ) : (
                   <div className="flex flex-col items-center justify-center text-center p-4 text-neutral-400">
-                    <User className="w-20 h-20 text-white opacity-80 mb-2 stroke-[1.5]" />
+                    <User className="w-16 h-16 sm:w-20 sm:h-20 text-white opacity-80 mb-2 stroke-[1.5]" />
                     <span className="text-[9px] tracking-widest uppercase font-bold text-white">OPERATIVE PORTRAIT</span>
-                    <span className="text-[8px] text-neutral-500">NO AVATAR SIGNAL</span>
+                    <span className="text-[8px] text-neutral-500">NO SIGNAL</span>
                   </div>
                 )}
 
-                {/* Corner Frame Accents */}
                 <div className="absolute top-1 left-1 w-2 h-2 border-t-2 border-l-2 border-white pointer-events-none" />
                 <div className="absolute top-1 right-1 w-2 h-2 border-t-2 border-r-2 border-white pointer-events-none" />
                 <div className="absolute bottom-1 left-1 w-2 h-2 border-b-2 border-l-2 border-white pointer-events-none" />
@@ -250,45 +238,41 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
             </div>
           </div>
 
-          {/* ============================================================ */}
           {/* RIGHT SECTION: PERSONNEL DATA & TELEMETRY */}
-          {/* ============================================================ */}
-          <div className="md:col-span-7 flex flex-col justify-between space-y-4">
+          <div className="md:col-span-7 flex flex-col justify-between space-y-3 sm:space-y-4 min-w-0">
             {/* ROW 1: NAME, RANK BADGE, SERIAL */}
-            <div className="border-b border-white/40 pb-3">
+            <div className="border-b border-white/40 pb-2.5 pr-14 sm:pr-0">
               <div className="flex flex-wrap items-start justify-between gap-2">
-                <div>
-                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-wider text-white uppercase">
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-lg sm:text-2xl lg:text-3xl font-extrabold tracking-wide sm:tracking-wider text-white uppercase break-words">
                     {personnelName}
                   </h1>
                 </div>
 
-                {/* Solid White Role/Title Badge */}
-                <div className="bg-white text-black font-extrabold text-xs sm:text-sm px-3 py-0.5 tracking-widest uppercase border border-white shadow-sm">
+                <div className="bg-white text-black font-extrabold text-[11px] sm:text-sm px-2.5 py-0.5 tracking-wider uppercase border border-white shadow-sm shrink-0 rounded">
                   {currentTitle || 'COMMANDER'}
                 </div>
               </div>
 
-              {/* Serial / ID Code line */}
-              <div className="text-[11px] text-neutral-400 font-mono tracking-widest mt-1">
+              <div className="text-[10px] sm:text-[11px] text-neutral-400 font-mono tracking-wider mt-1">
                 CMDR.4T42 // ID:{level >= 40 ? 'S-MONARCH' : `OP-${level}09`}
               </div>
             </div>
 
-            {/* ROW 2: TOUR METADATA GRID TABLE */}
-            <div className="border border-white/80 p-2 sm:p-2.5 text-[10px] sm:text-[11px] font-mono leading-relaxed bg-[#050505]">
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 border-b border-white/30 pb-1.5 mb-1.5">
+            {/* ROW 2: TOUR METADATA GRID */}
+            <div className="border border-white/80 p-2 sm:p-2.5 text-[10px] sm:text-[11px] font-mono leading-relaxed bg-[#050505] rounded-lg">
+              <div className="grid grid-cols-2 gap-x-3 gap-y-1 border-b border-white/30 pb-1.5 mb-1.5">
                 <div className="flex items-center justify-between">
                   <span className="text-neutral-400">TOUR START:</span>
                   <span className="font-bold text-white tracking-wider">29.09.2035</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-neutral-400">HA:</span>
-                  <span className="font-bold text-white tracking-wider">E95381.NJ814</span>
+                  <span className="font-bold text-white tracking-wider">E95381.NJ</span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+              <div className="grid grid-cols-2 gap-x-3 gap-y-1">
                 <div className="flex items-center justify-between">
                   <span className="text-neutral-400">TOUR END:</span>
                   <span className="font-bold text-white tracking-wider">EXTEND</span>
@@ -300,11 +284,10 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
               </div>
             </div>
 
-            {/* ROW 3: HONEYCOMB GRAPHIC + BIG NUMBERS & EMAIL LINE */}
+            {/* ROW 3: HONEYCOMB + BIG NUMBERS */}
             <div className="space-y-2 py-1">
-              <div className="flex items-center justify-between gap-4">
-                {/* Honeycomb Hexagon Cluster Icon */}
-                <div className="shrink-0 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center">
+              <div className="flex items-center justify-between gap-2 sm:gap-4 overflow-hidden">
+                <div className="shrink-0 w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center">
                   <svg className="w-full h-full fill-neutral-600 stroke-white stroke-[1.5]" viewBox="0 0 100 100">
                     <polygon points="50,15 70,26.5 70,50 50,61.5 30,50 30,26.5" />
                     <polygon points="26,30 46,41.5 46,65 26,76.5 6,65 6,41.5" />
@@ -313,8 +296,8 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
                   </svg>
                 </div>
 
-                {/* Big Segmented Key Metrics: 33 74 17 90 matching the image */}
-                <div className="flex-1 flex items-center justify-end gap-3 sm:gap-6 text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-[0.25em] text-white">
+                {/* Big Segmented Key Metrics: 33 74 17 90 (Mobile responsive tracking) */}
+                <div className="flex-1 flex items-center justify-end gap-2 sm:gap-5 text-lg xs:text-xl sm:text-3xl lg:text-4xl font-extrabold tracking-[0.1em] sm:tracking-[0.25em] text-white">
                   <span>33</span>
                   <span>74</span>
                   <span>17</span>
@@ -322,26 +305,22 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
                 </div>
               </div>
 
-              {/* Email / Handle line below horizontal rule */}
-              <div className="border-t border-white/60 pt-1.5 flex items-center justify-between text-[11px] sm:text-xs text-neutral-300 font-mono tracking-wider">
-                <span>{`${username.toLowerCase().replace(/[^a-z0-9]/g, '') || 'aoshima'}@hardimanaerospace.com`}</span>
-                <span className="text-[9px] text-neutral-400 font-mono">[AUTHENTICATED]</span>
+              {/* Email / Handle line */}
+              <div className="border-t border-white/60 pt-1.5 flex flex-col xs:flex-row xs:items-center justify-between gap-1 text-[10px] sm:text-xs text-neutral-300 font-mono">
+                <span className="truncate">{`${username.toLowerCase().replace(/[^a-z0-9]/g, '') || 'aoshima'}@hardimanaerospace.com`}</span>
+                <span className="text-[9px] text-neutral-400 font-mono shrink-0">[AUTHENTICATED]</span>
               </div>
             </div>
 
-            {/* ROW 4: TERMINAL TELEMETRY SPECS LIST */}
-            <div className="grid grid-cols-2 gap-4 text-[10px] sm:text-[11px] font-mono leading-tight pt-1 border-t border-white/30">
-              {/* Column 1 */}
+            {/* ROW 4: TERMINAL TELEMETRY SPECS */}
+            <div className="grid grid-cols-2 gap-3 text-[10px] sm:text-[11px] font-mono leading-tight pt-1 border-t border-white/30">
               <div className="space-y-0.5 text-neutral-300">
                 <div>&gt;{personnelName.split(',')[0] || 'OSH'}</div>
                 <div>&gt;{personnelName.split(',')[1]?.trim() || 'ALE'}</div>
                 <div>&gt;DOB {dateOfBirth || '04.10.07'}</div>
                 <div>&gt;AGE {calculateAge(dateOfBirth)}</div>
-                <div>&gt;H165.10CM</div>
-                <div>&gt;W54.4311KG</div>
               </div>
 
-              {/* Column 2 */}
               <div className="space-y-0.5 text-neutral-300">
                 <div>NV4RID: (TTT.22)</div>
                 <div>&gt;CTZN.COO.CC01</div>
@@ -353,42 +332,27 @@ export default function PersonnelProfileCard({ onEditClick }: PersonnelProfileCa
         </div>
 
         {/* ------------------------------------------------------------- */}
-        {/* FOOTER BAR: HAN-IV PERSONNEL CROSSOVER LINE & BRAND SCALE */}
+        {/* FOOTER BAR: BRAND SCALE */}
         {/* ------------------------------------------------------------- */}
-        <div className="mt-6 pt-3 border-t border-white/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-[10px] font-mono tracking-wider">
-          {/* Left Brand Title */}
+        <div className="mt-5 pt-3 border-t border-white/40 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-[10px] font-mono tracking-wider">
           <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
             <span className="font-extrabold text-white text-xs tracking-widest">HARDIMAN</span>
             <span className="text-[8px] text-neutral-400 tracking-[0.2em]">AEROSPACE</span>
           </div>
 
-          {/* Center Crossover Tag & Ruler Hash Track */}
-          <div className="flex flex-col items-center gap-1">
-            {/* Curved / Cross-over label line */}
-            <div className="flex items-center gap-2 text-white font-extrabold text-[11px] tracking-widest">
+          <div className="flex flex-col items-center gap-1 max-w-full overflow-hidden">
+            <div className="flex items-center gap-1.5 text-white font-extrabold text-[10px] sm:text-[11px] tracking-wider">
               <span className="text-neutral-500">—</span>
               <span>HAN-IV PERSONNEL</span>
               <span className="text-neutral-500">—</span>
             </div>
 
-            {/* Scale Hash Track: I . . . I . . . I */}
-            <div className="flex flex-col items-center font-mono text-[9px] text-neutral-400">
-              <div className="tracking-[0.15em] text-white/80">I....I....I....I....I....I....I....I</div>
-              <div className="flex justify-between w-full text-[8px] text-neutral-500 px-0.5">
-                <span>0</span>
-                <span>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>4</span>
-                <span>5</span>
-                <span>6</span>
-                <span>7</span>
-                <span>8</span>
-              </div>
+            {/* Responsive Scale Hash Track */}
+            <div className="flex flex-col items-center font-mono text-[8px] sm:text-[9px] text-neutral-400">
+              <div className="tracking-[0.1em] sm:tracking-[0.15em] text-white/80 truncate max-w-xs">I...I...I...I...I...I...I...I</div>
             </div>
           </div>
 
-          {/* Right Brand Title */}
           <div className="flex flex-col items-center sm:items-end text-center sm:text-right">
             <span className="font-extrabold text-white text-xs tracking-widest">HARDIMAN</span>
             <span className="text-[8px] text-neutral-400 tracking-[0.2em]">CORPORATION</span>

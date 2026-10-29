@@ -103,7 +103,7 @@ export const SoundscapesHUD: React.FC = () => {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: 0.2 }}
-      className="bg-[#0A0A0E] border border-[#1E1E26] rounded-xl p-5 shadow-[0_4px_20px_rgba(0,0,0,0.6)] space-y-4 font-mono select-none"
+      className="bg-[#0A0A0E] border border-[#1E1E26] rounded-2xl p-4 sm:p-5 shadow-[0_4px_20px_rgba(0,0,0,0.6)] space-y-4 font-mono select-none"
     >
       {/* Header */}
       <div className="flex items-center justify-between border-b border-[#1E1E26] pb-3">
@@ -129,7 +129,7 @@ export const SoundscapesHUD: React.FC = () => {
       </div>
 
       {/* Soundscape Options Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
         {soundscapes.map((s) => {
           const isActive = activeSoundscape === s.id;
 
@@ -137,7 +137,7 @@ export const SoundscapesHUD: React.FC = () => {
             <button
               key={s.id}
               onClick={() => handleSelectSoundscape(s.id)}
-              className={`p-3 rounded-lg border text-left flex flex-col justify-between transition-all duration-200 ${
+              className={`p-3.5 rounded-xl border text-left flex flex-col justify-between transition-all duration-200 min-h-[56px] active:scale-95 touch-manipulation cursor-pointer ${
                 isActive
                   ? 'bg-[#18181F] border-[#FFFFFF] text-[#FFFFFF] shadow-[0_0_12px_rgba(255,255,255,0.2)]'
                   : 'bg-[#050507] border-[#1E1E26] text-[#FFFFFF] hover:border-[#383848]'
@@ -147,7 +147,7 @@ export const SoundscapesHUD: React.FC = () => {
                 <span className="font-bold text-xs">{s.label}</span>
                 {isActive ? <Volume2 className="w-4 h-4 text-[#FFFFFF]" /> : <VolumeX className="w-4 h-4 text-[#8E8E93]" />}
               </div>
-              <span className="text-[10px] text-[#8E8E93] mt-1">{s.desc}</span>
+              <span className="text-[10px] text-[#8E8E93] mt-1 leading-snug">{s.desc}</span>
             </button>
           );
         })}
@@ -155,16 +155,16 @@ export const SoundscapesHUD: React.FC = () => {
 
       {/* Volume Slider HUD Control */}
       {activeSoundscape !== 'SILENCE' && (
-        <div className="pt-2 flex items-center gap-4 bg-[#050507] p-3 rounded-lg border border-[#1E1E26]">
-          <Sliders className="w-4 h-4 text-[#FFFFFF]" />
-          <span className="text-[10px] text-[#8E8E93] uppercase">VOLUME: {volume}%</span>
+        <div className="pt-2 flex items-center gap-3 bg-[#050507] p-3 rounded-xl border border-[#1E1E26]">
+          <Sliders className="w-4 h-4 text-[#FFFFFF] shrink-0" />
+          <span className="text-[10px] text-[#8E8E93] uppercase shrink-0">VOL: {volume}%</span>
           <input
             type="range"
             min="0"
             max="100"
             value={volume}
             onChange={(e) => handleVolumeChange(Number(e.target.value))}
-            className="w-full accent-[#FFFFFF] bg-[#1E1E26] h-1.5 rounded-lg appearance-none cursor-pointer"
+            className="w-full accent-[#FFFFFF] bg-[#1E1E26] h-2 rounded-lg appearance-none cursor-pointer touch-manipulation"
           />
         </div>
       )}

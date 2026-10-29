@@ -6,7 +6,6 @@ import Header from '@/components/layout/Header';
 import MobileBottomNav from '@/components/layout/MobileBottomNav';
 import MobileDrawer from '@/components/layout/MobileDrawer';
 import MobileInstallBanner from '@/components/ui/MobileInstallBanner';
-
 import LocalDataMigrationModal from '@/components/auth/LocalDataMigrationModal';
 
 interface AppShellProps {
@@ -23,12 +22,12 @@ export const AppShell: React.FC<AppShellProps> = ({ children }) => {
       <Sidebar />
 
       {/* Main Application Container */}
-      <div className="flex flex-col flex-1 h-screen overflow-hidden relative">
+      <div className="flex flex-col flex-1 h-screen h-[100dvh] overflow-hidden relative w-full max-w-full">
         {/* Top Telemetry Header */}
         <Header onOpenDrawer={() => setIsDrawerOpen(true)} />
 
-        {/* Scrollable Main Canvas - includes bottom padding on mobile for MobileBottomNav */}
-        <main className="flex-1 overflow-y-auto bg-cyber-grid bg-scanline p-3 sm:p-6 pb-20 md:pb-6 relative">
+        {/* Scrollable Main Canvas - includes safe bottom padding on mobile for MobileBottomNav */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden bg-cyber-grid bg-scanline p-3 sm:p-6 pb-28 sm:pb-24 md:pb-6 relative w-full">
           {children}
         </main>
       </div>
